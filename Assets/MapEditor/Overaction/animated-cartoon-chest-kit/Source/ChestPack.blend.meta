@@ -1,0 +1,304 @@
+fileFormatVersion: 2
+guid: 4019cc2804e1331418ba8a30c48cbc80
+ModelImporter:
+  serializedVersion: 19301
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: BoneBody
+  - first:
+      1: 100002
+    second: BoneBody 1
+  - first:
+      1: 100004
+    second: BoneBody 2
+  - first:
+      1: 100006
+    second: BoneCover
+  - first:
+      1: 100008
+    second: BoneCover 1
+  - first:
+      1: 100010
+    second: BoneCover 2
+  - first:
+      1: 100012
+    second: BoneCover_end
+  - first:
+      1: 100014
+    second: BoneCover_end 1
+  - first:
+      1: 100016
+    second: BoneCover_end 2
+  - first:
+      1: 100018
+    second: //RootNode
+  - first:
+      1: 100020
+    second: GoldenChest
+  - first:
+      1: 100022
+    second: GoldenChestBotton
+  - first:
+      1: 100024
+    second: GolenChestTop
+  - first:
+      1: 100026
+    second: SilverChest
+  - first:
+      1: 100028
+    second: SilverChestBotton
+  - first:
+      1: 100030
+    second: SilverChestTop
+  - first:
+      1: 100032
+    second: WoodenChest
+  - first:
+      1: 100034
+    second: WoodenChestBotton
+  - first:
+      1: 100036
+    second: WoodenChestTop
+  - first:
+      4: 400000
+    second: BoneBody
+  - first:
+      4: 400002
+    second: BoneBody 1
+  - first:
+      4: 400004
+    second: BoneBody 2
+  - first:
+      4: 400006
+    second: BoneCover
+  - first:
+      4: 400008
+    second: BoneCover 1
+  - first:
+      4: 400010
+    second: BoneCover 2
+  - first:
+      4: 400012
+    second: BoneCover_end
+  - first:
+      4: 400014
+    second: BoneCover_end 1
+  - first:
+      4: 400016
+    second: BoneCover_end 2
+  - first:
+      4: 400018
+    second: //RootNode
+  - first:
+      4: 400020
+    second: GoldenChest
+  - first:
+      4: 400022
+    second: GoldenChestBotton
+  - first:
+      4: 400024
+    second: GolenChestTop
+  - first:
+      4: 400026
+    second: SilverChest
+  - first:
+      4: 400028
+    second: SilverChestBotton
+  - first:
+      4: 400030
+    second: SilverChestTop
+  - first:
+      4: 400032
+    second: WoodenChest
+  - first:
+      4: 400034
+    second: WoodenChestBotton
+  - first:
+      4: 400036
+    second: WoodenChestTop
+  - first:
+      21: 2100000
+    second: LPoly-Pallete
+  - first:
+      43: 4300000
+    second: GoldenChestBotton
+  - first:
+      43: 4300002
+    second: GolenChestTop
+  - first:
+      43: 4300004
+    second: SilverChestBotton
+  - first:
+      43: 4300006
+    second: SilverChestTop
+  - first:
+      43: 4300008
+    second: WoodenChestBotton
+  - first:
+      43: 4300010
+    second: WoodenChestTop
+  - first:
+      74: 7400000
+    second: WoodenChest|ChestIdle
+  - first:
+      74: 7400002
+    second: WoodenChest|ChestIdle.001
+  - first:
+      74: 7400004
+    second: WoodenChest|ChestIdle.002
+  - first:
+      74: 7400006
+    second: WoodenChest|CloseChest
+  - first:
+      74: 7400008
+    second: WoodenChest|OpenChest
+  - first:
+      74: 7400010
+    second: SilverChest|ChestIdle
+  - first:
+      74: 7400012
+    second: SilverChest|ChestIdle.001
+  - first:
+      74: 7400014
+    second: SilverChest|ChestIdle.002
+  - first:
+      74: 7400016
+    second: SilverChest|CloseChest
+  - first:
+      74: 7400018
+    second: SilverChest|OpenChest
+  - first:
+      74: 7400020
+    second: GoldenChest|ChestIdle
+  - first:
+      74: 7400022
+    second: GoldenChest|ChestIdle.001
+  - first:
+      74: 7400024
+    second: GoldenChest|ChestIdle.002
+  - first:
+      74: 7400026
+    second: GoldenChest|CloseChest
+  - first:
+      74: 7400028
+    second: GoldenChest|OpenChest
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: GoldenChestBotton
+  - first:
+      137: 13700002
+    second: GolenChestTop
+  - first:
+      137: 13700004
+    second: SilverChestBotton
+  - first:
+      137: 13700006
+    second: SilverChestTop
+  - first:
+      137: 13700008
+    second: WoodenChestBotton
+  - first:
+      137: 13700010
+    second: WoodenChestTop
+  - first:
+      41386430: 2186277476908879412
+    second: ImportLogs
+  - first:
+      74: -623603649343465320
+    second: Scene
+  externalObjects: {}
+  materials:
+    materialImportMode: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    fileIdsGeneration: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
