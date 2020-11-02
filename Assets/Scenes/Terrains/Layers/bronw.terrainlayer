@@ -7,7 +7,7 @@ TerrainLayer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: bronw
-  m_DiffuseTexture: {fileID: 2800000, guid: c4ce71840569ac549ae93ae63ee515fe, type: 3}
+  m_DiffuseTexture: {fileID: 2800000, guid: 999ed21744627d7419b327ea23fe051b, type: 3}
   m_NormalMapTexture: {fileID: 0}
   m_MaskMapTexture: {fileID: 0}
   m_TileSize: {x: 2, y: 2}
