@@ -7,7 +7,7 @@ using System.Linq;
 
 public class Pause : MonoBehaviour
 {
-    public Button BotaoRetornarAoJogo, BotaoOpcoes, BotaoVoltarAoMenu;
+    public Button BotaoRetornarAoJogo, BotaoRestart, BotaoOpcoes, BotaoVoltarAoMenu;
     [Space(20)]
     public Slider BarraVolume;
     public Toggle CaixaModoJanela;
@@ -118,12 +118,14 @@ public class Pause : MonoBehaviour
 
         // =========SETAR BOTOES==========//
         BotaoVoltarAoMenu.onClick = new Button.ButtonClickedEvent();
+        BotaoRestart.onClick = new Button.ButtonClickedEvent();
         BotaoOpcoes.onClick = new Button.ButtonClickedEvent();
         BotaoRetornarAoJogo.onClick = new Button.ButtonClickedEvent();
         BotaoVoltar.onClick = new Button.ButtonClickedEvent();
         BotaoSalvarPref.onClick = new Button.ButtonClickedEvent();
         //
         BotaoVoltarAoMenu.onClick.AddListener(() => VoltarAoMenu());
+        BotaoRestart.onClick.AddListener(() => Restart());
         BotaoOpcoes.onClick.AddListener(() => Opcoes(false, true));
         BotaoRetornarAoJogo.onClick.AddListener(() => Opcoes(false, false));
         BotaoVoltar.onClick.AddListener(() => Opcoes(true, false));
@@ -194,6 +196,7 @@ public class Pause : MonoBehaviour
     private void Opcoes(bool ativarOP, bool ativarOP2)
     {
         BotaoVoltarAoMenu.gameObject.SetActive(ativarOP);
+        BotaoRestart.gameObject.SetActive(ativarOP);
         BotaoOpcoes.gameObject.SetActive(ativarOP);
         BotaoRetornarAoJogo.gameObject.SetActive(ativarOP);
 
