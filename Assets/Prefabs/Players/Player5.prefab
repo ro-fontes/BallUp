@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 670224309865224971, guid: ebb25289dfc4f8c459b3164ab85f8f83, type: 3}
+  - {fileID: 2100000, guid: 1e5c97ef1e590fc4d9691a61ceb35c36, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -110,7 +110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ece972f5d632b2948b80505df6c6724d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  multiplier: 4
+  InWater: {fileID: 8300000, guid: ee9be2df301d38a4d8af54e68a7e4fda, type: 3}
+  Outwater: {fileID: 8300000, guid: f1c511443316b7e43848ed6d29c6668c, type: 3}
+  multiplier: 3
   speed: 9
   jumpFloat: 300
 --- !u!135 &-6806927902808973981

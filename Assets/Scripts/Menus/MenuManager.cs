@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEngine.PlayerLoop;
 
 public class MenuManager : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class MenuManager : MonoBehaviour
 
     [Space(20)]
     public Text textoVol, txtStars, txtFragments;
-    public string nomeCenaJogo = "CENA1";
+    int Stars, Fragments;
     private string nomeDaCena;
     private float VOLUME;
     private int qualidadeGrafica, modoJanelaAtivo, resolucaoSalveIndex;
@@ -32,7 +33,8 @@ public class MenuManager : MonoBehaviour
 
     void Start()
     {
-
+        txtStars.text = PlayerPrefs.GetInt("Stars").ToString();
+        txtFragments.text = PlayerPrefs.GetInt("Fragments").ToString();
 
         Opcoes(false);
         ChecarResolucoes();
@@ -141,6 +143,7 @@ public class MenuManager : MonoBehaviour
         BotaoSair.onClick.AddListener(() => Sair());
         BotaoVoltar.onClick.AddListener(() => Back());
     }
+    
     //=========VOIDS DE CHECAGEM==========//
     private void ChecarResolucoes()
     {
@@ -216,7 +219,8 @@ public class MenuManager : MonoBehaviour
             AudioListener.volume = VOLUME;
             //Destroy(gameObject);
         }
-
+        txtStars.text = PlayerPrefs.GetInt("Stars").ToString();
+        txtFragments.text = PlayerPrefs.GetInt("Fragments").ToString();
         SalvarPreferencias();
     }
 

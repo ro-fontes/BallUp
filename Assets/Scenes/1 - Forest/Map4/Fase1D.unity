@@ -7585,13 +7585,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e828c4c833d8dfc46b9c1d388cb39a24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _txtStars: {fileID: 0}
   _txtFragments: {fileID: 1368079837}
   _txtTime: {fileID: 1368079836}
   Stars: 0
   Fragments: 0
+  LevelSecond: 0
   ghost: {fileID: 0}
-  Blur: {fileID: 1368079834}
   completeLevelUI: {fileID: 1368079835}
   UIActive: {fileID: 1368079834}
 --- !u!4 &1861009798
@@ -7976,8 +7975,8 @@ MonoBehaviour:
   DistanciaDeVisib: 2
   Visibilidade: 7
   IntensidadeSol: 3
-  somEntrando: {fileID: 8300000, guid: ee9be2df301d38a4d8af54e68a7e4fda, type: 3}
-  somSaindo: {fileID: 8300000, guid: f1c511443316b7e43848ed6d29c6668c, type: 3}
+  somEntrando: {fileID: 0}
+  somSaindo: {fileID: 0}
   somSubmerso: {fileID: 8300000, guid: 080c1604035eae147ba93c2e9a30f758, type: 3}
 --- !u!82 &1952110570
 AudioSource:

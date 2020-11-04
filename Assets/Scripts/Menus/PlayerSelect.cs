@@ -23,6 +23,7 @@ public class PlayerSelect : MonoBehaviour
     public GameObject[] Players;
     public GameObject[] Particles;
     [Space(20)]
+    public Button[] level;
     public float RotateSpeed;
 
     private void Awake()
@@ -58,6 +59,17 @@ public class PlayerSelect : MonoBehaviour
 
         }
         player.transform.Rotate(0, RotateSpeed, 0);
+        for (int i = 1; i < 4; i++)
+        {
+            if (PlayerPrefs.HasKey(i + "Stars"))
+            {
+                level[i].interactable = true;
+            }
+            else
+            {
+                level[i].interactable = false;
+            }
+        }
         //---------------Aparece no menu principal----------------
     }
 
@@ -90,6 +102,8 @@ public class PlayerSelect : MonoBehaviour
 
         particle.name = "BallParticle";
         player.name = "Player";
+
+
 
         SceneManager.LoadScene(index, LoadSceneMode.Single);
     }

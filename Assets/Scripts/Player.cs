@@ -17,13 +17,19 @@ public class Player : MonoBehaviour
     GameObject BallParticle;
     float WaterDepth;
     bool isFloor;
-    
+    AudioSource AudioPlayer;
+
+    public AudioClip InWater, Outwater;
     public float multiplier;
     public float speed = 9;
     public float jumpFloat = 1;
 
     #endregion
 
+    private void Start()
+    {
+        AudioPlayer = GetComponent<AudioSource>();
+    }
     void Update()
     {
         playerJump();
@@ -118,12 +124,14 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Water"))
         {
+            AudioPlayer.PlayOneShot(InWater);
             WaterInScene = other.gameObject;
             rb.drag = 2f;
         }
         if (other.gameObject.CompareTag("Fragments"))
         {
             GameManager.Instance.AddFragments(1);
+            Destroy(other.gameObject);
         }
         if (other.gameObject.CompareTag("StopLevel"))
         {
@@ -137,6 +145,7 @@ public class Player : MonoBehaviour
         {
             rb.drag = 0;
             WaterInScene = null;
+            AudioPlayer.PlayOneShot(Outwater);
         }
     }
 }

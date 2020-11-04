@@ -20,7 +20,7 @@ public class Controlador : MonoBehaviour{
 	private float cronometro,cronometro2, cronometroGotas;
 
 	public Texture TexturaPingos;
-	public string TagAgua = "AGUA";
+	public string TagAgua = "Water";
 	public Color corAgua = new Color32 (15, 150, 125, 0);
 	[Range(0.5f,1.5f)]
 	public float Distorcao = 1;
