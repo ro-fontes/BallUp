@@ -6,26 +6,34 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-	public static GameManager Instance;
+    #region Varibles
+    public static GameManager Instance;
     [Space(20)]
+	[Tooltip("Set Fragments text")]
 	public Text _txtFragments;
+	[Tooltip("Set Timer seconds")]
 	public Text _txtTime;
     [Space(20)]
     public int Stars;
 	public int Fragments;
+	[Tooltip("Put how many seconds to pass the level")]
 	public int LevelSecond;
-	public int levelIndex;
-    [Space(20)]
+	[Space(20)]
     public GhostManager ghost;
-    public GameObject completeLevelUI;
-    public GameObject UIActive;
-	
+	[Tooltip("Set Gameobject EndLevelUI")]
+	public GameObject completeLevelUI;
+	[Tooltip("Set Gameobject Panel")]
+	public GameObject UIActive;
 
+	
+	int levelIndex;
 	int scoreAtualDoNivel;
 	int scoreMaximoSalvo;
 	float secondsCount;
 
-	private void Awake()
+    #endregion
+
+    private void Awake()
 	{
 		if (!Instance)
 		{
@@ -92,6 +100,7 @@ public class GameManager : MonoBehaviour
 
 	public void AddStars()
 	{
+		#region Check the time
 		if (secondsCount <= LevelSecond)
 		{
 			scoreAtualDoNivel = 3;
@@ -108,7 +117,10 @@ public class GameManager : MonoBehaviour
 			print("1 estrelas");
 		}
 
-		if (PlayerPrefs.HasKey(levelIndex + "Stars"))
+        #endregion
+
+        #region Check MaxStars
+        if (PlayerPrefs.HasKey(levelIndex + "Stars"))
         {
 			switch (scoreAtualDoNivel)
 			{
@@ -151,10 +163,10 @@ public class GameManager : MonoBehaviour
 			PlayerPrefs.SetInt(levelIndex + "Stars", scoreMaximoSalvo);
 			PlayerPrefs.SetInt("Stars", Stars);
 		}
+        #endregion
+    }
 
-	}
-
-	public void AddFragments(int value)
+    public void AddFragments(int value)
 	{
 		Fragments += value;
 		_txtFragments.text = Fragments.ToString();

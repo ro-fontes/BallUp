@@ -6,10 +6,18 @@ using UnityEngine.SceneManagement;
 
 public class EndLevel : MonoBehaviour
 {
-    void OnTriggerEnter()
+    bool EnterEnd;
+    private void Start()
     {
-        GameManager.Instance.AddStars();
-        GameManager.Instance.CompleteLevel();
-        gameObject.GetComponent<BoxCollider>().isTrigger = false;
+        EnterEnd = false;
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player") && !EnterEnd)
+        {
+            GameManager.Instance.AddStars();
+            GameManager.Instance.CompleteLevel();
+            EnterEnd = true;
+        }
     }
 }

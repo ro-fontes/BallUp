@@ -27,7 +27,6 @@ public class MenuManager : MonoBehaviour
 
     void Awake()
     {
-        //DontDestroyOnLoad(transform.gameObject);
         resolucoesSuportadas = Screen.resolutions;
     }
 
@@ -39,7 +38,7 @@ public class MenuManager : MonoBehaviour
         Opcoes(false);
         ChecarResolucoes();
         AjustarQualidades();
-        //
+
         if (PlayerPrefs.HasKey("RESOLUCAO"))
         {
             int numResoluc = PlayerPrefs.GetInt("RESOLUCAO");
@@ -48,11 +47,11 @@ public class MenuManager : MonoBehaviour
                 PlayerPrefs.DeleteKey("RESOLUCAO");
             }
         }
-        //
+        
         nomeDaCena = SceneManager.GetActiveScene().name;
         Cursor.visible = true;
         Time.timeScale = 1;
-        //
+        
         BarraVolume.minValue = 0;
         BarraVolume.maxValue = 1;
 

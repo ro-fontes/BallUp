@@ -14158,13 +14158,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e828c4c833d8dfc46b9c1d388cb39a24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _txtStars: {fileID: 0}
   _txtFragments: {fileID: 345267900}
   _txtTime: {fileID: 345267899}
   Stars: 0
   Fragments: 0
+  LevelSecond: 30
   ghost: {fileID: 0}
-  Blur: {fileID: 0}
   completeLevelUI: {fileID: 345267898}
   UIActive: {fileID: 345267897}
 --- !u!4 &1684704413

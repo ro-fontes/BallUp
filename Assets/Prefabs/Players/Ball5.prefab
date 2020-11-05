@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: -8532215996646677561}
   - component: {fileID: -5080663222041081442}
   - component: {fileID: 6861532988188834078}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Ball5
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,7 +99,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InWater: {fileID: 8300000, guid: ee9be2df301d38a4d8af54e68a7e4fda, type: 3}
   Outwater: {fileID: 8300000, guid: f1c511443316b7e43848ed6d29c6668c, type: 3}
-  multiplier: 3
   speed: 9
   jumpFloat: 300
 --- !u!114 &-8532215996646677561
@@ -124,7 +123,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14561501561650494}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 68f9fec487893c9478014c17700b6332, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -141,7 +140,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -235,7 +234,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5181359029315640551}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: SpawnParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

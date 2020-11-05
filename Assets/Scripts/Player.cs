@@ -9,19 +9,23 @@ using UnityEditor;
 public class Player : MonoBehaviour
 {
     #region variables
-
+    
     CinemachineFreeLook FreeLookCam;
     Rigidbody rb;
     Vector3 force;
     GameObject WaterInScene;
     GameObject BallParticle;
-    float WaterDepth;
-    bool isFloor;
     AudioSource AudioPlayer;
+    float WaterDepth;
+    float multiplier = 3;
+    bool isFloor;
 
+
+    [Tooltip("Set Audio FX")]
     public AudioClip InWater, Outwater;
-    public float multiplier;
+    [Tooltip("Set Player Speed")]
     public float speed = 9;
+    [Tooltip("Set Jump Force")]
     public float jumpFloat = 1;
 
     #endregion
@@ -84,18 +88,22 @@ public class Player : MonoBehaviour
     void playerJump()
     {
         RaycastHit hit;
+
         if(Physics.Raycast(transform.position, Vector3.down, out hit, 0.7f))
         {
             Debug.DrawLine(transform.position, hit.point, Color.green, 0.5f);
+
             if(hit.collider)
             {
                 isFloor = true;
-                if (Input.GetKeyDown(KeyCode.Space))
+
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump"))
                 {
                     rb.AddForce(Vector3.up * jumpFloat);
                 }
             }
         }
+
         if (!hit.collider)
         {
             isFloor = false;
@@ -128,14 +136,16 @@ public class Player : MonoBehaviour
             WaterInScene = other.gameObject;
             rb.drag = 2f;
         }
+
         if (other.gameObject.CompareTag("Fragments"))
         {
             GameManager.Instance.AddFragments(1);
             Destroy(other.gameObject);
         }
+
         if (other.gameObject.CompareTag("StopLevel"))
         {
-            
+
         }
     }
 

@@ -76,32 +76,34 @@ public class PlayerSelect : MonoBehaviour
     public void SelectMap(int index)
     {
         SpawnParticle = GameObject.Find("SpawnParticle");
-        particle = Instantiate(Particles[0], SpawnParticle.transform.position, SpawnParticle.transform.rotation);
+        particle = Instantiate(Particles[SaveParticle], SpawnParticle.transform.position, SpawnParticle.transform.rotation);
 
         player.transform.parent = null;
         particle.transform.parent = null;
 
-
-
-
-
         DontDestroyOnLoad(player);
         DontDestroyOnLoad(particle);
 
-        player.gameObject.transform.localScale = new Vector3(1, 1, 1);
-        particle.gameObject.transform.localScale = new Vector3(1, 1, 1);
-
-        player.GetComponent<Player>().enabled = true;
-        player.GetComponent<ChangeColor>().enabled = false;
-
-        player.transform.position = SpawnPlayer[index - 1];
+        particle.name = "BallParticle";
+        player.name = "Player";
 
         player.AddComponent<Rigidbody>();
         player.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
 
 
-        particle.name = "BallParticle";
-        player.name = "Player";
+        player.GetComponent<Player>().enabled = true;
+        player.GetComponent<ChangeColor>().enabled = false;
+
+        player.gameObject.transform.localScale = new Vector3(1, 1, 1);
+        particle.gameObject.transform.localScale = new Vector3(1, 1, 1);
+
+
+        player.transform.position = SpawnPlayer[index - 1];
+
+
+
+
+
 
 
 

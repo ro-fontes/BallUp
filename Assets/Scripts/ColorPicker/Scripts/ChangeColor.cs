@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ChangeColor : MonoBehaviour {
     [Tooltip("What Color Picker Code Will Affect The Color.")]
@@ -11,7 +12,8 @@ public class ChangeColor : MonoBehaviour {
 	private bool isCamera;
 	private bool isLight;
 	Color color;
-	// Use this for initialization
+	Material mat;
+
 	void Start () 
 	{
 		color = new Color(PlayerPrefs.GetFloat("Color"), PlayerPrefs.GetFloat("Color1"), PlayerPrefs.GetFloat("Color2"), 255f);

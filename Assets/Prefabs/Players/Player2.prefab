@@ -113,7 +113,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InWater: {fileID: 8300000, guid: ee9be2df301d38a4d8af54e68a7e4fda, type: 3}
   Outwater: {fileID: 8300000, guid: f1c511443316b7e43848ed6d29c6668c, type: 3}
-  multiplier: 3
   speed: 9
   jumpFloat: 300
 --- !u!135 &-8452485123161057153
