@@ -4,19 +4,28 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 public class Pause : MonoBehaviour
 {
+    [Tooltip("Set Pause button Menu")]
     public Button BotaoRetornarAoJogo, BotaoRestart, BotaoOpcoes, BotaoVoltarAoMenu;
     [Space(20)]
+    [Tooltip("Set options button Menu")]
     public Slider BarraVolume;
+    [Tooltip("Set options button Menu")]
     public Toggle CaixaModoJanela;
+    [Tooltip("Set options button Menu")]
     public Dropdown Resolucoes, Qualidades;
-    public Button BotaoVoltar, BotaoSalvarPref;
+    [Tooltip("Set options button Menu")]
+    public Button BotaoSalvarPref;
     [Space(20)]
     public Text textoVol;
     public Image blur;
     public string nomeCenaMenu = "Menu";
+    public GameObject PauseButton, SettingsButton, EndLevelButton;
+
+    GameObject Player;
     private float VOLUME;
     private int qualidadeGrafica, modoJanelaAtivo, resolucaoSalveIndex;
     private bool telaCheiaAtivada, menuParte1Ativo, menuParte2Ativo;
@@ -29,6 +38,7 @@ public class Pause : MonoBehaviour
 
     void Start()
     {
+        //Player.GetComponent<Player>().enabled = true;
         Opcoes(false, false);
         ChecarResolucoes();
         AjustarQualidades();
@@ -37,6 +47,7 @@ public class Pause : MonoBehaviour
         BarraVolume.minValue = 0;
         BarraVolume.maxValue = 1;
         menuParte1Ativo = menuParte2Ativo = false;
+
 
         if (PlayerPrefs.HasKey("RESOLUCAO"))
         {
@@ -121,28 +132,31 @@ public class Pause : MonoBehaviour
         BotaoRestart.onClick = new Button.ButtonClickedEvent();
         BotaoOpcoes.onClick = new Button.ButtonClickedEvent();
         BotaoRetornarAoJogo.onClick = new Button.ButtonClickedEvent();
-        BotaoVoltar.onClick = new Button.ButtonClickedEvent();
         BotaoSalvarPref.onClick = new Button.ButtonClickedEvent();
         //
         BotaoVoltarAoMenu.onClick.AddListener(() => VoltarAoMenu());
         BotaoRestart.onClick.AddListener(() => Restart());
         BotaoOpcoes.onClick.AddListener(() => Opcoes(false, true));
         BotaoRetornarAoJogo.onClick.AddListener(() => Opcoes(false, false));
-        BotaoVoltar.onClick.AddListener(() => Opcoes(true, false));
         BotaoSalvarPref.onClick.AddListener(() => SalvarPreferencias());
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (!Player)
+        {
+            Player = GameObject.Find("Player");
+        }
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Select"))
         {
             if (menuParte1Ativo == false && menuParte2Ativo == false)
-            { 
+            {
                 menuParte1Ativo = true;
                 menuParte2Ativo = false;
                 Opcoes(true, false);
                 Time.timeScale = 0;
                 AudioListener.volume = 0;
+                print("primeiro 2");
             }
             else if (menuParte1Ativo == true && menuParte2Ativo == false)
             {
@@ -167,6 +181,42 @@ public class Pause : MonoBehaviour
         else
         {
             blur.gameObject.SetActive(false);
+        }
+
+        if (GameManager.Instance.completeLevelUI.activeSelf == true)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+
+            EventSystem.current.SetSelectedGameObject(EndLevelButton);
+
+            //Player.GetComponent<Player>().enabled = false;
+        }
+        if(BotaoSalvarPref.gameObject.activeSelf)
+        {
+
+            if (Input.GetButtonDown("B"))
+            {
+                menuParte1Ativo = true;
+                menuParte2Ativo = false;
+                Opcoes(true, false);
+
+            }
+            //Player.GetComponent<Player>().enabled = false;
+        }
+        else if (BotaoVoltarAoMenu.gameObject.activeSelf)
+        {
+
+            if (Input.GetButtonDown("B"))
+            {
+                menuParte1Ativo = false;
+                menuParte2Ativo = false;
+                Opcoes(false, false);
+            }
+            //Player.GetComponent<Player>().enabled = false;
+        }
+        else
+        {
+            //Player.GetComponent<Player>().enabled = true;
         }
     }
 
@@ -205,15 +255,21 @@ public class Pause : MonoBehaviour
         CaixaModoJanela.gameObject.SetActive(ativarOP2);
         Resolucoes.gameObject.SetActive(ativarOP2);
         Qualidades.gameObject.SetActive(ativarOP2);
-        BotaoVoltar.gameObject.SetActive(ativarOP2);
         BotaoSalvarPref.gameObject.SetActive(ativarOP2);
         if (ativarOP == true && ativarOP2 == false)
         {
+            EventSystem.current.SetSelectedGameObject(null);
+
+            EventSystem.current.SetSelectedGameObject(PauseButton);
             menuParte1Ativo = true;
             menuParte2Ativo = false;
         }
         else if (ativarOP == false && ativarOP2 == true)
         {
+            EventSystem.current.SetSelectedGameObject(null);
+
+            EventSystem.current.SetSelectedGameObject(SettingsButton);
+
             menuParte1Ativo = false;
             menuParte2Ativo = true;
         }

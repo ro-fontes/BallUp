@@ -60,6 +60,28 @@ public class GameManager : MonoBehaviour
         ChangeCursorLock();
 		scoreMaximoSalvo = PlayerPrefs.GetInt(levelIndex + "Stars");
 		_txtFragments.text = Fragments.ToString();
+
+		if(completeLevelUI.activeSelf == true)
+        {
+            if (Input.GetButtonDown("A"))
+            {
+
+				print("A");
+            }
+			if (Input.GetButtonDown("X"))
+			{
+				print("x");
+
+			}
+			if (Input.GetButtonDown("B"))
+			{
+				print("B");
+			}
+			if (Input.GetButtonDown("Y"))
+			{
+				print("Y");
+			}
+		}
     }
 
     string FormatTime(float time)
@@ -90,6 +112,7 @@ public class GameManager : MonoBehaviour
     public void CompleteLevel()
     {
         completeLevelUI.SetActive(true);
+
     }
 
     void UpdateTimerUI()

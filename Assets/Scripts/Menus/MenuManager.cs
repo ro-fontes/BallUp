@@ -2,15 +2,14 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
-using UnityEngine.PlayerLoop;
+using UnityEngine.EventSystems;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class MenuManager : MonoBehaviour
 {
     public Animator menuAnim;
     public Button BotaoJogar, BotaoMultiplayer, BotaoOpcoes, BotaoOpcoes2, CustomizeButton, CustomizeButton2, BotaoSair, BotaoVoltar;
+    public GameObject FirstButton, OptionsButton, LocationsButton, skinbutton;
     [Space(20)]
     public Slider BarraVolume;
     public Toggle CaixaModoJanela;
@@ -32,6 +31,7 @@ public class MenuManager : MonoBehaviour
 
     void Start()
     {
+        FirstButton.GetComponent<Animator>().updateMode = AnimatorUpdateMode.Normal;
         txtStars.text = PlayerPrefs.GetInt("Stars").ToString();
         txtFragments.text = PlayerPrefs.GetInt("Fragments").ToString();
 
@@ -218,6 +218,19 @@ public class MenuManager : MonoBehaviour
             AudioListener.volume = VOLUME;
             //Destroy(gameObject);
         }
+        if (Input.GetButtonDown("B"))
+        {
+            Back();
+        }
+        if (Input.GetJoystickNames() != null)
+        {
+            print("Com Controle");
+        }
+        else
+        {
+            print("Sem controle");
+        }
+
         txtStars.text = PlayerPrefs.GetInt("Stars").ToString();
         txtFragments.text = PlayerPrefs.GetInt("Fragments").ToString();
         SalvarPreferencias();
@@ -226,9 +239,16 @@ public class MenuManager : MonoBehaviour
     private void Jogar()
     {
         menuAnim.SetBool("MenuToLocations", true);
+        EventSystem.current.SetSelectedGameObject(null);
+
+        EventSystem.current.SetSelectedGameObject(LocationsButton);
     }
     private void Back()
     {
+        
+        EventSystem.current.SetSelectedGameObject(null);
+        FirstButton.GetComponent<Animator>().updateMode = AnimatorUpdateMode.Normal;
+        EventSystem.current.SetSelectedGameObject(FirstButton);
         menuAnim.SetTrigger("Menu");
         menuAnim.SetBool("SkinSelectorToSettings", false);
         menuAnim.SetBool("Settings", false);
@@ -240,6 +260,9 @@ public class MenuManager : MonoBehaviour
     }
     void Customize()
     {
+        EventSystem.current.SetSelectedGameObject(null);
+
+        EventSystem.current.SetSelectedGameObject(skinbutton);
         menuAnim.SetBool("SkinSelector", true);
         menuAnim.SetBool("SkinSelectorToSettings", false);
         menuAnim.SetBool("SettingsToSkinSelector", true);
@@ -247,6 +270,9 @@ public class MenuManager : MonoBehaviour
     }
     void Settings()
     {
+        EventSystem.current.SetSelectedGameObject(null);
+
+        EventSystem.current.SetSelectedGameObject(OptionsButton);
         Opcoes(true);
         menuAnim.SetBool("SkinSelectorToSettings", true);
         menuAnim.SetBool("SettingsToSkinSelector", false);
