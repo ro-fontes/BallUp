@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEditor;
 
 public class ColorPickerUnityUI : MonoBehaviour {
 	[Tooltip("Is the image a circle")]
@@ -20,17 +21,50 @@ public class ColorPickerUnityUI : MonoBehaviour {
     private Vector3 Max; // max bounds
     private Vector3 Min; // min bounds
     private CanvasScaler myScale;
+	Vector3 CursorPos;
+	GameObject controllerManager;
+	bool PressX = false;
 
-	private void Start()
-	{
-        myScale = colorPalette.canvas.transform.GetComponent<CanvasScaler>();
+	private void Awake()
+    {
+		CursorPos.x = PlayerPrefs.GetFloat("CursorPosX");
+		CursorPos.y = PlayerPrefs.GetFloat("CursorPosY");
+		myScale = colorPalette.canvas.transform.GetComponent<CanvasScaler>();
 
-        SpectrumXY = new Vector2 (colorPalette.GetComponent<RectTransform> ().rect.width* myScale.transform.localScale.x, colorPalette.GetComponent<RectTransform> ().rect.height*myScale.transform.localScale.y);
-		PictureBounds = colorPalette.GetComponent<Collider2D> ().bounds ;
-		Max =PictureBounds.max;
-        Min = PictureBounds.min;
+		SpectrumXY = new Vector2(colorPalette.GetComponent<RectTransform>().rect.width * myScale.transform.localScale.x, colorPalette.GetComponent<RectTransform>().rect.height * myScale.transform.localScale.y);
+		PictureBounds = colorPalette.GetComponent<Collider2D>().bounds;
+		Max = PictureBounds.max;
+		Min = PictureBounds.min;
+		controllerManager = GameObject.Find("ControllerManager");
 	}
+    private void Update()
+    {
+        if (!controllerManager)
+        {
+			controllerManager = GameObject.Find("ControllerManager");
+		}
+		if (controllerManager.GetComponent<ControllerManager>().Xbox_One_Controller == 1)
+		{
+			if (PressX == true)
+			{
+				OnDrag();
+			}
 
+			if (Input.GetButtonDown("X"))
+            {
+				PressX = true;
+			}
+			if (Input.GetButtonDown("Y"))
+            {
+				PressX = false;
+			}
+		}
+	}
+    private void FixedUpdate()
+    {
+		PlayerPrefs.SetFloat("CursorPosX", CursorPos.x);
+		PlayerPrefs.SetFloat("CursorPosY", CursorPos.y);
+	}
     public static Vector3 MultiplyVectors(Vector3 V1, Vector3 V2) 
 	{
         float[] X = { V1.x, V2.x };
@@ -55,7 +89,7 @@ public class ColorPickerUnityUI : MonoBehaviour {
 	public void OnDrag()
 	{
 		UpdateThumbPosition ();
-        WasClicked = true;
+		WasClicked = true;
     }
 	//get color of mouse point
 	private Color GetColor()
@@ -94,8 +128,9 @@ public class ColorPickerUnityUI : MonoBehaviour {
 		if (circular && colorPalette.GetComponent<CircleCollider2D>()) 
 		{
 			Vector3 center = transform.position;
-			Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			Vector3 offset = position - center;
+
+			Vector3 offset = Camera.main.ScreenToWorldPoint(CursorPos) - center;
+
 			Vector3 Set = Vector3.ClampMagnitude(offset, (colorPalette.GetComponent<CircleCollider2D>().radius * myScale.transform.localScale.x));
 			Vector3 newPos = center + Set;
 			if (thumb.transform.position != newPos) 
@@ -107,22 +142,30 @@ public class ColorPickerUnityUI : MonoBehaviour {
 		} 
 		else 
 		{
-			SpectrumXY = new Vector2(colorPalette.GetComponent<RectTransform>().rect.width* myScale.transform.localScale.x, colorPalette.GetComponent<RectTransform>().rect.height*myScale.transform.localScale.y);
+			SpectrumXY = new Vector2(colorPalette.GetComponent<RectTransform>().rect.width * myScale.transform.localScale.x, colorPalette.GetComponent<RectTransform>().rect.height * myScale.transform.localScale.y);
 			PictureBounds = colorPalette.GetComponent<Collider2D> ().bounds;
-			Max =PictureBounds.max;
+			Max = PictureBounds.max;
 			Min = PictureBounds.min;
 
-            float x = Mathf.Clamp (Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Min.x, Max.x + 1);
-			float y = Mathf.Clamp (Camera.main.ScreenToWorldPoint(Input.mousePosition).y, Min.y, Max.y);
+			if (controllerManager.GetComponent<ControllerManager>().Mouse_Controller == 1)
+			{
+				CursorPos = Input.mousePosition;
+
+			}
+            else
+			{
+				CursorPos += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0);
+			}
+
+
+			float x = Mathf.Clamp (Camera.main.ScreenToWorldPoint(new Vector3(PlayerPrefs.GetFloat("CursorPosX"), PlayerPrefs.GetFloat("CursorPosY"),0)).x, Min.x, Max.x + 1);
+			float y = Mathf.Clamp (Camera.main.ScreenToWorldPoint(new Vector3(PlayerPrefs.GetFloat("CursorPosX"), PlayerPrefs.GetFloat("CursorPosY"),0)).y, Min.y, Max.y);
 			Vector3 newPos = new Vector3 (x, y, transform.position.z);
 
 			if (thumb.transform.position != newPos) 
 			{
 				thumb.transform.position = newPos;
-				//value.r = PlayerPrefs.GetFloat("Color");
-				//value.g = PlayerPrefs.GetFloat("Color1");
-				//value.b = PlayerPrefs.GetFloat("Color2");
-				value = GetColor ();
+				value = GetColor();
 			}
 		}
 	}

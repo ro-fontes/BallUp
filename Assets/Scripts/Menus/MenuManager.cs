@@ -9,28 +9,34 @@ public class MenuManager : MonoBehaviour
 {
     public Animator menuAnim;
     public Button BotaoJogar, BotaoMultiplayer, BotaoOpcoes, BotaoOpcoes2, CustomizeButton, CustomizeButton2, BotaoSair, BotaoVoltar;
-    public GameObject FirstButton, OptionsButton, LocationsButton, skinbutton;
+    public GameObject FirstButton, OptionsButton, LocationsButton, skinbutton, ColorPickerButton, HomeButtonSelected;
     [Space(20)]
     public Slider BarraVolume;
     public Toggle CaixaModoJanela;
     public Dropdown Resolucoes, Qualidades;
-
+    public GameObject ColorPickerUI;
     [Space(20)]
     public Text textoVol, txtStars, txtFragments;
+    public RectTransform Particle;
+    public RectTransform Skins;
+    public ControllerManager ControllerManager;
     int Stars, Fragments;
     private string nomeDaCena;
     private float VOLUME;
     private int qualidadeGrafica, modoJanelaAtivo, resolucaoSalveIndex;
     private bool telaCheiaAtivada;
     private Resolution[] resolucoesSuportadas;
+    bool OnController = true;
 
     void Awake()
     {
         resolucoesSuportadas = Screen.resolutions;
+        ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = true;
     }
 
     void Start()
     {
+        ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = false;
         FirstButton.GetComponent<Animator>().updateMode = AnimatorUpdateMode.Normal;
         txtStars.text = PlayerPrefs.GetInt("Stars").ToString();
         txtFragments.text = PlayerPrefs.GetInt("Fragments").ToString();
@@ -218,17 +224,57 @@ public class MenuManager : MonoBehaviour
             AudioListener.volume = VOLUME;
             //Destroy(gameObject);
         }
-        if (Input.GetButtonDown("B"))
+        if(ControllerManager.Mouse_Controller == 0 && OnController == true)
+        {
+            Back();
+            OnController = false;
+        }
+        else if(ControllerManager.Mouse_Controller == 1)
+        {
+            OnController = true;
+        }
+
+        if (Input.GetButtonDown("B") || Input.GetKeyDown(KeyCode.Escape))
         {
             Back();
         }
-        if (Input.GetJoystickNames() != null)
+        if (Input.GetButtonDown("Select"))
         {
-            print("Com Controle");
+            EventSystem.current.SetSelectedGameObject(null);
+
+            EventSystem.current.SetSelectedGameObject(HomeButtonSelected);
+            ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = false;
         }
-        else
+
+        if (menuAnim.GetBool("SkinSelector") == true)
         {
-            print("Sem controle");
+            if (Input.GetButtonDown("X"))
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+                ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = true;
+            }
+            if (Input.GetButtonDown("Y"))
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+
+                EventSystem.current.SetSelectedGameObject(skinbutton);
+                ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = false;
+
+            }
+            if (Input.GetButtonDown("RB"))
+            {
+                print("Entrou no RB");
+                Skins.gameObject.SetActive(false);
+                Particle.gameObject.SetActive(true);
+                Particle.SetAsLastSibling();
+            }
+            if (Input.GetButtonDown("LB"))
+            {
+                print("Entrou no LB");
+                Skins.gameObject.SetActive(true);
+                Particle.gameObject.SetActive(false);
+                Skins.SetAsLastSibling();
+            }
         }
 
         txtStars.text = PlayerPrefs.GetInt("Stars").ToString();
@@ -239,17 +285,36 @@ public class MenuManager : MonoBehaviour
     private void Jogar()
     {
         menuAnim.SetBool("MenuToLocations", true);
-        EventSystem.current.SetSelectedGameObject(null);
+        menuAnim.SetBool("Menu", false);
+        if (ControllerManager.Mouse_Controller == 1)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+        }
+        else
+        {
+            EventSystem.current.SetSelectedGameObject(null);
 
-        EventSystem.current.SetSelectedGameObject(LocationsButton);
+            EventSystem.current.SetSelectedGameObject(LocationsButton);
+        }
+
     }
     private void Back()
     {
-        
-        EventSystem.current.SetSelectedGameObject(null);
         FirstButton.GetComponent<Animator>().updateMode = AnimatorUpdateMode.Normal;
-        EventSystem.current.SetSelectedGameObject(FirstButton);
-        menuAnim.SetTrigger("Menu");
+        if (ControllerManager.Mouse_Controller == 1)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+        }
+        else
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+
+            EventSystem.current.SetSelectedGameObject(FirstButton);
+        }
+
+        ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = false;
+        //menuAnim.SetTrigger("Menu");
+        menuAnim.SetBool("Menu", true);
         menuAnim.SetBool("SkinSelectorToSettings", false);
         menuAnim.SetBool("Settings", false);
         menuAnim.SetBool("SettingsToSkinSelector", false);
@@ -260,20 +325,51 @@ public class MenuManager : MonoBehaviour
     }
     void Customize()
     {
-        EventSystem.current.SetSelectedGameObject(null);
+        Invoke("ActiveColorUI", 0.7f);
+        if (ControllerManager.Mouse_Controller == 1)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+        }
+        else
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(skinbutton);
+        }
 
-        EventSystem.current.SetSelectedGameObject(skinbutton);
+        if (Input.GetButtonDown("X"))
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(ColorPickerButton);
+        }
+        if (Input.GetButtonDown("Y"))
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(skinbutton);
+        }
+        menuAnim.SetBool("Menu", false);
         menuAnim.SetBool("SkinSelector", true);
         menuAnim.SetBool("SkinSelectorToSettings", false);
         menuAnim.SetBool("SettingsToSkinSelector", true);
         menuAnim.SetBool("LocationsToSkinSelector", true);
     }
+    void ActiveColorUI()
+    {
+        ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = true;
+    }
     void Settings()
     {
-        EventSystem.current.SetSelectedGameObject(null);
+        if (ControllerManager.Mouse_Controller == 1)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+        }
+        else
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(OptionsButton);
+        }
 
-        EventSystem.current.SetSelectedGameObject(OptionsButton);
         Opcoes(true);
+        menuAnim.SetBool("Menu", false);
         menuAnim.SetBool("SkinSelectorToSettings", true);
         menuAnim.SetBool("SettingsToSkinSelector", false);
         menuAnim.SetBool("Settings", true);

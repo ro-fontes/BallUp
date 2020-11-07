@@ -12,11 +12,15 @@ public class ChangeColor : MonoBehaviour {
 	private bool isCamera;
 	private bool isLight;
 	Color color;
-	Material mat;
 
-	void Start () 
-	{
+
+    private void Awake()
+    {
 		color = new Color(PlayerPrefs.GetFloat("Color"), PlayerPrefs.GetFloat("Color1"), PlayerPrefs.GetFloat("Color2"), 255f);
+	}
+    void Start () 
+	{
+		
 		gameObject.GetComponent<Renderer>().materials[MaterialIndex].color = color;
 		if (!ObjectPaletteToUse)
         {

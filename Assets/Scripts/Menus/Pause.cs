@@ -24,6 +24,7 @@ public class Pause : MonoBehaviour
     public Image blur;
     public string nomeCenaMenu = "Menu";
     public GameObject PauseButton, SettingsButton, EndLevelButton;
+    bool OnController = true;
 
     GameObject Player;
     private float VOLUME;
@@ -156,7 +157,6 @@ public class Pause : MonoBehaviour
                 Opcoes(true, false);
                 Time.timeScale = 0;
                 AudioListener.volume = 0;
-                print("primeiro 2");
             }
             else if (menuParte1Ativo == true && menuParte2Ativo == false)
             {
@@ -185,11 +185,18 @@ public class Pause : MonoBehaviour
 
         if (GameManager.Instance.completeLevelUI.activeSelf == true)
         {
-            EventSystem.current.SetSelectedGameObject(null);
+            if(OnController == true)
+            {
+                EventSystem.current.SetSelectedGameObject(null);
 
-            EventSystem.current.SetSelectedGameObject(EndLevelButton);
-
+                EventSystem.current.SetSelectedGameObject(EndLevelButton);
+                OnController = false;
+            }
             //Player.GetComponent<Player>().enabled = false;
+        }
+        else
+        {
+            OnController = true;
         }
         if(BotaoSalvarPref.gameObject.activeSelf)
         {
@@ -316,7 +323,7 @@ public class Pause : MonoBehaviour
         GameObject destroyParticle = GameObject.Find("BallParticle");
         Destroy(destroyParticle);
         Destroy(destroyPlayer);
-        SceneManager.LoadScene(nomeCenaMenu);
+        SceneManager.LoadScene(1);
     }
 
     public void Restart()

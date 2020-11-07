@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
 	public GameObject completeLevelUI;
 	[Tooltip("Set Gameobject Panel")]
 	public GameObject UIActive;
-
+	GameObject ControllerManager;
 	
 	int levelIndex;
 	int scoreAtualDoNivel;
@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
 
 	private void Start()
 	{
+		ControllerManager = GameObject.Find("ControllerManager");
 		//ghost.recording = true;		
 		_txtFragments.text = Fragments.ToString();
 		levelIndex = SceneManager.GetActiveScene().buildIndex;
@@ -99,8 +100,16 @@ public class GameManager : MonoBehaviour
     {
         if(completeLevelUI.activeSelf || UIActive.activeSelf)
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+			if(ControllerManager.GetComponent<ControllerManager>().Xbox_One_Controller == 1)
+            {
+				Cursor.lockState = CursorLockMode.None;
+				Cursor.visible = false;
+			}
+            else
+            {
+				Cursor.lockState = CursorLockMode.None;
+				Cursor.visible = true;
+			}
         }
         else
         {

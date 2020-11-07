@@ -270,7 +270,7 @@ AnimatorController:
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Menu
-    m_Type: 9
+    m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -483,16 +483,16 @@ AnimatorStateMachine:
     m_Position: {x: 50, y: 240, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5884302900382797024}
-    m_Position: {x: 640, y: 290, z: 0}
+    m_Position: {x: 250, y: 460, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2694054192256511350}
-    m_Position: {x: 650, y: 330, z: 0}
+    m_Position: {x: 470, y: 460, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5199998136148873359}
-    m_Position: {x: 685, y: 395, z: 0}
+    m_Position: {x: 910, y: 460, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -101740277881129494}
-    m_Position: {x: 720, y: 460, z: 0}
+    m_Position: {x: 690, y: 460, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1912097522673254964}
     m_Position: {x: 490, y: 140, z: 0}
