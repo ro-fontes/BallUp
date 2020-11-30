@@ -328,13 +328,13 @@ public class Pause : MonoBehaviour
 
     public void Restart()
     {
-        GameObject.Find("Player").transform.position = PlayerSelect.Instance.SpawnPlayer[SceneManager.GetActiveScene().buildIndex - 1];
+        GameObject.Find("Player").transform.position = PlayerSelect.Instance.SpawnPlayer[SceneManager.GetActiveScene().buildIndex - 2];
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
     }
 
     public void LoadNextLevel()
     {
-        GameObject.Find("Player").transform.position = PlayerSelect.Instance.SpawnPlayer[SceneManager.GetActiveScene().buildIndex];
+        GameObject.Find("Player").transform.position = PlayerSelect.Instance.SpawnPlayer[SceneManager.GetActiveScene().buildIndex - 1];
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

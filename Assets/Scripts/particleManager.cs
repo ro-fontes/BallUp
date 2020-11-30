@@ -8,7 +8,7 @@ public class particleManager : MonoBehaviour
 
     void Update()
     {
-        Spawn = GameObject.Find("SpawnParticle");
+        Spawn = GameObject.Find("Player");
 
         transform.position = Spawn.transform.position - new Vector3(0, 0.55f, 0);
     }

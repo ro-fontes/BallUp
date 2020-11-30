@@ -22,12 +22,12 @@ public class PlayerSelect : MonoBehaviour
     public Vector3[] SpawnPlayer;
     public GameObject[] Players;
     public GameObject[] Particles;
+    [Tooltip("Put the buttons that will activate if the player passes the level")]
+    public Button[] levelButtonActivate;
     [Space(20)]
-    public Button[] level;
     public float RotateSpeed;
-
-
     public GameObject Stars, Fragments, Ball;
+    [Space(20)]
     public GameObject LoadGameobjct;
     public GameObject bar;
     public Text loadingText;
@@ -55,17 +55,10 @@ public class PlayerSelect : MonoBehaviour
         {
             yield return new WaitForSeconds(LoopTime);
             for (int j = 0; j < backgroundImages.Length; j++)
-                backgroundImages[j].SetActive(false);
+            backgroundImages[j].SetActive(false);
             backgroundImages[i].SetActive(true);
         }
     }
-
-    
-
-
-
-
-
 
     private void Awake()
     {
@@ -73,7 +66,10 @@ public class PlayerSelect : MonoBehaviour
         {
             Instance = this;
         }
+        SaveSkin = PlayerPrefs.GetInt("Skin");
+        SaveParticle = PlayerPrefs.GetInt("Particle");
     }
+
 
     void Start()
     {
@@ -82,14 +78,14 @@ public class PlayerSelect : MonoBehaviour
         vignetteEfect.color = new Color(vignetteEfect.color.r, vignetteEfect.color.g, vignetteEfect.color.b, vignetteEfectVolue);
 
         if (backGroundImageAndLoop)
+        {
             StartCoroutine(transitionImage());
+        }
 
 
 
 
 
-        SaveSkin = PlayerPrefs.GetInt("Skin");
-        SaveParticle = PlayerPrefs.GetInt("Particle");
     }
     private void FixedUpdate()
     {
@@ -102,34 +98,34 @@ public class PlayerSelect : MonoBehaviour
         {
             player = GameObject.Find("SkinManager");
             player = Instantiate(Players[SaveSkin], player.transform.position, player.transform.rotation);
+            player.name = "Player";
             player.GetComponent<Player>().enabled = false;
             player.transform.parent = GameObject.Find("SkinManager").transform;
             player.gameObject.transform.localScale = new Vector3(10, 10, 10);
+
             //----------------------------------FAZER-Particula-aparecer-no-menu-principal---------------------------
             //particle.transform.parent = SpawnParticle.transform;
             //particle.gameObject.transform.localScale = new Vector3(10, 10, 10);
         }
         if (!particle)
         {
-            SpawnParticle = GameObject.Find("SpawnParticle");
-            particle = Instantiate(Particles[SaveParticle], SpawnParticle.transform.position, SpawnParticle.transform.rotation);
-
+            particle = Instantiate(Particles[SaveParticle], player.transform.position, player.transform.rotation);
         }
 
-        //---------------Aparece no menu principal----------------
         for (int i = 1; i < 4; i++)
         {
             if (PlayerPrefs.HasKey(i + "Stars"))
             {
-                level[i].interactable = true;
+                levelButtonActivate[i].interactable = true;
             }
             else
             {
-                level[i].interactable = false;
+                levelButtonActivate[i].interactable = false;
             }
         }
     }
 
+    #region SelectMapOld
     public void SelectMap(int index)
     {
         SpawnParticle = GameObject.Find("SpawnParticle");
@@ -155,13 +151,13 @@ public class PlayerSelect : MonoBehaviour
         particle.gameObject.transform.localScale = new Vector3(1, 1, 1);
 
 
-        player.transform.position = SpawnPlayer[index - 2];
+        //player.transform.position = SpawnPlayer[index - 2];
     }
+    #endregion
 
     public void SelectSkin(int index)
     {
         SaveSkin = index;
-        player.transform.Rotate(0, RotateSpeed, 0);
         PlayerPrefs.SetInt("Skin", SaveSkin);
         Destroy(player);
     }
@@ -182,10 +178,6 @@ public class PlayerSelect : MonoBehaviour
         async = SceneManager.LoadSceneAsync(sceneNo);
         async.allowSceneActivation = false;
 
-
-
-
-
         // Continue until the installation is completed
         while (async.isDone == false)
         {
@@ -197,10 +189,8 @@ public class PlayerSelect : MonoBehaviour
             if (async.progress == 0.9f)
             {
                 bar.transform.localScale = new Vector3(1, 0.9f, 1);
-                
 
-
-
+                //Player spawn
                 player.transform.parent = null;
                 particle.transform.parent = null;
 
@@ -208,7 +198,7 @@ public class PlayerSelect : MonoBehaviour
                 DontDestroyOnLoad(particle);
 
                 particle.name = "BallParticle";
-                player.name = "Player";
+                //player.name = "Player";
 
                 player.AddComponent<Rigidbody>();
                 player.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
@@ -217,8 +207,8 @@ public class PlayerSelect : MonoBehaviour
                 player.GetComponent<Player>().enabled = true;
                 player.GetComponent<ChangeColor>().enabled = false;
 
-                particle.name = "BallParticle";
-                player.name = "Player";
+                //particle.name = "BallParticle";
+                //player.name = "Player";
 
                 player.gameObject.transform.localScale = new Vector3(1, 1, 1);
                 particle.gameObject.transform.localScale = new Vector3(1, 1, 1);

@@ -263,14 +263,12 @@ public class MenuManager : MonoBehaviour
             }
             if (Input.GetButtonDown("RB"))
             {
-                print("Entrou no RB");
                 Skins.gameObject.SetActive(false);
                 Particle.gameObject.SetActive(true);
                 Particle.SetAsLastSibling();
             }
             if (Input.GetButtonDown("LB"))
             {
-                print("Entrou no LB");
                 Skins.gameObject.SetActive(true);
                 Particle.gameObject.SetActive(false);
                 Skins.SetAsLastSibling();

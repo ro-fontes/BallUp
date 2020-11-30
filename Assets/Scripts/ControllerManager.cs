@@ -19,11 +19,6 @@ public class ControllerManager : MonoBehaviour
     [HideInInspector]
     public int Mouse_Controller = 0;
 
-    private void Awake()
-    {
-        //DontDestroyOnLoad(gameObject);
-        Cursor.visible = true;
-    }
 
     // Update is called once per frame
     void Update()
@@ -45,12 +40,13 @@ public class ControllerManager : MonoBehaviour
                 Mouse_Controller = 0;
             }
         }
-        if (Input.GetMouseButton(0) && Xbox_One_Controller == 1)
+        if (Input.GetMouseButton(0))
         {
             Mouse_Controller = 1;
             PS4_Controller = 0;
             Xbox_One_Controller = 0;
         }
+
         if (Input.GetButton("A"))
         {
             Xbox_One_Controller = 1;
@@ -60,9 +56,9 @@ public class ControllerManager : MonoBehaviour
 
         if (Xbox_One_Controller == 1 && Mouse_Controller == 0)
         {
-            Cursor.visible = false;
             if (SceneManager.GetActiveScene().buildIndex == 1)
             {
+                Cursor.visible = false;
                 X_XBX.SetActive(true);
                 Y_XBX.SetActive(true);
                 RB.SetActive(true);
@@ -89,11 +85,10 @@ public class ControllerManager : MonoBehaviour
         }
         else if(Mouse_Controller == 1 && Xbox_One_Controller == 0)
         {
-            Cursor.visible = true;
-
             //Xbox Buttons
             if(SceneManager.GetActiveScene().buildIndex == 1)
             {
+                Cursor.visible = true;
                 X_XBX.SetActive(false);
                 Y_XBX.SetActive(false);
                 RB.SetActive(false);

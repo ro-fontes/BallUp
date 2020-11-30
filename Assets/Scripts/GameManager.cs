@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
 		ControllerManager = GameObject.Find("ControllerManager");
 		//ghost.recording = true;		
 		_txtFragments.text = Fragments.ToString();
-		levelIndex = SceneManager.GetActiveScene().buildIndex;
+		levelIndex = SceneManager.GetActiveScene().buildIndex - 1;
         if (SceneManager.sceneCount == 1)
 		{
 			secondsCount = 0;
@@ -100,17 +100,18 @@ public class GameManager : MonoBehaviour
     {
         if(completeLevelUI.activeSelf || UIActive.activeSelf)
         {
-			if(ControllerManager.GetComponent<ControllerManager>().Xbox_One_Controller == 1)
-            {
-				Cursor.lockState = CursorLockMode.None;
-				Cursor.visible = false;
-			}
-            else
+			if(ControllerManager.GetComponent<ControllerManager>().Mouse_Controller == 1)
             {
 				Cursor.lockState = CursorLockMode.None;
 				Cursor.visible = true;
 			}
-        }
+            else
+            {
+				Cursor.lockState = CursorLockMode.None;
+				Cursor.visible = false;
+			}
+
+		}
         else
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -136,17 +137,17 @@ public class GameManager : MonoBehaviour
 		if (secondsCount <= LevelSecond)
 		{
 			scoreAtualDoNivel = 3;
-			print("3 estrelas");
+			//print("3 estrelas");
 		}
 		else if (secondsCount <= LevelSecond + 10)
 		{
 			scoreAtualDoNivel = 2;
-			print("2 estrelas");
+			//print("2 estrelas");
 		}
 		else
 		{
 			scoreAtualDoNivel = 1;
-			print("1 estrelas");
+			//print("1 estrelas");
 		}
 
         #endregion
@@ -190,8 +191,6 @@ public class GameManager : MonoBehaviour
         {
 			scoreMaximoSalvo = scoreAtualDoNivel;
 			Stars += scoreMaximoSalvo;
-
-			print("existe");
 			PlayerPrefs.SetInt(levelIndex + "Stars", scoreMaximoSalvo);
 			PlayerPrefs.SetInt("Stars", Stars);
 		}
