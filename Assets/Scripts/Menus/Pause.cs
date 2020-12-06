@@ -44,7 +44,7 @@ public class Pause : MonoBehaviour
         ChecarResolucoes();
         AjustarQualidades();
         Time.timeScale = 1;
-        AudioListener.volume = 1;
+        //AudioListener.volume = 1;
         BarraVolume.minValue = 0;
         BarraVolume.maxValue = 1;
         menuParte1Ativo = menuParte2Ativo = false;
@@ -61,12 +61,12 @@ public class Pause : MonoBehaviour
         //=============== SAVES===========//
         if (PlayerPrefs.HasKey("VOLUME"))
         {
-            VOLUME = PlayerPrefs.GetFloat("VOLUME");
-            BarraVolume.value = VOLUME;
+            //VOLUME = PlayerPrefs.GetFloat("VOLUME");
+           // BarraVolume.value = VOLUME;
         }
         else
         {
-            PlayerPrefs.SetFloat("VOLUME", 1);
+            //PlayerPrefs.SetFloat("VOLUME", 1);
             BarraVolume.value = 1;
         }
         //=============MODO JANELA===========//
@@ -285,7 +285,7 @@ public class Pause : MonoBehaviour
             menuParte1Ativo = false;
             menuParte2Ativo = false;
             Time.timeScale = 1;
-            AudioListener.volume = VOLUME;
+            //AudioListener.volume = VOLUME;
         }
     }
 
@@ -302,7 +302,7 @@ public class Pause : MonoBehaviour
             modoJanelaAtivo = 0;
             telaCheiaAtivada = true;
         }
-        PlayerPrefs.SetFloat("VOLUME", BarraVolume.value);
+        //PlayerPrefs.SetFloat("VOLUME", BarraVolume.value);
         PlayerPrefs.SetInt("qualidadeGrafica", Qualidades.value);
         PlayerPrefs.SetInt("modoJanela", modoJanelaAtivo);
         PlayerPrefs.SetInt("RESOLUCAO", Resolucoes.value);
@@ -312,7 +312,7 @@ public class Pause : MonoBehaviour
 
     private void AplicarPreferencias()
     {
-        VOLUME = PlayerPrefs.GetFloat("VOLUME");
+        //VOLUME = PlayerPrefs.GetFloat("VOLUME");
         QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("qualidadeGrafica"));
         Screen.SetResolution(resolucoesSuportadas[resolucaoSalveIndex].width, resolucoesSuportadas[resolucaoSalveIndex].height, telaCheiaAtivada);
     }

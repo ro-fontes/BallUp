@@ -1,36 +1,45 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Audio;
 
 public class MenuManager : MonoBehaviour
 {
-    public GameObject PostFX;
+    GameObject PostFX;
     public Animator menuAnim;
     public Button BotaoJogar, BotaoMultiplayer, BotaoOpcoes, BotaoOpcoes2, CustomizeButton, CustomizeButton2, BotaoSair, BotaoVoltar;
-    public GameObject FirstButton, OptionsButton, LocationsButton, skinbutton, ColorPickerButton, HomeButtonSelected;
+    public GameObject FirstButton, LocationsButton, skinbutton, ColorPickerButton, HomeButtonSelected;
     [Space(20)]
-    public Slider BarraVolume;
+    public GameObject page1, page2, page3, page4, page5;
+    [Space(20)]
+    public Slider BarraVolume, BarSoundFX, BarSoundMusic, BarFPSLimit;
     public Toggle AnisotropicFiltering, VSync, CaixaModoJanela, MotionBlurBox, BloomBox, DepthOfFieldBox;
     public Dropdown Resolucoes, Qualidades;
     public GameObject ColorPickerUI;
     [Space(20)]
-    public Text textoVol, txtStars, txtFragments;
+    public Text textoVol, txtStars, txtFragments, txtFPSMax;
+    [Space(20)]
     public RectTransform Particle;
     public RectTransform Skins;
+    [Space(20)]
+    public RectTransform Window, Graphics, Audio, Data, Language;
+    [Space(20)]
     public ControllerManager ControllerManager;
-
-
-    int Stars, Fragments;
+    public AudioMixer masterMixer;
+    
+    int SettingsPage = 0;
     string nomeDaCena;
-    float VOLUME;
-    int qualidadeGrafica, modoJanelaAtivo, resolucaoSalveIndex, VSyncEnable, AnisotropicFilteringEnable, MotionBlurEnable, BloomEnable, DepthOfFieldEnable;
+    float VOLUME, SFXSound, MusicSound;
+    int qualidadeGrafica, modoJanelaAtivo, resolucaoSalveIndex, VSyncEnable, AnisotropicFilteringEnable, 
+        MotionBlurEnable, BloomEnable, DepthOfFieldEnable, FPSLimit;
     bool telaCheiaAtivada;
-    Resolution[] resolucoesSuportadas;
 
+    Resolution[] resolucoesSuportadas;
     DepthOfField DepthOfField = null;
     MotionBlur MotionBlur = null;
     Bloom bloomLayer = null;
@@ -42,24 +51,23 @@ public class MenuManager : MonoBehaviour
     {
         resolucoesSuportadas = Screen.resolutions;
         ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = true;
+
         PostFX = GameObject.Find("PostFX");
-        DontDestroyOnLoad(PostFX);
         PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out DepthOfField);
         PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out MotionBlur);
         PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out bloomLayer);
         PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out ambientOcclusionLayer);
         PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out colorGradingLayer);
+        DontDestroyOnLoad(PostFX);
     }
 
     void Start()
     {
-
         ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = false;
         FirstButton.GetComponent<Animator>().updateMode = AnimatorUpdateMode.Normal;
         txtStars.text = PlayerPrefs.GetInt("Stars").ToString();
         txtFragments.text = PlayerPrefs.GetInt("Fragments").ToString();
 
-        Opcoes(false);
         ChecarResolucoes();
         AjustarQualidades();
 
@@ -73,28 +81,71 @@ public class MenuManager : MonoBehaviour
         }
         
         nomeDaCena = SceneManager.GetActiveScene().name;
-        Cursor.visible = true;
         Time.timeScale = 1;
-        
-        BarraVolume.minValue = 0;
-        BarraVolume.maxValue = 1;
+
+        BarSoundFX.minValue = -80;
+        BarSoundFX.maxValue = 5;
+        BarSoundMusic.minValue = -80;
+        BarSoundMusic.maxValue = 5;
+        BarraVolume.minValue = -80;
+        BarraVolume.maxValue = 5;
 
         //=============== SAVES===========//
         if (PlayerPrefs.HasKey("VOLUME"))
         {
             VOLUME = PlayerPrefs.GetFloat("VOLUME");
             BarraVolume.value = VOLUME;
-            AudioListener.volume = VOLUME;
+            masterMixer.SetFloat("Master", VOLUME);
         }
         else
         {
-            PlayerPrefs.SetFloat("VOLUME", 1);
-            BarraVolume.value = 1;
+            VOLUME = 0;
+            PlayerPrefs.SetFloat("VOLUME", VOLUME);
+            BarraVolume.value = VOLUME;
         }
 
+        if (PlayerPrefs.HasKey("SFX"))
+        {
+            SFXSound = PlayerPrefs.GetFloat("SFX");
+            BarSoundFX.value = SFXSound;
+            masterMixer.SetFloat("SFX", SFXSound);
+        }
+        else
+        {
+            SFXSound = 0;
+            PlayerPrefs.SetFloat("SFX", SFXSound);
+            BarSoundFX.value = SFXSound;
+        }
+
+        if (PlayerPrefs.HasKey("Music"))
+        {
+            MusicSound = PlayerPrefs.GetFloat("Music");
+            BarSoundMusic.value = MusicSound;
+            masterMixer.SetFloat("Music", MusicSound);
+        }
+        else
+        {
+            MusicSound = 0;
+            PlayerPrefs.SetFloat("Music", MusicSound);
+            BarSoundMusic.value = MusicSound;
+        }
 
         #region Set Start Box
 
+        if (PlayerPrefs.HasKey("FPSLimit"))
+        {
+            FPSLimit = PlayerPrefs.GetInt("FPSLimit");
+            BarFPSLimit.value = FPSLimit;
+            Application.targetFrameRate = FPSLimit;
+            txtFPSMax.text = FPSLimit.ToString();
+        }
+        else
+        {
+            FPSLimit = 60;
+            PlayerPrefs.SetInt("FPSLimit", FPSLimit);
+            Application.targetFrameRate = FPSLimit;
+            txtFPSMax.text = FPSLimit.ToString();
+        }
 
         //=============MODO JANELA===========//
         if (PlayerPrefs.HasKey("modoJanela"))
@@ -130,7 +181,6 @@ public class MenuManager : MonoBehaviour
             telaCheiaAtivada = true;
         }
 
-
         //VSync enable/disable
         if (PlayerPrefs.HasKey("VSync"))
         {
@@ -153,7 +203,6 @@ public class MenuManager : MonoBehaviour
             VSync.isOn = true;
             QualitySettings.vSyncCount = 1;
         }
-
 
 
         if (PlayerPrefs.HasKey("Bloom"))
@@ -285,6 +334,7 @@ public class MenuManager : MonoBehaviour
 
 
         #endregion
+
         // =========SETAR BOTOES==========//
         BotaoJogar.onClick = new Button.ButtonClickedEvent();
         BotaoOpcoes.onClick = new Button.ButtonClickedEvent();
@@ -313,6 +363,7 @@ public class MenuManager : MonoBehaviour
         }
         Resolucoes.captionText.text = "Resolucao";
     }
+
     private void AjustarQualidades()
     {
         string[] nomes = QualitySettings.names;
@@ -323,27 +374,11 @@ public class MenuManager : MonoBehaviour
         }
         Qualidades.captionText.text = "Qualidade";
     }
-    private void Opcoes(bool ativarOP)
-    {
-        //BotaoJogar.gameObject.SetActive(!ativarOP);
-        //BotaoMultiplayer.gameObject.SetActive(!ativarOP);
-        //BotaoOpcoes.gameObject.SetActive(!ativarOP);
-        //BotaoSair.gameObject.SetActive(!ativarOP);
-        ////
-        //textoVol.gameObject.SetActive(ativarOP);
-        //BarraVolume.gameObject.SetActive(ativarOP);
-        //CaixaModoJanela.gameObject.SetActive(ativarOP);
-        //Resolucoes.gameObject.SetActive(ativarOP);
-        //Qualidades.gameObject.SetActive(ativarOP);
-        //BotaoVoltar.gameObject.SetActive(ativarOP);
-        //BotaoSalvarPref.gameObject.SetActive(ativarOP);
-    }
 
     //=========VOIDS DE SALVAMENTO==========//
     private void SalvarPreferencias()
     {
         #region SetPostFX
-
 
         if (CaixaModoJanela.isOn == true)
         {
@@ -356,6 +391,12 @@ public class MenuManager : MonoBehaviour
             telaCheiaAtivada = true;
         }
 
+        if (BarFPSLimit.value != FPSLimit)
+        {
+            FPSLimit = Convert.ToInt32(BarFPSLimit.value);
+            PlayerPrefs.SetInt("FPSLimit", Convert.ToInt32(BarFPSLimit.value));
+            txtFPSMax.text = FPSLimit.ToString();
+        }
 
 
         if(VSync.isOn == true)
@@ -418,11 +459,12 @@ public class MenuManager : MonoBehaviour
             AnisotropicFilteringEnable = 0;
             QualitySettings.anisotropicFiltering = UnityEngine.AnisotropicFiltering.Disable;
         }
-
-
         #endregion
 
         PlayerPrefs.SetFloat("VOLUME", BarraVolume.value);
+        PlayerPrefs.SetFloat("SFX", BarSoundFX.value);
+        PlayerPrefs.SetFloat("Music", BarSoundMusic.value);
+        PlayerPrefs.SetInt("FPSLimit", Convert.ToInt32(BarFPSLimit.value));
         PlayerPrefs.SetInt("qualidadeGrafica", Qualidades.value);
         PlayerPrefs.SetInt("VSync", VSyncEnable);
         PlayerPrefs.SetInt("AnisotropicFiltering", AnisotropicFilteringEnable);
@@ -431,14 +473,24 @@ public class MenuManager : MonoBehaviour
         PlayerPrefs.SetInt("MotionBlur", MotionBlurEnable);
         PlayerPrefs.SetInt("modoJanela", modoJanelaAtivo);
         PlayerPrefs.SetInt("RESOLUCAO", Resolucoes.value);
+
         resolucaoSalveIndex = Resolucoes.value;
         AplicarPreferencias();
     }
 
     private void AplicarPreferencias()
     {
+        SFXSound = PlayerPrefs.GetFloat("SFX");
         VOLUME = PlayerPrefs.GetFloat("VOLUME");
-        AudioListener.volume = VOLUME;
+        MusicSound = PlayerPrefs.GetFloat("Music");
+        FPSLimit = PlayerPrefs.GetInt("FPSLimit");
+
+        Application.targetFrameRate = FPSLimit;
+
+        masterMixer.SetFloat("Master", VOLUME);
+        masterMixer.SetFloat("SFX", SFXSound);
+        masterMixer.SetFloat("Music", MusicSound);
+
         QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("qualidadeGrafica"));
         Screen.SetResolution(resolucoesSuportadas[resolucaoSalveIndex].width, resolucoesSuportadas[resolucaoSalveIndex].height, telaCheiaAtivada);
     }
@@ -448,10 +500,12 @@ public class MenuManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name != nomeDaCena)
         {
-            AudioListener.volume = VOLUME;
-            //Destroy(gameObject);
+            masterMixer.SetFloat("Master", VOLUME);
+            masterMixer.SetFloat("SFX", SFXSound);
+            masterMixer.SetFloat("Music", MusicSound);
         }
-        if(ControllerManager.Mouse_Controller == 0 && OnController == true)
+
+        if (ControllerManager.Mouse_Controller == 0 && OnController == true)
         {
             Back();
             OnController = false;
@@ -471,6 +525,102 @@ public class MenuManager : MonoBehaviour
 
             EventSystem.current.SetSelectedGameObject(HomeButtonSelected);
             ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = false;
+        }
+        if(ControllerManager.Xbox_One_Controller == 1)
+        {
+            if (menuAnim.GetBool("Settings") == true)
+            {
+                switch (SettingsPage)
+                {
+                    case 0:
+                        Window.SetAsLastSibling();
+                        break;
+                    case 1:
+                        Graphics.SetAsLastSibling();
+                        break;
+                    case 2:
+                        Audio.SetAsLastSibling();
+                        break;
+                    case 3:
+                        Data.SetAsLastSibling();
+                        break;
+                    case 4:
+                        Language.SetAsLastSibling();
+                        break;
+                }
+
+                if (Input.GetButtonDown("RB"))
+                {
+                    SettingsPage++;
+
+                    switch (SettingsPage)
+                    {
+                        case 0:
+                            EventSystem.current.SetSelectedGameObject(null);
+                            EventSystem.current.SetSelectedGameObject(page1);
+                            break;
+                        case 1:
+                            EventSystem.current.SetSelectedGameObject(null);
+                            EventSystem.current.SetSelectedGameObject(page2);
+                            break;
+                        case 2:
+                            EventSystem.current.SetSelectedGameObject(null);
+                            EventSystem.current.SetSelectedGameObject(page3);
+                            break;
+                        case 3:
+                            EventSystem.current.SetSelectedGameObject(null);
+                            EventSystem.current.SetSelectedGameObject(page4);
+                            break;
+                        case 4:
+                            EventSystem.current.SetSelectedGameObject(null);
+                            EventSystem.current.SetSelectedGameObject(page5);
+                            break;
+                    }
+
+
+                    if (SettingsPage > 4)
+                    {
+                        SettingsPage = 4;
+                    }
+                }
+
+                if (Input.GetButtonDown("LB"))
+                {
+                    SettingsPage--;
+                    switch (SettingsPage)
+                    {
+                        case 0:
+                            EventSystem.current.SetSelectedGameObject(null);
+                            EventSystem.current.SetSelectedGameObject(page1);
+                            break;
+                        case 1:
+                            EventSystem.current.SetSelectedGameObject(null);
+                            EventSystem.current.SetSelectedGameObject(page2);
+                            break;
+                        case 2:
+                            EventSystem.current.SetSelectedGameObject(null);
+                            EventSystem.current.SetSelectedGameObject(page3);
+                            break;
+                        case 3:
+                            EventSystem.current.SetSelectedGameObject(null);
+                            EventSystem.current.SetSelectedGameObject(page4);
+                            break;
+                        case 4:
+                            EventSystem.current.SetSelectedGameObject(null);
+                            EventSystem.current.SetSelectedGameObject(page5);
+                            break;
+                    }
+
+                    if (SettingsPage < 0)
+                    {
+                        SettingsPage = 0;
+                    }
+                }
+            }
+            else
+            {
+                SettingsPage = 0;
+            }
         }
 
         if (menuAnim.GetBool("SkinSelector") == true)
@@ -543,7 +693,6 @@ public class MenuManager : MonoBehaviour
         }
 
         ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = false;
-        //menuAnim.SetTrigger("Menu");
         menuAnim.SetBool("Menu", true);
         menuAnim.SetBool("SkinSelectorToSettings", false);
         menuAnim.SetBool("Settings", false);
@@ -594,11 +743,10 @@ public class MenuManager : MonoBehaviour
         }
         else
         {
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(OptionsButton);
-        }
 
-        Opcoes(true);
+            //EventSystem.current.SetSelectedGameObject(null);
+            //EventSystem.current.SetSelectedGameObject(OptionsButton);
+        }
         menuAnim.SetBool("Menu", false);
         menuAnim.SetBool("SkinSelectorToSettings", true);
         menuAnim.SetBool("SettingsToSkinSelector", false);

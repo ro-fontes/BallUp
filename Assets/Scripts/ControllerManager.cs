@@ -10,7 +10,8 @@ public class ControllerManager : MonoBehaviour
     [Tooltip("PS Images")]
     public GameObject X_PS, Cube_PS, Triangle_PS, Circle_PS, R1, R2, L1, L2;
     [Tooltip("XBX Images")]
-    public GameObject LB, RB, LT, RT, X_XBX, A_XBX, B_XBX, Y_XBX, Start;
+    public GameObject  LT, RT, X_XBX, A_XBX, B_XBX, Y_XBX, Start;
+    public GameObject[] LB, RB;
 
     [HideInInspector]
     public int Xbox_One_Controller = 0;
@@ -61,14 +62,27 @@ public class ControllerManager : MonoBehaviour
                 Cursor.visible = false;
                 X_XBX.SetActive(true);
                 Y_XBX.SetActive(true);
-                RB.SetActive(true);
-                LB.SetActive(true);
+                for(int i = 0; i < RB.Length; i++)
+                {
+                    RB[i].SetActive(true);
+                }
+                for (int i = 0; i < LB.Length; i++)
+                {
+                    LB[i].SetActive(true);
+                }
                 Start.SetActive(true);
             }
             else if (SceneManager.GetActiveScene().buildIndex == 2)
             {
-                RB.SetActive(true);
-                LB.SetActive(true);
+                for (int i = 0; i < RB.Length; i++)
+                {
+                    RB[i].SetActive(true);
+                }
+                for (int i = 0; i < LB.Length; i++)
+                {
+                    LB[i].SetActive(true);
+                }
+
             }
         }
         else if (PS4_Controller == 1 && Mouse_Controller == 0)
@@ -91,14 +105,27 @@ public class ControllerManager : MonoBehaviour
                 Cursor.visible = true;
                 X_XBX.SetActive(false);
                 Y_XBX.SetActive(false);
-                RB.SetActive(false);
-                LB.SetActive(false);
+                for (int i = 0; i < RB.Length; i++)
+                {
+                    RB[i].SetActive(false);
+                }
+
+                for (int i = 0; i < LB.Length; i++)
+                {
+                    LB[i].SetActive(false);
+                }
                 Start.SetActive(false);
             }
             else if(SceneManager.GetActiveScene().buildIndex == 2)
             {
-                RT.SetActive(false);
-                RB.SetActive(false);
+                for (int i = 0; i < RB.Length; i++)
+                {
+                    RB[i].SetActive(false);
+                }
+                for (int i = 0; i < LB.Length; i++)
+                {
+                    LB[i].SetActive(false);
+                }
             }
 
             //Playstation Buttons
