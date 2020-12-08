@@ -46,19 +46,14 @@ public class MenuManager : MonoBehaviour
     AmbientOcclusion ambientOcclusionLayer = null;
     ColorGrading colorGradingLayer = null;
     bool OnController = true;
+    
 
     void Awake()
     {
         resolucoesSuportadas = Screen.resolutions;
         ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = true;
 
-        PostFX = GameObject.Find("PostFX");
-        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out DepthOfField);
-        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out MotionBlur);
-        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out bloomLayer);
-        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out ambientOcclusionLayer);
-        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out colorGradingLayer);
-        DontDestroyOnLoad(PostFX);
+
     }
 
     void Start()
@@ -70,6 +65,17 @@ public class MenuManager : MonoBehaviour
 
         ChecarResolucoes();
         AjustarQualidades();
+        if (!PostFX)
+        {
+            PostFX = GameObject.Find("PostFX");
+        }
+
+        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out DepthOfField);
+        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out MotionBlur);
+        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out bloomLayer);
+        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out ambientOcclusionLayer);
+        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out colorGradingLayer);
+        DontDestroyOnLoad(PostFX);
 
         if (PlayerPrefs.HasKey("RESOLUCAO"))
         {
@@ -341,14 +347,14 @@ public class MenuManager : MonoBehaviour
         BotaoOpcoes2.onClick = new Button.ButtonClickedEvent();
         CustomizeButton.onClick = new Button.ButtonClickedEvent();
         CustomizeButton2.onClick = new Button.ButtonClickedEvent();
-        BotaoSair.onClick = new Button.ButtonClickedEvent();
+        //BotaoSair.onClick = new Button.ButtonClickedEvent();
         BotaoVoltar.onClick = new Button.ButtonClickedEvent();
         BotaoJogar.onClick.AddListener(() => Jogar());
         CustomizeButton.onClick.AddListener(() => Customize());
         CustomizeButton2.onClick.AddListener(() => Customize());
         BotaoOpcoes.onClick.AddListener(() => Settings());
         BotaoOpcoes2.onClick.AddListener(() => Settings());
-        BotaoSair.onClick.AddListener(() => Sair());
+        //BotaoSair.onClick.AddListener(() => Sair());
         BotaoVoltar.onClick.AddListener(() => Back());
     }
     
@@ -465,12 +471,13 @@ public class MenuManager : MonoBehaviour
         PlayerPrefs.SetFloat("SFX", BarSoundFX.value);
         PlayerPrefs.SetFloat("Music", BarSoundMusic.value);
         PlayerPrefs.SetInt("FPSLimit", Convert.ToInt32(BarFPSLimit.value));
-        PlayerPrefs.SetInt("qualidadeGrafica", Qualidades.value);
         PlayerPrefs.SetInt("VSync", VSyncEnable);
         PlayerPrefs.SetInt("AnisotropicFiltering", AnisotropicFilteringEnable);
         PlayerPrefs.SetInt("Bloom", BloomEnable);
         PlayerPrefs.SetInt("DepthOfField", DepthOfFieldEnable);
         PlayerPrefs.SetInt("MotionBlur", MotionBlurEnable);
+
+        PlayerPrefs.SetInt("qualidadeGrafica", Qualidades.value);
         PlayerPrefs.SetInt("modoJanela", modoJanelaAtivo);
         PlayerPrefs.SetInt("RESOLUCAO", Resolucoes.value);
 
@@ -753,7 +760,7 @@ public class MenuManager : MonoBehaviour
         menuAnim.SetBool("Settings", true);
         menuAnim.SetBool("LocationsToOptions", true);
     }
-    private void Sair()
+    public void Sair()
     {
         Application.Quit();
     }

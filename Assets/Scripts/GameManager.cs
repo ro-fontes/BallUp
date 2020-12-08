@@ -14,8 +14,9 @@ public class GameManager : MonoBehaviour
 	[Tooltip("Set Timer seconds")]
 	public Text _txtTime;
     [Space(20)]
-    public int Stars;
-	public int Fragments;
+
+	[SerializeField]
+    private int Stars, Fragments;
 	[Tooltip("Put how many seconds to pass the level")]
 	public int LevelSecond;
 	[Space(20)]

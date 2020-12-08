@@ -23,14 +23,18 @@ public class Player : MonoBehaviour
 
     [Tooltip("Set Audio FX")]
     public AudioClip InWater, Outwater;
+
     [Tooltip("Set Player Speed")]
-    public float speed = 9;
+    [SerializeField]
+    private float speed = 9;
+
     [Tooltip("Set Jump Force")]
-    public float jumpFloat = 1;
+    [SerializeField]
+    private float jumpFloat = 1;
 
     #endregion
 
-    private void Start()
+    void Start()
     {
         AudioPlayer = GetComponent<AudioSource>();
     }
@@ -141,11 +145,6 @@ public class Player : MonoBehaviour
         {
             GameManager.Instance.AddFragments(1);
             Destroy(other.gameObject);
-        }
-
-        if (other.gameObject.CompareTag("StopLevel"))
-        {
-
         }
     }
 

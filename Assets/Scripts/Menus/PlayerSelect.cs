@@ -10,24 +10,22 @@ using UnityEditor;
 
 public class PlayerSelect : MonoBehaviour
 {
-    GameObject player;
-    GameObject particle;
-    int SaveSkin;
-    int SaveParticle;
-
     public static PlayerSelect Instance;
+    public int Language;
+    public Vector3[] SpawnPlayer;
+
     [Space(20)]
     public GameObject SpawnParticle;
     [Space(20)]
-    public Vector3[] SpawnPlayer;
-    public GameObject[] Players;
-    public GameObject[] Particles;
+
     [Tooltip("Put the buttons that will activate if the player passes the level")]
     public Button[] levelButtonActivate;
+
     [Space(20)]
     public float RotateSpeed;
     public GameObject Stars, Fragments, Ball;
     [Space(20)]
+
     public GameObject LoadGameobjct;
     public GameObject bar;
     public Text loadingText;
@@ -35,8 +33,19 @@ public class PlayerSelect : MonoBehaviour
     public float LoopTime;
     public GameObject[] backgroundImages;
     [Range(0, 1f)] public float vignetteEfectVolue; // Must be a value between 0 and 1
+
+
+    [SerializeField]
+    private GameObject[] Players;
+    [SerializeField]
+    private GameObject[] Particles;
+
     AsyncOperation async;
     Image vignetteEfect;
+    GameObject player;
+    GameObject particle;
+    int SaveSkin;
+    int SaveParticle;
 
 
     public void loadingScreen(int sceneNo)
@@ -220,5 +229,9 @@ public class PlayerSelect : MonoBehaviour
             }
             yield return null;
         }
+    }
+    public void ChangeLanguage(int value)
+    {
+        Language = value;
     }
 }
