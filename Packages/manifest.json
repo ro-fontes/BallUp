@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.arcaedion.multiplayer.example": "file:D:/Library/Download/arcaedion-multiplayer-base",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.ads": "3.4.9",
@@ -8,7 +9,6 @@
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.ide.rider": "1.1.4",
     "com.unity.ide.vscode": "1.2.2",
-    "com.unity.multiplayer-hlapi": "1.0.6",
     "com.unity.postprocessing": "2.3.0",
     "com.unity.purchasing": "2.1.1",
     "com.unity.render-pipelines.lightweight": "7.3.1",

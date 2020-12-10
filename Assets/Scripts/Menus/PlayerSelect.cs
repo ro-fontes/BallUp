@@ -75,6 +75,7 @@ public class PlayerSelect : MonoBehaviour
         {
             Instance = this;
         }
+
         SaveSkin = PlayerPrefs.GetInt("Skin");
         SaveParticle = PlayerPrefs.GetInt("Particle");
     }
@@ -90,19 +91,14 @@ public class PlayerSelect : MonoBehaviour
         {
             StartCoroutine(transitionImage());
         }
-
-
-
-
-
     }
     private void FixedUpdate()
     {
         player.transform.Rotate(0, RotateSpeed, 0);
     }
+
     void Update()
     {
-        //---------------Aparece no menu principal----------------
         if (!player)
         {
             player = GameObject.Find("SkinManager");

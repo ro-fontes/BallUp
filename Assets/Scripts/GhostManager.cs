@@ -18,7 +18,7 @@ public struct GhostTransform
 public class GhostManager : MonoBehaviour
 {
     public Transform Ball;
-    Transform teste;
+    //Transform teste;
     public Transform ghostBall;
     public bool recording;
     public bool playing;
@@ -81,12 +81,12 @@ public class GhostManager : MonoBehaviour
             float playerRotatey = PlayerPrefs.GetFloat("TransformsY" + i);
             float playerRotatez = PlayerPrefs.GetFloat("TransformsZ" + i);
 
-            teste.position = new Vector3(playerX, playerY, playerZ);
-            teste.rotation = new Quaternion(playerRotateX, playerRotatey, playerRotatez, 1f);
+            //teste.position = new Vector3(playerX, playerY, playerZ);
+            //teste.rotation = new Quaternion(playerRotateX, playerRotatey, playerRotatez, 1f);
 
-            var newGhostTransformSaved = new GhostTransform(teste);
+            //var newGhostTransformSaved = new GhostTransform(teste);
 
-            recordedGhostTranforms.Add(newGhostTransformSaved);
+            //recordedGhostTranforms.Add(newGhostTransformSaved);
         }
         
     }

@@ -7,9 +7,8 @@ using UnityEngine.EventSystems;
 [HelpURL("http://www.babilinapps.com/contact/")]
 public class MaterialManager : MonoBehaviour {
     [Header("GUI Elements")]
-    [Tooltip("GUI Panel that will have the buttons")]
-    [SerializeField]
-    private GameObject GUIPanel;
+    //[SerializeField]
+    //private GameObject GUIPanel;
 
     [Tooltip("Button type to use")]
     [SerializeField]
@@ -132,10 +131,10 @@ public class MaterialManager : MonoBehaviour {
     public void GetMaterialObjects(GameObject _obj)
     {
         //clear all buttons
-        foreach (Transform child in GUIPanel.transform)
-        {
-            Destroy(child.gameObject);
-        }
+        //foreach (Transform child in GUIPanel.transform)
+        //{
+        //    Destroy(child.gameObject);
+        //}
         CurrentStats = null;
         SelectedObject = null;
         AllObjectStats.Clear();
@@ -173,7 +172,7 @@ public class MaterialManager : MonoBehaviour {
             }
                 
             GameObject newButton = Instantiate(Button, Vector3.zero, Quaternion.identity) as GameObject;
-            newButton.transform.SetParent(GUIPanel.transform);
+            //newButton.transform.SetParent(GUIPanel.transform);
 
 
             Button _b = newButton.GetComponent<Button>();

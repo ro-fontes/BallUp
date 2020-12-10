@@ -11,6 +11,7 @@ using UnityEngine.Audio;
 public class MenuManager : MonoBehaviour
 {
     GameObject PostFX;
+    public AudioMixer masterMixer;
     public Animator menuAnim;
     public Button BotaoJogar, BotaoMultiplayer, BotaoOpcoes, BotaoOpcoes2, CustomizeButton, CustomizeButton2, BotaoSair, BotaoVoltar;
     public GameObject FirstButton, LocationsButton, skinbutton, ColorPickerButton, HomeButtonSelected;
@@ -30,34 +31,60 @@ public class MenuManager : MonoBehaviour
     public RectTransform Window, Graphics, Audio, Data, Language;
     [Space(20)]
     public ControllerManager ControllerManager;
-    public AudioMixer masterMixer;
-    
+
+
     int SettingsPage = 0;
     string nomeDaCena;
     float VOLUME, SFXSound, MusicSound;
-    int qualidadeGrafica, modoJanelaAtivo, resolucaoSalveIndex, VSyncEnable, AnisotropicFilteringEnable, 
+    int qualidadeGrafica, modoJanelaAtivo, resolucaoSalveIndex, VSyncEnable, AnisotropicFilteringEnable,
         MotionBlurEnable, BloomEnable, DepthOfFieldEnable, FPSLimit;
     bool telaCheiaAtivada;
+    bool OnController = true;
 
     Resolution[] resolucoesSuportadas;
+
     DepthOfField DepthOfField = null;
     MotionBlur MotionBlur = null;
     Bloom bloomLayer = null;
     AmbientOcclusion ambientOcclusionLayer = null;
     ColorGrading colorGradingLayer = null;
-    bool OnController = true;
-    
+
+    [SerializeField]
+    private Text[] Score;
 
     void Awake()
     {
         resolucoesSuportadas = Screen.resolutions;
         ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = true;
-
-
     }
 
     void Start()
     {
+        for (int i = 1; i < Score.Length; i++)
+        {
+            if (PlayerPrefs.HasKey(i + "LevelTime"))
+            {
+                Score[i - 1].text = FormatTime(PlayerPrefs.GetFloat(i + "LevelTime"));
+            }
+            else
+            {
+                Score[i - 1].text = "00:00.00";
+            }
+        }
+
+        if (!PostFX)
+        {
+            PostFX = GameObject.Find("PostFX");
+        }
+
+
+        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out DepthOfField);
+        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out MotionBlur);
+        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out bloomLayer);
+        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out ambientOcclusionLayer);
+        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out colorGradingLayer);
+
+        DontDestroyOnLoad(PostFX);
         ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = false;
         FirstButton.GetComponent<Animator>().updateMode = AnimatorUpdateMode.Normal;
         txtStars.text = PlayerPrefs.GetInt("Stars").ToString();
@@ -65,17 +92,6 @@ public class MenuManager : MonoBehaviour
 
         ChecarResolucoes();
         AjustarQualidades();
-        if (!PostFX)
-        {
-            PostFX = GameObject.Find("PostFX");
-        }
-
-        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out DepthOfField);
-        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out MotionBlur);
-        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out bloomLayer);
-        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out ambientOcclusionLayer);
-        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out colorGradingLayer);
-        DontDestroyOnLoad(PostFX);
 
         if (PlayerPrefs.HasKey("RESOLUCAO"))
         {
@@ -347,17 +363,26 @@ public class MenuManager : MonoBehaviour
         BotaoOpcoes2.onClick = new Button.ButtonClickedEvent();
         CustomizeButton.onClick = new Button.ButtonClickedEvent();
         CustomizeButton2.onClick = new Button.ButtonClickedEvent();
-        //BotaoSair.onClick = new Button.ButtonClickedEvent();
         BotaoVoltar.onClick = new Button.ButtonClickedEvent();
         BotaoJogar.onClick.AddListener(() => Jogar());
         CustomizeButton.onClick.AddListener(() => Customize());
         CustomizeButton2.onClick.AddListener(() => Customize());
         BotaoOpcoes.onClick.AddListener(() => Settings());
         BotaoOpcoes2.onClick.AddListener(() => Settings());
-        //BotaoSair.onClick.AddListener(() => Sair());
         BotaoVoltar.onClick.AddListener(() => Back());
     }
-    
+
+    string FormatTime(float time)
+    {
+        int intTime = (int)time;
+        int minutes = intTime / 60;
+        int seconds = intTime % 60;
+        float fraction = time * 1000;
+        fraction = (fraction % 1000);
+        string timeText = string.Format("{0:00}:{1:00}:{2:000}", minutes, seconds, fraction);
+        return timeText;
+    }
+
     //=========VOIDS DE CHECAGEM==========//
     private void ChecarResolucoes()
     {
@@ -476,7 +501,6 @@ public class MenuManager : MonoBehaviour
         PlayerPrefs.SetInt("Bloom", BloomEnable);
         PlayerPrefs.SetInt("DepthOfField", DepthOfFieldEnable);
         PlayerPrefs.SetInt("MotionBlur", MotionBlurEnable);
-
         PlayerPrefs.SetInt("qualidadeGrafica", Qualidades.value);
         PlayerPrefs.SetInt("modoJanela", modoJanelaAtivo);
         PlayerPrefs.SetInt("RESOLUCAO", Resolucoes.value);

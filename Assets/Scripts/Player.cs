@@ -9,7 +9,7 @@ using UnityEditor;
 public class Player : MonoBehaviour
 {
     #region variables
-    
+    [Header("GUI Elements")]
     CinemachineFreeLook FreeLookCam;
     Rigidbody rb;
     Vector3 force;

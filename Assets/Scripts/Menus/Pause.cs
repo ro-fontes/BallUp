@@ -22,7 +22,6 @@ public class Pause : MonoBehaviour
     public Dropdown Resolucoes, Qualidades;
     [Tooltip("Set options button Menu")]
     [Space(20)]
-    public Text textoVol;
     public AudioMixer masterMixer;
     public Image blur;
     public string nomeCenaMenu = "Menu";
