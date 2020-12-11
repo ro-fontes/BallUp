@@ -603,6 +603,7 @@ public class Pause : MonoBehaviour
     public void Restart()
     {
         GameObject.Find("Player").transform.position = PlayerSelect.Instance.SpawnPlayer[SceneManager.GetActiveScene().buildIndex - 2];
+        GameObject.Find("Player").GetComponent<Rigidbody>().velocity = new Vector3(0,0,0); 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
     }
 

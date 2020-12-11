@@ -47,7 +47,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        ControllerManager = GameObject.Find("ControllerManager");
+        if (!ControllerManager)
+        {
+            ControllerManager = GameObject.Find("ControllerManager");
+        }
+
         //ghost.recording = true;		
         _txtFragments.text = Fragments.ToString();
         CurrentLevel = SceneManager.GetActiveScene().buildIndex;
@@ -63,7 +67,11 @@ public class GameManager : MonoBehaviour
     {
         UpdateTimerUI();
         ChangeCursorLock();
-        scoreMaximoSalvo = PlayerPrefs.GetInt(levelIndex + "Stars");
+        if(scoreMaximoSalvo != PlayerPrefs.GetInt(levelIndex + "Stars"))
+        {
+            scoreMaximoSalvo = PlayerPrefs.GetInt(levelIndex + "Stars");
+        }
+
         _txtFragments.text = Fragments.ToString();
 
         if (completeLevelUI.activeSelf == true)

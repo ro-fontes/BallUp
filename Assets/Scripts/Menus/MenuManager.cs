@@ -4,34 +4,37 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
-using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Audio;
 
 public class MenuManager : MonoBehaviour
 {
-    GameObject PostFX;
-    public AudioMixer masterMixer;
-    public Animator menuAnim;
-    public Button BotaoJogar, BotaoMultiplayer, BotaoOpcoes, BotaoOpcoes2, CustomizeButton, CustomizeButton2, BotaoSair, BotaoVoltar;
-    public GameObject FirstButton, LocationsButton, skinbutton, ColorPickerButton, HomeButtonSelected;
-    [Space(20)]
-    public GameObject page1, page2, page3, page4, page5;
-    [Space(20)]
-    public Slider BarraVolume, BarSoundFX, BarSoundMusic, BarFPSLimit;
-    public Toggle AnisotropicFiltering, VSync, CaixaModoJanela, MotionBlurBox, BloomBox, DepthOfFieldBox;
-    public Dropdown Resolucoes, Qualidades;
-    public GameObject ColorPickerUI;
-    [Space(20)]
-    public Text textoVol, txtStars, txtFragments, txtFPSMax;
-    [Space(20)]
-    public RectTransform Particle;
-    public RectTransform Skins;
-    [Space(20)]
-    public RectTransform Window, Graphics, Audio, Data, Language;
-    [Space(20)]
-    public ControllerManager ControllerManager;
+    #region Variables
 
+    [SerializeField]
+    private AudioMixer masterMixer;
+    [SerializeField]
+    private Animator menuAnim;
+    [SerializeField]
+    private GameObject ColorPickerUI;
+    [SerializeField]
+    private Slider BarraVolume, BarSoundFX, BarSoundMusic, BarFPSLimit;
+    [SerializeField]
+    private GameObject PageSelector1, PageSelector2, PageSelector3, PageSelector4, PageSelector5;
+    [SerializeField]
+    private Button BotaoJogar, BotaoOpcoes, BotaoOpcoes2, CustomizeButton, CustomizeButton2, BotaoVoltar;
+    [SerializeField]
+    private GameObject FirstButton, LocationsButton, skinbutton, ColorPickerButton, HomeButtonSelected;
+    [SerializeField]
+    private Toggle AnisotropicFiltering, VSync, CaixaModoJanela, MotionBlurBox, BloomBox, DepthOfFieldBox;
+    [SerializeField]
+    private Text txtStars, txtFragments, txtFPSMax;
+    [SerializeField]
+    private RectTransform Particle, Skins, Window, Graphics, Audio, Data, Language;
+    [SerializeField]
+    private ControllerManager ControllerManager;
+    [SerializeField]
+    private Text[] Score;
 
     int SettingsPage = 0;
     string nomeDaCena;
@@ -41,25 +44,42 @@ public class MenuManager : MonoBehaviour
     bool telaCheiaAtivada;
     bool OnController = true;
 
+    public GameObject PostFX;
+    public Dropdown Resolucoes, Qualidades;
     Resolution[] resolucoesSuportadas;
-
     DepthOfField DepthOfField = null;
     MotionBlur MotionBlur = null;
     Bloom bloomLayer = null;
     AmbientOcclusion ambientOcclusionLayer = null;
     ColorGrading colorGradingLayer = null;
 
-    [SerializeField]
-    private Text[] Score;
+    #endregion
 
     void Awake()
     {
+        if (!PostFX)
+        {
+            PostFX = GameObject.Find("PostFX");
+        }
+
+
         resolucoesSuportadas = Screen.resolutions;
         ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = true;
+
+
+        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out DepthOfField);
+        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out MotionBlur);
+        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out bloomLayer);
+        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out ambientOcclusionLayer);
+        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out colorGradingLayer);
+
     }
 
     void Start()
     {
+        DontDestroyOnLoad(PostFX);
+
+        print(PostFX);
         for (int i = 1; i < Score.Length; i++)
         {
             if (PlayerPrefs.HasKey(i + "LevelTime"))
@@ -72,36 +92,22 @@ public class MenuManager : MonoBehaviour
             }
         }
 
-        if (!PostFX)
-        {
-            PostFX = GameObject.Find("PostFX");
-        }
+        ChecarResolucoes();
+        AjustarQualidades();
 
 
-        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out DepthOfField);
-        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out MotionBlur);
-        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out bloomLayer);
-        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out ambientOcclusionLayer);
-        PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out colorGradingLayer);
-
-        DontDestroyOnLoad(PostFX);
         ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = false;
         FirstButton.GetComponent<Animator>().updateMode = AnimatorUpdateMode.Normal;
         txtStars.text = PlayerPrefs.GetInt("Stars").ToString();
         txtFragments.text = PlayerPrefs.GetInt("Fragments").ToString();
 
-        ChecarResolucoes();
-        AjustarQualidades();
+        #region PostFXLayer
 
-        if (PlayerPrefs.HasKey("RESOLUCAO"))
-        {
-            int numResoluc = PlayerPrefs.GetInt("RESOLUCAO");
-            if (resolucoesSuportadas.Length <= numResoluc)
-            {
-                PlayerPrefs.DeleteKey("RESOLUCAO");
-            }
-        }
-        
+
+
+
+        #endregion
+
         nomeDaCena = SceneManager.GetActiveScene().name;
         Time.timeScale = 1;
 
@@ -113,6 +119,17 @@ public class MenuManager : MonoBehaviour
         BarraVolume.maxValue = 5;
 
         //=============== SAVES===========//
+        if (PlayerPrefs.HasKey("RESOLUCAO"))
+        {
+            int numResoluc = PlayerPrefs.GetInt("RESOLUCAO");
+            if (resolucoesSuportadas.Length <= numResoluc)
+            {
+                PlayerPrefs.DeleteKey("RESOLUCAO");
+            }
+        }
+
+        #region Set Start Box
+
         if (PlayerPrefs.HasKey("VOLUME"))
         {
             VOLUME = PlayerPrefs.GetFloat("VOLUME");
@@ -151,8 +168,6 @@ public class MenuManager : MonoBehaviour
             PlayerPrefs.SetFloat("Music", MusicSound);
             BarSoundMusic.value = MusicSound;
         }
-
-        #region Set Start Box
 
         if (PlayerPrefs.HasKey("FPSLimit"))
         {
@@ -220,10 +235,10 @@ public class MenuManager : MonoBehaviour
         }
         else
         {
-            VSyncEnable = 1;
+            VSyncEnable = 0;
             PlayerPrefs.SetInt("VSync", VSyncEnable);
-            VSync.isOn = true;
-            QualitySettings.vSyncCount = 1;
+            VSync.isOn = false;
+            QualitySettings.vSyncCount = 0;
         }
 
 
@@ -409,8 +424,6 @@ public class MenuManager : MonoBehaviour
     //=========VOIDS DE SALVAMENTO==========//
     private void SalvarPreferencias()
     {
-        #region SetPostFX
-
         if (CaixaModoJanela.isOn == true)
         {
             modoJanelaAtivo = 1;
@@ -490,7 +503,6 @@ public class MenuManager : MonoBehaviour
             AnisotropicFilteringEnable = 0;
             QualitySettings.anisotropicFiltering = UnityEngine.AnisotropicFiltering.Disable;
         }
-        #endregion
 
         PlayerPrefs.SetFloat("VOLUME", BarraVolume.value);
         PlayerPrefs.SetFloat("SFX", BarSoundFX.value);
@@ -588,23 +600,23 @@ public class MenuManager : MonoBehaviour
                     {
                         case 0:
                             EventSystem.current.SetSelectedGameObject(null);
-                            EventSystem.current.SetSelectedGameObject(page1);
+                            EventSystem.current.SetSelectedGameObject(PageSelector1);
                             break;
                         case 1:
                             EventSystem.current.SetSelectedGameObject(null);
-                            EventSystem.current.SetSelectedGameObject(page2);
+                            EventSystem.current.SetSelectedGameObject(PageSelector2);
                             break;
                         case 2:
                             EventSystem.current.SetSelectedGameObject(null);
-                            EventSystem.current.SetSelectedGameObject(page3);
+                            EventSystem.current.SetSelectedGameObject(PageSelector3);
                             break;
                         case 3:
                             EventSystem.current.SetSelectedGameObject(null);
-                            EventSystem.current.SetSelectedGameObject(page4);
+                            EventSystem.current.SetSelectedGameObject(PageSelector4);
                             break;
                         case 4:
                             EventSystem.current.SetSelectedGameObject(null);
-                            EventSystem.current.SetSelectedGameObject(page5);
+                            EventSystem.current.SetSelectedGameObject(PageSelector5);
                             break;
                     }
 
@@ -622,23 +634,23 @@ public class MenuManager : MonoBehaviour
                     {
                         case 0:
                             EventSystem.current.SetSelectedGameObject(null);
-                            EventSystem.current.SetSelectedGameObject(page1);
+                            EventSystem.current.SetSelectedGameObject(PageSelector1);
                             break;
                         case 1:
                             EventSystem.current.SetSelectedGameObject(null);
-                            EventSystem.current.SetSelectedGameObject(page2);
+                            EventSystem.current.SetSelectedGameObject(PageSelector2);
                             break;
                         case 2:
                             EventSystem.current.SetSelectedGameObject(null);
-                            EventSystem.current.SetSelectedGameObject(page3);
+                            EventSystem.current.SetSelectedGameObject(PageSelector3);
                             break;
                         case 3:
                             EventSystem.current.SetSelectedGameObject(null);
-                            EventSystem.current.SetSelectedGameObject(page4);
+                            EventSystem.current.SetSelectedGameObject(PageSelector4);
                             break;
                         case 4:
                             EventSystem.current.SetSelectedGameObject(null);
-                            EventSystem.current.SetSelectedGameObject(page5);
+                            EventSystem.current.SetSelectedGameObject(PageSelector5);
                             break;
                     }
 

@@ -1,16 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using Cinemachine;
-using UnityEditor;
-using Rewired;
 
 public class Player : MonoBehaviour
 {
     #region variables
-    [Header("GUI Elements")]
+
+    [Tooltip("Set Audio FX")]
+    [SerializeField]
+    private AudioClip InWater, Outwater;
+    [Tooltip("Set Player Speed")]
+    [SerializeField]
+    private float speed = 9;
+    [Tooltip("Set Jump Force")]
+    [SerializeField]
+    private float jumpFloat = 1;
+
+    //[Header("GUI Elements")]
     CinemachineFreeLook FreeLookCam;
     Rigidbody rb;
     Vector3 force;
@@ -21,36 +28,38 @@ public class Player : MonoBehaviour
     float multiplier = 3;
     bool isFloor;
 
-    public int gamePlayerId = 0;
-    private Rewired.Player PlayerA;
-    //private Rewired.Player playerA { get { return Rewired.Demos.PressStartToJoinExample_Assigner.GetRewiredPlayer(gamePlayerId); } }
-
-    [Tooltip("Set Audio FX")]
-    public AudioClip InWater, Outwater;
-
-    [Tooltip("Set Player Speed")]
-    [SerializeField]
-    private float speed = 9;
-
-    [Tooltip("Set Jump Force")]
-    [SerializeField]
-    private float jumpFloat = 1;
-
     #endregion
-
 
     void Start()
     {
         AudioPlayer = GetComponent<AudioSource>();
-        PlayerA = ReInput.players.GetPlayer(gamePlayerId);
     }
+
+    void FixedUpdate()
+    {
+        Move();
+    }
+
     void Update()
     {
         playerJump();
-        rb = GetComponent<Rigidbody>();
-        FreeLookCam = CinemachineFreeLook.FindObjectOfType<CinemachineFreeLook>();
+        if (!rb)
+        {
+            rb = GetComponent<Rigidbody>();
+        }
+
+        if (!FreeLookCam)
+        {
+            FreeLookCam = CinemachineFreeLook.FindObjectOfType<CinemachineFreeLook>();
+        }
+
+        if (!BallParticle)
+        {
+
+        }
         BallParticle = GameObject.Find("BallParticle");
-        if(rb.velocity.magnitude >= 2.5f && WaterInScene == null && isFloor == true)
+
+        if (rb.velocity.magnitude >= 2.5f && WaterInScene == null && isFloor == true)
         {
             PlayParticle();
         }
@@ -70,17 +79,11 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        Move();
-    }
 
     void Move()
     {
-        float x = PlayerA.GetAxis("Move Horizontal");
-        float z = PlayerA.GetAxis("Move Vertical");
-        //float x = Input.GetAxis("Horizontal");
-        //float z = Input.GetAxis("Vertical");
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
 
         Vector3 camDirection = (transform.position - FreeLookCam.transform.position).normalized;
         camDirection = new Vector3(camDirection.x, 0, camDirection.z);
