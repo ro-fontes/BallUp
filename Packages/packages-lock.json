@@ -1,11 +1,5 @@
 {
   "dependencies": {
-    "com.arcaedion.multiplayer.example": {
-      "version": "file:D:/Library/Download/arcaedion-multiplayer-base",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {}
-    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
