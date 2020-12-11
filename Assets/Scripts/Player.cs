@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Cinemachine;
 using UnityEditor;
+using Rewired;
 
 public class Player : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class Player : MonoBehaviour
     float multiplier = 3;
     bool isFloor;
 
+    public int gamePlayerId = 0;
+    private Rewired.Player PlayerA;
+    //private Rewired.Player playerA { get { return Rewired.Demos.PressStartToJoinExample_Assigner.GetRewiredPlayer(gamePlayerId); } }
 
     [Tooltip("Set Audio FX")]
     public AudioClip InWater, Outwater;
@@ -34,9 +38,11 @@ public class Player : MonoBehaviour
 
     #endregion
 
+
     void Start()
     {
         AudioPlayer = GetComponent<AudioSource>();
+        PlayerA = ReInput.players.GetPlayer(gamePlayerId);
     }
     void Update()
     {
@@ -71,8 +77,10 @@ public class Player : MonoBehaviour
 
     void Move()
     {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        float x = PlayerA.GetAxis("Move Horizontal");
+        float z = PlayerA.GetAxis("Move Vertical");
+        //float x = Input.GetAxis("Horizontal");
+        //float z = Input.GetAxis("Vertical");
 
         Vector3 camDirection = (transform.position - FreeLookCam.transform.position).normalized;
         camDirection = new Vector3(camDirection.x, 0, camDirection.z);
