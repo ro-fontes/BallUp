@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using Photon.Pun;
 
 public class Player : MonoBehaviour
 {
@@ -17,13 +18,16 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float jumpFloat = 1;
 
-    //[Header("GUI Elements")]
-    CinemachineFreeLook FreeLookCam;
+    public GameObject MyCamera;
+    public CinemachineFreeLook FreeLookCam;
+
+    PhotonView MyPhotonView;
     Rigidbody rb;
     Vector3 force;
     GameObject WaterInScene;
     GameObject BallParticle;
     AudioSource AudioPlayer;
+    public GameObject Cam;
     float WaterDepth;
     float multiplier = 3;
     bool isFloor;
@@ -32,21 +36,26 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        MyPhotonView = GetComponent<PhotonView>();
         AudioPlayer = GetComponent<AudioSource>();
+        rb = GetComponent<Rigidbody>();
+        if (!MyPhotonView.IsMine)
+        {
+            MyCamera.gameObject.SetActive(false);
+        }
     }
 
     void FixedUpdate()
     {
-        Move();
+        if(MyPhotonView.IsMine)
+        {
+            Move();
+        }
     }
 
     void Update()
     {
         playerJump();
-        if (!rb)
-        {
-            rb = GetComponent<Rigidbody>();
-        }
 
         if (!FreeLookCam)
         {
@@ -55,9 +64,9 @@ public class Player : MonoBehaviour
 
         if (!BallParticle)
         {
-
+            BallParticle = GameObject.Find("BallParticle");
         }
-        BallParticle = GameObject.Find("BallParticle");
+
 
         if (rb.velocity.magnitude >= 2.5f && WaterInScene == null && isFloor == true)
         {
@@ -70,7 +79,7 @@ public class Player : MonoBehaviour
 
         if (WaterInScene != null)
         {
-            if(transform.position.y <= WaterInScene.transform.position.y)
+            if (transform.position.y <= WaterInScene.transform.position.y)
             {
                 WaterDepth = transform.position.y - WaterInScene.transform.position.y;
                 force.y = (Physics.gravity.y * WaterDepth - rb.velocity.y) * multiplier;
@@ -78,7 +87,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-
 
     void Move()
     {
@@ -114,7 +122,15 @@ public class Player : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump"))
                 {
-                    rb.AddForce(Vector3.up * jumpFloat);
+                    if (MyPhotonView.IsMine)
+                    {
+                        rb.AddForce(Vector3.up * jumpFloat);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                    
                 }
             }
         }
@@ -133,14 +149,6 @@ public class Player : MonoBehaviour
     void StopParticle()
     {
         BallParticle.GetComponent<ParticleSystem>().Stop();
-    }
-
-    void OnCollisionStay(Collision other)
-    {
-        if (other.gameObject.CompareTag("Trampolim"))
-        {
-            rb.velocity = new Vector2(0f, 10f);
-        }
     }
 
     private void OnTriggerEnter(Collider other)

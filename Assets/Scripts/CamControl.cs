@@ -1,25 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Cinemachine;
 
 public class CamControl : MonoBehaviour
 {
     CinemachineFreeLook freeLook;
-    GameObject player;
+    public GameObject player;
 
     private void Awake()
-    {
-        player = GameObject.Find("Player");
-    }
-
-    void Start()
     {
         freeLook = GetComponent<CinemachineFreeLook>();
     }
 
     void Update()
     {
+        if (!player)
+        {
+            player = GameObject.Find("Player" + PlayerPrefs.GetInt("Skin"));
+        }
         freeLook.Follow = player.transform;
         freeLook.LookAt = player.transform;
     }

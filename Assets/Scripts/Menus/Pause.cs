@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using System;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Audio;
+using Photon.Pun;
 
 public class Pause : MonoBehaviour
 {
+    #region Variables
+
     [Tooltip("Set Pause button Menu")]
     public Button BotaoRetornarAoJogo, BotaoRestart, BotaoOpcoes, BotaoVoltarAoMenu;
     [Space(20)]
@@ -24,7 +24,6 @@ public class Pause : MonoBehaviour
     [Space(20)]
     public AudioMixer masterMixer;
     public Image blur;
-    public string nomeCenaMenu = "Menu";
     public GameObject PauseButton, SettingsButton, EndLevelButton, Options;
     public Text txtFPSMax;
 
@@ -36,12 +35,13 @@ public class Pause : MonoBehaviour
     ColorGrading colorGradingLayer = null;
 
     GameObject PostFX;
-    GameObject Player;
     private int FPSLimit, VSyncEnable, BloomEnable;
     private float VOLUME, SFXSound, MusicSound;
     private int qualidadeGrafica, modoJanelaAtivo, resolucaoSalveIndex, DepthOfFieldEnable, MotionBlurEnable, AnisotropicFilteringEnable;
     private bool telaCheiaAtivada, menuParte1Ativo, menuParte2Ativo;
     private Resolution[] resolucoesSuportadas;
+
+    #endregion
 
     void Awake()
     {
@@ -79,7 +79,6 @@ public class Pause : MonoBehaviour
                 PlayerPrefs.DeleteKey("RESOLUCAO");
             }
         }
-        //=============== SAVES===========//
         if (PlayerPrefs.HasKey("VOLUME"))
         {
             VOLUME = PlayerPrefs.GetFloat("VOLUME");
@@ -320,6 +319,7 @@ public class Pause : MonoBehaviour
         }
 
         #endregion
+
         // =========SETAR BOTOES==========//
         BotaoVoltarAoMenu.onClick = new Button.ButtonClickedEvent();
         BotaoRestart.onClick = new Button.ButtonClickedEvent();
@@ -334,11 +334,6 @@ public class Pause : MonoBehaviour
 
     void Update()
     {
-        if (!Player)
-        {
-            Player = GameObject.Find("Player");
-        }
-
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Select"))
         {
             if (menuParte1Ativo == false && menuParte2Ativo == false)
@@ -400,7 +395,6 @@ public class Pause : MonoBehaviour
         }
         else if (BotaoVoltarAoMenu.gameObject.activeSelf)
         {
-
             if (Input.GetButtonDown("B"))
             {
                 menuParte1Ativo = false;
@@ -411,7 +405,6 @@ public class Pause : MonoBehaviour
         SalvarPreferencias();
     }
 
-    //=========VOIDS DE CHECAGEM==========//
     private void ChecarResolucoes()
     {
         Resolution[] resolucoesSuportadas = Screen.resolutions;
@@ -474,7 +467,6 @@ public class Pause : MonoBehaviour
         }
     }
 
-    //=========VOIDS DE SALVAMENTO==========//
     private void SalvarPreferencias()
     {
         if (CaixaModoJanela.isOn == true)
@@ -495,7 +487,6 @@ public class Pause : MonoBehaviour
             txtFPSMax.text = FPSLimit.ToString();
         }
 
-
         if (VSync.isOn == true)
         {
             VSyncEnable = 1;
@@ -506,7 +497,6 @@ public class Pause : MonoBehaviour
             VSyncEnable = 0;
             QualitySettings.vSyncCount = 0;
         }
-
 
         if (DepthOfFieldBox.isOn == true)
         {
@@ -519,7 +509,6 @@ public class Pause : MonoBehaviour
             DepthOfField.enabled.value = false;
         }
 
-
         if (MotionBlurBox.isOn == true)
         {
             MotionBlurEnable = 1;
@@ -531,8 +520,6 @@ public class Pause : MonoBehaviour
             MotionBlur.enabled.value = false;
         }
 
-
-
         if (BloomBox.isOn == true)
         {
             BloomEnable = 1;
@@ -543,8 +530,6 @@ public class Pause : MonoBehaviour
             BloomEnable = 0;
             bloomLayer.enabled.value = false;
         }
-
-
 
         if (AnisotropicFiltering.isOn == true)
         {
@@ -566,7 +551,6 @@ public class Pause : MonoBehaviour
         PlayerPrefs.SetInt("Bloom", BloomEnable);
         PlayerPrefs.SetInt("DepthOfField", DepthOfFieldEnable);
         PlayerPrefs.SetInt("MotionBlur", MotionBlurEnable);
-
         PlayerPrefs.SetInt("qualidadeGrafica", Qualidades.value);
         PlayerPrefs.SetInt("modoJanela", modoJanelaAtivo);
         PlayerPrefs.SetInt("RESOLUCAO", Resolucoes.value);
@@ -593,11 +577,12 @@ public class Pause : MonoBehaviour
 
     public void VoltarAoMenu()
     {
-        GameObject destroyPlayer = GameObject.Find("Player");
+        GameObject destroyPlayer = GameObject.Find("Player"+PlayerPrefs.GetInt("Skin"));
         GameObject destroyParticle = GameObject.Find("BallParticle");
         Destroy(destroyParticle);
         Destroy(destroyPlayer);
         SceneManager.LoadScene(1);
+        PhotonNetwork.Disconnect();
     }
 
     public void Restart()

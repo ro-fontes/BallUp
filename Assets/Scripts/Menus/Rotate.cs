@@ -15,7 +15,7 @@ public class Rotate : MonoBehaviour
     public EnumAxis axis;
     public float speed;
 
-    private void Update()
+    private void FixedUpdate()
     {
        switch (axis)
         {

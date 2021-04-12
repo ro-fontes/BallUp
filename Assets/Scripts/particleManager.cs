@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class particleManager : MonoBehaviour
 {
@@ -8,7 +6,7 @@ public class particleManager : MonoBehaviour
 
     void Update()
     {
-        Spawn = GameObject.Find("Player");
+        Spawn = GameObject.Find("Player"+PlayerPrefs.GetInt("Skin"));
 
         transform.position = Spawn.transform.position - new Vector3(0, 0.55f, 0);
     }

@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using System;
-using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
@@ -62,24 +62,20 @@ public class MenuManager : MonoBehaviour
             PostFX = GameObject.Find("PostFX");
         }
 
-
         resolucoesSuportadas = Screen.resolutions;
         ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = true;
-
 
         PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out DepthOfField);
         PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out MotionBlur);
         PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out bloomLayer);
         PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out ambientOcclusionLayer);
         PostFX.GetComponent<PostProcessVolume>().profile.TryGetSettings(out colorGradingLayer);
-
     }
 
     void Start()
     {
         DontDestroyOnLoad(PostFX);
 
-        print(PostFX);
         for (int i = 1; i < Score.Length; i++)
         {
             if (PlayerPrefs.HasKey(i + "LevelTime"))
@@ -95,18 +91,10 @@ public class MenuManager : MonoBehaviour
         ChecarResolucoes();
         AjustarQualidades();
 
-
         ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = false;
         FirstButton.GetComponent<Animator>().updateMode = AnimatorUpdateMode.Normal;
         txtStars.text = PlayerPrefs.GetInt("Stars").ToString();
         txtFragments.text = PlayerPrefs.GetInt("Fragments").ToString();
-
-        #region PostFXLayer
-
-
-
-
-        #endregion
 
         nomeDaCena = SceneManager.GetActiveScene().name;
         Time.timeScale = 1;
@@ -398,7 +386,6 @@ public class MenuManager : MonoBehaviour
         return timeText;
     }
 
-    //=========VOIDS DE CHECAGEM==========//
     private void ChecarResolucoes()
     {
         Resolution[] resolucoesSuportadas = Screen.resolutions;
@@ -421,7 +408,6 @@ public class MenuManager : MonoBehaviour
         Qualidades.captionText.text = "Qualidade";
     }
 
-    //=========VOIDS DE SALVAMENTO==========//
     private void SalvarPreferencias()
     {
         if (CaixaModoJanela.isOn == true)
@@ -538,7 +524,6 @@ public class MenuManager : MonoBehaviour
         Screen.SetResolution(resolucoesSuportadas[resolucaoSalveIndex].width, resolucoesSuportadas[resolucaoSalveIndex].height, telaCheiaAtivada);
     }
 
-    //===========VOIDS NORMAIS=========//
     void Update()
     {
         if (SceneManager.GetActiveScene().name != nomeDaCena)
@@ -721,6 +706,7 @@ public class MenuManager : MonoBehaviour
         }
 
     }
+
     private void Back()
     {
         FirstButton.GetComponent<Animator>().updateMode = AnimatorUpdateMode.Normal;
@@ -745,6 +731,7 @@ public class MenuManager : MonoBehaviour
         menuAnim.SetBool("LocationsToSkinSelector", false);
         menuAnim.SetBool("LocationsToOptions", false);
     }
+
     void Customize()
     {
         Invoke("ActiveColorUI", 0.7f);
@@ -774,10 +761,12 @@ public class MenuManager : MonoBehaviour
         menuAnim.SetBool("SettingsToSkinSelector", true);
         menuAnim.SetBool("LocationsToSkinSelector", true);
     }
+
     void ActiveColorUI()
     {
         ColorPickerUI.GetComponent<ColorPickerUnityUI>().enabled = true;
     }
+
     void Settings()
     {
         if (ControllerManager.Mouse_Controller == 1)
@@ -796,6 +785,7 @@ public class MenuManager : MonoBehaviour
         menuAnim.SetBool("Settings", true);
         menuAnim.SetBool("LocationsToOptions", true);
     }
+
     public void Sair()
     {
         Application.Quit();

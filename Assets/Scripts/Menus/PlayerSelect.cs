@@ -1,10 +1,9 @@
-﻿using System.Collections;
+﻿using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
 
 public class PlayerSelect : MonoBehaviour
 {
@@ -14,19 +13,22 @@ public class PlayerSelect : MonoBehaviour
     public Vector3[] SpawnPlayer;
     [HideInInspector]
     public int Language;
+    public GameObject spawn;
 
     [SerializeField]
     private GameObject[] Players;
+    [SerializeField]
+    private GameObject[] PlayersFBX;
     [SerializeField]
     private GameObject[] Particles;
     [Tooltip("Put the buttons that will activate if the player passes the level")]
     [SerializeField]
     private Button[] levelButtonActivate;
     [SerializeField]
-    private float RotateSpeed = 0.5f;
-    [SerializeField]
     private GameObject Stars, Fragments;
-    [Space(20)]
+    GameObject player, playerPref, particle;
+
+    [Header("LOADINGSCREEN")]
     [SerializeField]
     private GameObject LoadGameobjct;
     [SerializeField]
@@ -41,10 +43,9 @@ public class PlayerSelect : MonoBehaviour
     private GameObject[] backgroundImages;
     [SerializeField]
     [Range(0, 1f)] private float vignetteEfectVolue;
-
     int SaveSkin, SaveParticle;
     AsyncOperation async;
-    GameObject player, particle;
+
 
     #endregion
 
@@ -76,33 +77,22 @@ public class PlayerSelect : MonoBehaviour
         SaveParticle = PlayerPrefs.GetInt("Particle");
     }
 
-
     void Start()
     {
         if (backGroundImageAndLoop)
         {
             StartCoroutine(transitionImage());
         }
-    }
-    private void FixedUpdate()
-    {
-        player.transform.Rotate(0, RotateSpeed, 0);
+        player.SetActive(true);
     }
 
     void Update()
     {
         if (!player)
         {
-            player = GameObject.Find("SkinManager");
-            player = Instantiate(Players[SaveSkin], player.transform.position, player.transform.rotation);
-            player.name = "Player";
-            player.GetComponent<Player>().enabled = false;
-            player.transform.parent = GameObject.Find("SkinManager").transform;
+            player = Instantiate(PlayersFBX[SaveSkin], spawn.transform.position, spawn.transform.rotation);
+            player.transform.parent = spawn.transform;
             player.gameObject.transform.localScale = new Vector3(10, 10, 10);
-        }
-        if (!particle)
-        {
-            particle = Instantiate(Particles[SaveParticle], player.transform.position, player.transform.rotation);
         }
 
         for (int i = 1; i < 4; i++)
@@ -154,36 +144,28 @@ public class PlayerSelect : MonoBehaviour
                 bar.transform.localScale = new Vector3(1, 0.9f, 1);
 
                 //Player spawn
-                player.transform.parent = null;
-                particle.transform.parent = null;
-
-                DontDestroyOnLoad(player);
+                if (!playerPref)
+                {
+                    playerPref = Instantiate(Players[SaveSkin], SpawnPlayer[sceneNo - 2], new Quaternion(0, 0, 0, 0));
+                }
+                if (!particle)
+                {
+                    particle = Instantiate(Particles[SaveParticle], playerPref.transform.position, playerPref.transform.rotation);
+                }
+                    
+                DontDestroyOnLoad(playerPref);
                 DontDestroyOnLoad(particle);
 
+                playerPref.name = "Player" + SaveSkin;
                 particle.name = "BallParticle";
-                //player.name = "Player";
+                playerPref.transform.GetChild(0).gameObject.SetActive(true);
 
-                player.AddComponent<Rigidbody>();
-                player.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
-
-
-                player.GetComponent<Player>().enabled = true;
-                player.GetComponent<ChangeColor>().enabled = false;
-
-                //particle.name = "BallParticle";
-                //player.name = "Player";
-
-                player.gameObject.transform.localScale = new Vector3(1, 1, 1);
-                particle.gameObject.transform.localScale = new Vector3(1, 1, 1);
-
-
-                player.transform.position = SpawnPlayer[sceneNo - 2];
-                player.SetActive(true);
                 async.allowSceneActivation = true;
             }
             yield return null;
         }
     }
+
     public void ChangeLanguage(int value)
     {
         Language = value;
