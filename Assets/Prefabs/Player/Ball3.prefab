@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2611731108917150196}
   - component: {fileID: 4113368260603663166}
   - component: {fileID: 7125471539615524960}
+  - component: {fileID: 6598573498110375299}
   m_Layer: 0
   m_Name: UV Torus4
   m_TagString: Untagged
@@ -79,6 +80,21 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &6598573498110375299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036572759883444356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d82d820dbeb22a3459f0ded22474880d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ColorPicker: {fileID: 0}
+  MaterialIndex: 0
+  ObjectPaletteToUse: {fileID: 0}
 --- !u!1 &5132780431188951027
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,6 +106,7 @@ GameObject:
   - component: {fileID: 9023376441485569271}
   - component: {fileID: 7156144695727184073}
   - component: {fileID: 7215568485520251108}
+  - component: {fileID: 1650670873219760076}
   m_Layer: 0
   m_Name: UV Torus2
   m_TagString: Untagged
@@ -158,6 +175,21 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &1650670873219760076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5132780431188951027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d82d820dbeb22a3459f0ded22474880d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ColorPicker: {fileID: 0}
+  MaterialIndex: 0
+  ObjectPaletteToUse: {fileID: 0}
 --- !u!1 &6290367826742240791
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,6 +201,7 @@ GameObject:
   - component: {fileID: 8862859579937745266}
   - component: {fileID: 2652626467940742815}
   - component: {fileID: 1996165281189048215}
+  - component: {fileID: 2825207136603821266}
   m_Layer: 0
   m_Name: UV Torus1
   m_TagString: Untagged
@@ -237,6 +270,21 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &2825207136603821266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290367826742240791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d82d820dbeb22a3459f0ded22474880d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ColorPicker: {fileID: 0}
+  MaterialIndex: 0
+  ObjectPaletteToUse: {fileID: 0}
 --- !u!1 &8095694203549938388
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,6 +296,7 @@ GameObject:
   - component: {fileID: 1572057002813797409}
   - component: {fileID: 667861914257156316}
   - component: {fileID: 8007121737389692042}
+  - component: {fileID: 8504921562238802214}
   m_Layer: 0
   m_Name: UV Torus3
   m_TagString: Untagged
@@ -316,6 +365,21 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8504921562238802214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8095694203549938388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d82d820dbeb22a3459f0ded22474880d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ColorPicker: {fileID: 0}
+  MaterialIndex: 0
+  ObjectPaletteToUse: {fileID: 0}
 --- !u!1 &8140224211945727636
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,7 +389,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8916056777494068270}
-  - component: {fileID: -7180880466251155208}
   - component: {fileID: 5751632605497215127}
   m_Layer: 0
   m_Name: Ball3
@@ -352,21 +415,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-7180880466251155208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8140224211945727636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d82d820dbeb22a3459f0ded22474880d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ColorPicker: {fileID: 0}
-  MaterialIndex: 0
-  ObjectPaletteToUse: {fileID: 0}
 --- !u!114 &5751632605497215127
 MonoBehaviour:
   m_ObjectHideFlags: 0

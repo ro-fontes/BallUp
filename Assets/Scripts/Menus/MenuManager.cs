@@ -22,7 +22,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     private GameObject PageSelector1, PageSelector2, PageSelector3, PageSelector4, PageSelector5;
     [SerializeField]
-    private Button BotaoJogar, BotaoOpcoes, BotaoOpcoes2, CustomizeButton, CustomizeButton2, BotaoVoltar;
+    private Button BotaoJogar, BotaoOpcoes, BotaoOpcoes2, CustomizeButton, CustomizeButton2, BotaoVoltar, multiplayerButton;
     [SerializeField]
     private GameObject FirstButton, LocationsButton, skinbutton, ColorPickerButton, HomeButtonSelected;
     [SerializeField]
@@ -367,6 +367,8 @@ public class MenuManager : MonoBehaviour
         CustomizeButton.onClick = new Button.ButtonClickedEvent();
         CustomizeButton2.onClick = new Button.ButtonClickedEvent();
         BotaoVoltar.onClick = new Button.ButtonClickedEvent();
+        multiplayerButton.onClick = new Button.ButtonClickedEvent();
+        multiplayerButton.onClick.AddListener(() => Multiplayer());
         BotaoJogar.onClick.AddListener(() => Jogar());
         CustomizeButton.onClick.AddListener(() => Customize());
         CustomizeButton2.onClick.AddListener(() => Customize());
@@ -730,6 +732,9 @@ public class MenuManager : MonoBehaviour
         menuAnim.SetBool("MenuToLocations", false);
         menuAnim.SetBool("LocationsToSkinSelector", false);
         menuAnim.SetBool("LocationsToOptions", false);
+        menuAnim.SetBool("MenuToMultiplayer", false);
+        menuAnim.SetBool("MultiplayerToOptions", false);
+        menuAnim.SetBool("MultiplayerToSkinSelector", false);
     }
 
     void Customize()
@@ -760,6 +765,19 @@ public class MenuManager : MonoBehaviour
         menuAnim.SetBool("SkinSelectorToSettings", false);
         menuAnim.SetBool("SettingsToSkinSelector", true);
         menuAnim.SetBool("LocationsToSkinSelector", true);
+        menuAnim.SetBool("MultiplayerToSkinSelector", true);
+    }
+
+    void Multiplayer()
+    {
+        menuAnim.SetBool("Menu", false);
+        menuAnim.SetBool("SkinSelector", false);
+        menuAnim.SetBool("SkinSelectorToSettings", false);
+        menuAnim.SetBool("SettingsToSkinSelector", false);
+        menuAnim.SetBool("LocationsToSkinSelector", false);
+        menuAnim.SetBool("MenuToMultiplayer", true);
+        menuAnim.SetBool("MultiplayerToOptions", false);
+        menuAnim.SetBool("MultiplayerToSkinSelector", false);
     }
 
     void ActiveColorUI()
@@ -784,6 +802,7 @@ public class MenuManager : MonoBehaviour
         menuAnim.SetBool("SettingsToSkinSelector", false);
         menuAnim.SetBool("Settings", true);
         menuAnim.SetBool("LocationsToOptions", true);
+        menuAnim.SetBool("MultiplayerToOptions", true);
     }
 
     public void Sair()

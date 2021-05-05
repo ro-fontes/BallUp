@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     private float jumpFloat = 1;
 
     public GameObject MyCamera;
-    public CinemachineFreeLook FreeLookCam;
+    CinemachineFreeLook FreeLookCam;
 
     PhotonView MyPhotonView;
     Rigidbody rb;
@@ -27,7 +27,6 @@ public class Player : MonoBehaviour
     GameObject WaterInScene;
     GameObject BallParticle;
     AudioSource AudioPlayer;
-    public GameObject Cam;
     float WaterDepth;
     float multiplier = 3;
     bool isFloor;
@@ -59,7 +58,7 @@ public class Player : MonoBehaviour
 
         if (!FreeLookCam)
         {
-            FreeLookCam = CinemachineFreeLook.FindObjectOfType<CinemachineFreeLook>();
+            FreeLookCam = FindObjectOfType<CinemachineFreeLook>();
         }
 
         if (!BallParticle)
@@ -149,6 +148,13 @@ public class Player : MonoBehaviour
     void StopParticle()
     {
         BallParticle.GetComponent<ParticleSystem>().Stop();
+    }
+
+    [PunRPC]
+    public void SetColor(float R, float G, float B)
+    {
+        //this.GetComponent<MeshRenderer>().material.color = new Color(PlayerPrefs.GetFloat("Color"), PlayerPrefs.GetFloat("Color1"), PlayerPrefs.GetFloat("Color2"), 255f);
+        GetComponent<MeshRenderer>().material.color = new Color(R, G, B, 255f);
     }
 
     private void OnTriggerEnter(Collider other)

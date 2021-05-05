@@ -4,7 +4,7 @@ public class particleManager : MonoBehaviour
 {
     public GameObject Spawn;
 
-    void Update()
+    void FixedUpdate()
     {
         Spawn = GameObject.Find("Player"+PlayerPrefs.GetInt("Skin"));
 

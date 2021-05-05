@@ -26,7 +26,8 @@ public class PlayerSelect : MonoBehaviour
     private Button[] levelButtonActivate;
     [SerializeField]
     private GameObject Stars, Fragments;
-    GameObject player, playerPref, particle;
+    GameObject player, playerPref, particle, freeLook;
+    public GameObject cam;
 
     [Header("LOADINGSCREEN")]
     [SerializeField]
@@ -93,6 +94,7 @@ public class PlayerSelect : MonoBehaviour
             player = Instantiate(PlayersFBX[SaveSkin], spawn.transform.position, spawn.transform.rotation);
             player.transform.parent = spawn.transform;
             player.gameObject.transform.localScale = new Vector3(10, 10, 10);
+            player.name = "Player";
         }
 
         for (int i = 1; i < 4; i++)
@@ -152,13 +154,16 @@ public class PlayerSelect : MonoBehaviour
                 {
                     particle = Instantiate(Particles[SaveParticle], playerPref.transform.position, playerPref.transform.rotation);
                 }
-                    
+
                 DontDestroyOnLoad(playerPref);
                 DontDestroyOnLoad(particle);
 
+
                 playerPref.name = "Player" + SaveSkin;
+
                 particle.name = "BallParticle";
                 playerPref.transform.GetChild(0).gameObject.SetActive(true);
+
 
                 async.allowSceneActivation = true;
             }
