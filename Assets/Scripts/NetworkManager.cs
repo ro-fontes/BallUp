@@ -3,9 +3,12 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+    public MenuManager menuManager;
+
     [Header("Login")]
     public GameObject loginPn;
     public InputField playerName;
@@ -13,22 +16,30 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     [Header("Lobby")]
     public GameObject lobbyPn;
+    public GameObject noRoomPn;
     public InputField roomName;
+    public Slider maxPlayers;
+    public Text maxPlayerCount;
     string tempRoomName;
 
     [Header("Player")]
     public GameObject playerPun;
+    public GameObject playerFbx;
     public GameObject[] Players;
     public Vector3[] SpawnPlayer;
     public GameObject[] Particles;
     public GameObject particle;
-    int SaveParticle;
     int SaveSkin;
-    int i = 1;
+    int SaveParticle;
+    string savedPlayerName;
+
+    [Header("LoadMap")]
+    [SerializeField]
+    private string selectedMap = "Fase1A";
 
     #region LoadingScreen
 
-    [Header("LOADINGSCREEN")]
+    [Header("LoadingScreen")]
     [SerializeField]
     private GameObject loadGameobject;
     [SerializeField]
@@ -43,14 +54,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private GameObject[] backgroundImages;
     [SerializeField]
     [Range(0, 1f)] private float vignetteEffectValue;
-    AsyncOperation async;
-    
-    
 
-    public void loadingScreen(int sceneNo)
+    public void loadingScreen(string sceneNo)
     {
         loadGameobject.gameObject.SetActive(true);
-        StartCoroutine(Loading(sceneNo));
+        playerFbx.SetActive(false);
+        StartCoroutine(WaitATime(3, sceneNo));
+
     }
 
     IEnumerator transitionImage()
@@ -72,44 +82,101 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             StartCoroutine(transitionImage());
         }
-        playerPun = Players[PlayerPrefs.GetInt("Skin")];
-        loginPn.gameObject.SetActive(true);
-        PhotonNetwork.AutomaticallySyncScene = true;
-        tempPlayerName = "Neiva" + Random.Range(8, 99);
-        playerName.text = tempPlayerName;
-        tempRoomName = "Pato" + Random.Range(8, 99);
+        if (!PlayerPrefs.HasKey("namePlayerSaved"))
+        {
+            loginPn.gameObject.SetActive(true);
+        }
+        else
+        {
+            loginPn.gameObject.SetActive(false);
 
+        }
+
+        maxPlayers.value = 1;
+        
+        PhotonNetwork.AutomaticallySyncScene = true;
+        tempPlayerName = "Player" + UnityEngine.Random.Range(8, 99);
+        playerName.text = tempPlayerName;
+        tempRoomName = "Room" + UnityEngine.Random.Range(8, 99);
+        noRoomPn.SetActive(false);
         particle = GameObject.Find("BallParticle");
+        savedPlayerName = PlayerPrefs.GetString("namePlayerSaved");
         SaveSkin = PlayerPrefs.GetInt("Skin");
         SaveParticle = PlayerPrefs.GetInt("Particle");
+        playerPun = Players[SaveSkin];
+    }
+
+    private void Update()
+    {
+        maxPlayerCount.text = maxPlayers.value + " Player";
+        playerFbx = GameObject.Find("Player");
+    }
+
+    IEnumerator WaitATime(float time, string text)
+    {
+        yield return new WaitForSeconds(time);
+        StartCoroutine(Loading(text));
+    }
+
+    IEnumerator JoinLobby(float time)
+    {
+        PhotonNetwork.ConnectUsingSettings();
+        yield return new WaitForSeconds(time);
+        PhotonNetwork.JoinLobby();
+    }
+    IEnumerator GenerateRoom(float time)
+    {
+        PhotonNetwork.ConnectUsingSettings();
+        yield return new WaitForSeconds(time);
+
+        RoomOptions roomOptions = new RoomOptions() { MaxPlayers = Convert.ToByte(maxPlayers.value), PlayerTtl = 20 };
+
+        if (roomName.text == "")
+        {
+            PhotonNetwork.JoinOrCreateRoom(tempRoomName, roomOptions, TypedLobby.Default);
+        }
+        else
+        {
+            tempRoomName = roomName.text;
+            PhotonNetwork.JoinOrCreateRoom(roomName.text, roomOptions, TypedLobby.Default);
+        }
+    }
+
+    IEnumerator FadeText(float time)
+    {
+        noRoomPn.SetActive(true);
+        yield return new WaitForSeconds(time);
+        noRoomPn.SetActive(false);
     }
 
     public void Login()
     {
-        PhotonNetwork.ConnectUsingSettings();
-
         if (playerName.text != "")
         {
             PhotonNetwork.NickName = playerName.text;
+            savedPlayerName = playerName.text;
+            PlayerPrefs.SetString("namePlayerSaved", savedPlayerName);
         }
         else
         {
             PhotonNetwork.NickName = tempPlayerName;
+            savedPlayerName = tempPlayerName;
+            PlayerPrefs.SetString("namePlayerSaved", savedPlayerName);
         }
 
         loginPn.gameObject.SetActive(false);
-        roomName.text = tempRoomName;
+        
     }
 
     public void Quicksearch()
     {
-        PhotonNetwork.JoinLobby();
+        StartCoroutine(JoinLobby(2));
+        
     }
 
     public void CreateRoom()
     {
-        RoomOptions roomOptions = new RoomOptions() { MaxPlayers = 4 };
-        PhotonNetwork.JoinOrCreateRoom(roomName.text, roomOptions, TypedLobby.Default);
+        StartCoroutine(GenerateRoom(2));
     }
 
     public override void OnConnected()
@@ -132,7 +199,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        PhotonNetwork.CreateRoom(tempRoomName);
+        StartCoroutine(FadeText(5));
+        Disconnect();
     }
 
     public void Disconnect()
@@ -144,17 +212,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         Debug.LogWarning("OnJoinedRoom");
         Debug.LogWarning("Nome da Sala: " + PhotonNetwork.CurrentRoom.Name);
+        Debug.LogWarning("Quantidade maxima de players da sala: " + PhotonNetwork.CurrentRoom.MaxPlayers);
         Debug.LogWarning("Nome do Player: " + PhotonNetwork.NickName);
         Debug.LogWarning("Players Conectados: " + PhotonNetwork.CurrentRoom.PlayerCount);
 
         loginPn.gameObject.SetActive(false);
-        loadingScreen(2);
+        loadingScreen(selectedMap);
     }
-    IEnumerator Loading(int sceneNo)
+    IEnumerator Loading(string sceneNo)
     {
-        
         PhotonNetwork.LoadLevel(sceneNo);
         PhotonNetwork.AutomaticallySyncScene = true;
+        
 
         // Continue until the installation is completed
         while (PhotonNetwork.LevelLoadingProgress < 1)

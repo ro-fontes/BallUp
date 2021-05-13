@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class PlayerNameTag : MonoBehaviourPun
 {
     [SerializeField] TextMeshProUGUI nameText;
-    // Start is called before the first frame update
+
     void Start()
     {
         if(photonView.IsMine) { return; }

@@ -13,8 +13,7 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField]
     private AudioMixer masterMixer;
-    [SerializeField]
-    private Animator menuAnim;
+    public Animator menuAnim;
     [SerializeField]
     private GameObject ColorPickerUI;
     [SerializeField]

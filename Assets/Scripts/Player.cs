@@ -7,20 +7,33 @@ using Photon.Pun;
 public class Player : MonoBehaviour
 {
     #region variables
+    
+    [Header("Sounds Config")]
 
     [Tooltip("Set Audio FX")]
+    public AudioClip InWater;
+    public AudioClip Outwater;
+
+    [Header("Player Config")]
+
     [SerializeField]
-    private AudioClip InWater, Outwater;
-    [Tooltip("Set Player Speed")]
-    [SerializeField]
+    [Tooltip("Set Player speed")]
+    [Range(1, 20)]
     private float speed = 9;
-    [Tooltip("Set Jump Force")]
+
     [SerializeField]
-    private float jumpFloat = 1;
+    [Tooltip("Set Jump Force")]
+    [Range(100, 1000)]
+    private float jumpFloat = 300;
+
+    [SerializeField]
+    [Tooltip("Set Fluctuation Multiplier")]
+    [Range(1, 10)]
+    private float fluctuationMultiplier = 3;
 
     public GameObject MyCamera;
-    CinemachineFreeLook FreeLookCam;
 
+    CinemachineFreeLook FreeLookCam;
     PhotonView MyPhotonView;
     Rigidbody rb;
     Vector3 force;
@@ -28,7 +41,6 @@ public class Player : MonoBehaviour
     GameObject BallParticle;
     AudioSource AudioPlayer;
     float WaterDepth;
-    float multiplier = 3;
     bool isFloor;
 
     #endregion
@@ -55,7 +67,6 @@ public class Player : MonoBehaviour
     void Update()
     {
         playerJump();
-
         if (!FreeLookCam)
         {
             FreeLookCam = FindObjectOfType<CinemachineFreeLook>();
@@ -81,7 +92,7 @@ public class Player : MonoBehaviour
             if (transform.position.y <= WaterInScene.transform.position.y)
             {
                 WaterDepth = transform.position.y - WaterInScene.transform.position.y;
-                force.y = (Physics.gravity.y * WaterDepth - rb.velocity.y) * multiplier;
+                force.y = (Physics.gravity.y * WaterDepth - rb.velocity.y) * fluctuationMultiplier;
                 rb.AddForce(force);
             }
         }

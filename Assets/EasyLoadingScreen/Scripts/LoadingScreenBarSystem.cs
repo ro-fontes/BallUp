@@ -10,7 +10,8 @@ public class LoadingScreenBarSystem : MonoBehaviour {
     public bool backGroundImageAndLoop;
     public float LoopTime;
     public GameObject[] backgroundImages;
-    [Range(0,1f)]public float vignetteEfectVolue; // Must be a value between 0 and 1
+    [Range(0,1f)]
+    public float vignetteEfectVolue; // Must be a value between 0 and 1
     AsyncOperation async;
     Image vignetteEfect;
 
@@ -20,20 +21,6 @@ public class LoadingScreenBarSystem : MonoBehaviour {
         this.gameObject.SetActive(true);
         StartCoroutine(Loading(sceneNo));
     }
-
-    // Used to try. Delete the comment lines (25 and 36)
-    /*
-    public void Update()
-    {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            bar.transform.localScale += new Vector3(0.001f,0,0);
-
-            if (loadingText != null)
-                loadingText.text = "%" + (100 * bar.transform.localScale.x).ToString("####");
-        }
-    }
-    */
 
     private void Start()
     {

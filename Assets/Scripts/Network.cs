@@ -8,8 +8,6 @@ public class Network : MonoBehaviourPunCallbacks
     public GameObject Cam;
     public Vector3[] SpawnPlayer;
     public GameObject[] Particles;
-    //public List<GameObject> Players = new List<GameObject>();
-    //public GameObject[] Players;
     int i = 0;
     int SaveSkin, SaveParticle;
     float savedColorR, savedColorG, savedColorB;
@@ -22,13 +20,23 @@ public class Network : MonoBehaviourPunCallbacks
         savedColorR = PlayerPrefs.GetFloat("Color");
         savedColorG = PlayerPrefs.GetFloat("Color1");
         savedColorB = PlayerPrefs.GetFloat("Color2");
-
         SaveSkin = PlayerPrefs.GetInt("Skin");
         SaveParticle = PlayerPrefs.GetInt("Particle");
+    }
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    {
+        print("entrou joinedRoom");
+        //Spawn();
+    }
+
+    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
+    {
+        
     }
 
     private void Update()
     {
+
         if (PhotonNetwork.CurrentRoom.PlayerCount != i && !player)
         {
             Spawn();
@@ -54,10 +62,8 @@ public class Network : MonoBehaviourPunCallbacks
         B = player.GetComponent<MeshRenderer>().material.color.b;
         player.GetComponent<PhotonView>().RPC("SetColor", RpcTarget.AllBufferedViaServer, R, G, B);
 
-
         particle = Instantiate(Particles[SaveParticle], player.transform.position, player.transform.rotation);
         particle.name = "BallParticle";
     }
-    
 }
 

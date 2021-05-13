@@ -10,26 +10,41 @@ public class PlayerSelect : MonoBehaviour
     #region Variables
 
     public static PlayerSelect Instance;
-    public Vector3[] SpawnPlayer;
+
     [HideInInspector]
     public int Language;
-    public GameObject spawn;
 
+    [Header("Player")]
+
+    public Vector3[] SpawnPlayer;
+    public GameObject spawn;
     [SerializeField]
     private GameObject[] Players;
     [SerializeField]
     private GameObject[] PlayersFBX;
     [SerializeField]
     private GameObject[] Particles;
+    private GameObject player, playerPref, particle;
+
+    [Header("Buttons")]
+
+    [SerializeField]
     [Tooltip("Put the buttons that will activate if the player passes the level")]
-    [SerializeField]
     private Button[] levelButtonActivate;
+
+    [Header("UI")]
+
     [SerializeField]
-    private GameObject Stars, Fragments;
-    GameObject player, playerPref, particle, freeLook;
+    private GameObject Stars;
+    [SerializeField]
+    private GameObject Fragments;
+
+    [Header("Camera")]
+
     public GameObject cam;
 
-    [Header("LOADINGSCREEN")]
+    [Header("LoadingScreen")]
+
     [SerializeField]
     private GameObject LoadGameobjct;
     [SerializeField]
@@ -46,7 +61,6 @@ public class PlayerSelect : MonoBehaviour
     [Range(0, 1f)] private float vignetteEfectVolue;
     int SaveSkin, SaveParticle;
     AsyncOperation async;
-
 
     #endregion
 

@@ -104,6 +104,7 @@ MonoBehaviour:
   Outwater: {fileID: 8300000, guid: f1c511443316b7e43848ed6d29c6668c, type: 3}
   speed: 9
   jumpFloat: 300
+  fluctuationMultiplier: 3
   MyCamera: {fileID: 259289112048894413}
 --- !u!135 &-8452485123161057153
 SphereCollider:
