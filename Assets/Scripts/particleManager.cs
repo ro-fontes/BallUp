@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-public class particleManager : MonoBehaviour
+public class ParticleManager : MonoBehaviour
 {
     public GameObject Spawn;
 
     void FixedUpdate()
     {
-        Spawn = GameObject.Find("Player"+PlayerPrefs.GetInt("Skin"));
+        Spawn = GameObject.FindGameObjectWithTag("Player");
 
         transform.position = Spawn.transform.position - new Vector3(0, 0.55f, 0);
     }

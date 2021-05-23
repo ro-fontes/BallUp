@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using UnityEditor;
 
 public class ColorPickerUnityUI : MonoBehaviour {
 	[Tooltip("Is the image a circle")]
@@ -136,7 +133,6 @@ public class ColorPickerUnityUI : MonoBehaviour {
 			if (thumb.transform.position != newPos) 
 			{
 				thumb.transform.position = newPos;
-
 				value = GetColor ();
 			}
 		} 

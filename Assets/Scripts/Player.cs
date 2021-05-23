@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     [Tooltip("Set Player speed")]
     [Range(1, 20)]
     private float speed = 9;
+    public bool isSinglePlayer;
 
     [SerializeField]
     [Tooltip("Set Jump Force")]
@@ -30,7 +31,6 @@ public class Player : MonoBehaviour
     [Tooltip("Set Fluctuation Multiplier")]
     [Range(1, 10)]
     private float fluctuationMultiplier = 3;
-
     public GameObject MyCamera;
 
     CinemachineFreeLook FreeLookCam;
@@ -47,21 +47,34 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        MyPhotonView = GetComponent<PhotonView>();
+        if (!isSinglePlayer)
+        {
+            MyCamera.transform.parent = null;
+            MyPhotonView = GetComponent<PhotonView>();
+            if (!MyPhotonView.IsMine)
+            {
+                MyCamera.gameObject.SetActive(false);
+            }
+        }
+        
         AudioPlayer = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
-        if (!MyPhotonView.IsMine)
-        {
-            MyCamera.gameObject.SetActive(false);
-        }
     }
 
     void FixedUpdate()
     {
-        if(MyPhotonView.IsMine)
+        if (!isSinglePlayer)
+        {
+            if (MyPhotonView.IsMine)
+            {
+                Move();
+            }
+        }
+        else
         {
             Move();
         }
+        
     }
 
     void Update()
@@ -77,15 +90,23 @@ public class Player : MonoBehaviour
             BallParticle = GameObject.Find("BallParticle");
         }
 
-
-        if (rb.velocity.magnitude >= 2.5f && WaterInScene == null && isFloor == true)
+        if (MyPhotonView.IsMine)
         {
-            PlayParticle();
+            if (rb.velocity.magnitude >= 2.5f && WaterInScene == null && isFloor == true)
+            {
+                PlayParticle();
+            }
+            else
+            {
+                StopParticle();
+                //GetComponent<PhotonView>().RPC("StopParticle", RpcTarget.AllBufferedViaServer);
+            }
         }
         else
         {
-            StopParticle();
+            return;
         }
+
 
         if (WaterInScene != null)
         {
@@ -132,15 +153,21 @@ public class Player : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump"))
                 {
-                    if (MyPhotonView.IsMine)
+                    if (!isSinglePlayer)
                     {
-                        rb.AddForce(Vector3.up * jumpFloat);
+                        if (MyPhotonView.IsMine)
+                        {
+                            rb.AddForce(Vector3.up * jumpFloat);
+                        }
+                        else
+                        {
+                            return;
+                        }
                     }
                     else
                     {
-                        return;
+                        rb.AddForce(Vector3.up * jumpFloat);
                     }
-                    
                 }
             }
         }
@@ -151,12 +178,14 @@ public class Player : MonoBehaviour
         }
     }
 
-    void PlayParticle()
+    [PunRPC]
+    public void PlayParticle()
     {
          BallParticle.GetComponent<ParticleSystem>().Play();
     }
 
-    void StopParticle()
+    [PunRPC]
+    public void StopParticle()
     {
         BallParticle.GetComponent<ParticleSystem>().Stop();
     }

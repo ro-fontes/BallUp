@@ -15,7 +15,7 @@ public class CamControl : MonoBehaviour
     {
         if (!player)
         {
-            player = GameObject.Find("Player" + PlayerPrefs.GetInt("Skin"));
+            player = GameObject.FindGameObjectWithTag("Player");
         }
         freeLook.Follow = player.transform;
         freeLook.LookAt = player.transform;
