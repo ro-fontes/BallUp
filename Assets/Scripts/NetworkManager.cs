@@ -24,6 +24,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     [Header("Player")]
     public GameObject playerPun;
+    public GameObject playerFbx;
     public GameObject[] Players;
     public Vector3[] SpawnPlayer;
     public GameObject[] Particles;
@@ -35,21 +36,52 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [Header("LoadMap")]
     [SerializeField]
     private string selectedMap = "Fase1A";
-    public LoadingScreenMultiplayer loadScreen;
+
+    #region LoadingScreen
+
+    [Header("LoadingScreen")]
+    [SerializeField]
+    private GameObject loadGameobject;
+    [SerializeField]
+    private GameObject bar;
+    [SerializeField]
+    private Text loadingText;
+    [SerializeField]
+    private bool backGroundImageAndLoop;
+    [SerializeField]
+    private float LoopTime;
+    [SerializeField]
+    private GameObject[] backgroundImages;
+    [SerializeField]
+    [Range(0, 1f)] private float vignetteEffectValue;
 
     public void loadingScreen(string sceneNo)
     {
-        loadScreen.loadingScreen(sceneNo);
-        playerPun.GetComponent<Player>().isSinglePlayer = false;
-        if(PhotonNetwork.LevelLoadingProgress > 0.8f)
+        loadGameobject.gameObject.SetActive(true);
+        playerFbx.SetActive(false);
+        StartCoroutine(WaitATime(3, sceneNo));
+
+    }
+
+    IEnumerator transitionImage()
+    {
+        for (int i = 0; i < backgroundImages.Length; i++)
         {
-            playerPun.transform.GetChild(0).gameObject.SetActive(true);
+            yield return new WaitForSeconds(LoopTime);
+            for (int j = 0; j < backgroundImages.Length; j++)
+                backgroundImages[j].SetActive(false);
+            backgroundImages[i].SetActive(true);
         }
     }
 
+    #endregion
+
     void Start()
     {
-        loadScreen = GetComponent<LoadingScreenMultiplayer>();
+        if (backGroundImageAndLoop)
+        {
+            StartCoroutine(transitionImage());
+        }
         if (!PlayerPrefs.HasKey("namePlayerSaved"))
         {
             loginPn.gameObject.SetActive(true);
@@ -57,6 +89,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         else
         {
             loginPn.gameObject.SetActive(false);
+
         }
 
         maxPlayers.value = 1;
@@ -76,6 +109,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private void Update()
     {
         maxPlayerCount.text = maxPlayers.value + " Player";
+        playerFbx = GameObject.Find("Player");
+    }
+
+    IEnumerator WaitATime(float time, string text)
+    {
+        yield return new WaitForSeconds(time);
+        StartCoroutine(Loading(text));
     }
 
     IEnumerator JoinLobby(float time)
@@ -89,7 +129,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
         yield return new WaitForSeconds(time);
 
-        RoomOptions roomOptions = new RoomOptions() { MaxPlayers = Convert.ToByte(maxPlayers.value)};
+        RoomOptions roomOptions = new RoomOptions() { MaxPlayers = Convert.ToByte(maxPlayers.value), PlayerTtl = 20 };
 
         if (roomName.text == "")
         {
@@ -177,7 +217,29 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.LogWarning("Players Conectados: " + PhotonNetwork.CurrentRoom.PlayerCount);
 
         loginPn.gameObject.SetActive(false);
-        playerPun.GetComponent<Player>().isSinglePlayer = false;
         loadingScreen(selectedMap);
+    }
+    IEnumerator Loading(string sceneNo)
+    {
+        PhotonNetwork.LoadLevel(sceneNo);
+        PhotonNetwork.AutomaticallySyncScene = true;
+        
+
+        // Continue until the installation is completed
+        while (PhotonNetwork.LevelLoadingProgress < 1)
+        {
+            bar.transform.localScale = new Vector3(PhotonNetwork.LevelLoadingProgress, 0.9f, 1);
+
+            if (loadingText != null)
+                loadingText.text = "%" + (100 * bar.transform.localScale.x).ToString("####");
+
+            if (PhotonNetwork.LevelLoadingProgress > 0.8f)
+            {
+                bar.transform.localScale = new Vector3(1, 0.9f, 1);
+
+                playerPun.transform.GetChild(0).gameObject.SetActive(true);
+            }
+            yield return null;
+        }
     }
 }

@@ -57,7 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f84e306decf12dd458ee37e9220c163c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawn: {fileID: 1039231868707457675}
+  spawn: {fileID: 0}
 --- !u!1 &1039231868707457675
 GameObject:
   m_ObjectHideFlags: 0
@@ -73,9 +73,8 @@ GameObject:
   - component: {fileID: 9139788364561577949}
   - component: {fileID: 5706217475088362911}
   - component: {fileID: 1445149089432806671}
-  - component: {fileID: 3018901164597012677}
-  - component: {fileID: 6332910731332670035}
   - component: {fileID: 1062477669439120087}
+  - component: {fileID: 6332910731332670035}
   m_Layer: 0
   m_Name: Player0
   m_TagString: Player
@@ -290,12 +289,11 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents:
-  - {fileID: 3018901164597012677}
+  ObservedComponents: []
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &3018901164597012677
+--- !u!114 &1062477669439120087
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -304,13 +302,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1039231868707457675}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Script: {fileID: 11500000, guid: 59c3113cb5e5b404286853785f2effcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 1
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
+  nameText: {fileID: 7098894313399377321}
 --- !u!114 &6332910731332670035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,23 +321,9 @@ MonoBehaviour:
   InWater: {fileID: 8300000, guid: ee9be2df301d38a4d8af54e68a7e4fda, type: 3}
   Outwater: {fileID: 8300000, guid: f1c511443316b7e43848ed6d29c6668c, type: 3}
   speed: 9
-  isSinglePlayer: 0
   jumpFloat: 300
   fluctuationMultiplier: 3
   MyCamera: {fileID: 4314535513345889584}
---- !u!114 &1062477669439120087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1039231868707457675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59c3113cb5e5b404286853785f2effcb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nameText: {fileID: 7098894313399377321}
 --- !u!1 &4314535513345889584
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,9 +351,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4314535513345889584}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 14.6466875, y: 14.6466875, z: 14.64669}
+  m_LocalRotation: {x: 0.1290659, y: 0.554592, z: -0.08757176, w: 0.8173744}
+  m_LocalPosition: {x: 7.0511017, y: 10.574578, z: 22.895176}
+  m_LocalScale: {x: 14.646688, y: 14.646688, z: 14.64669}
   m_Children: []
   m_Father: {fileID: 371484625645768753}
   m_RootOrder: 0

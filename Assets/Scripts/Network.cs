@@ -8,13 +8,11 @@ public class Network : MonoBehaviourPunCallbacks
     public GameObject Cam;
     public Vector3[] SpawnPlayer;
     public GameObject[] Particles;
-
-    private int i = 0;
-    private int x = 0;
-    private int SaveSkin, SaveParticle;
-    private float savedColorR, savedColorG, savedColorB;
-    private float R, G, B;
-    private GameObject player, particle;
+    int i = 0;
+    int SaveSkin, SaveParticle;
+    float savedColorR, savedColorG, savedColorB;
+    float R, G, B;
+    GameObject player, particle;
 
     private void Start()
     {
@@ -28,22 +26,21 @@ public class Network : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
         print("entrou joinedRoom");
-        x++;
+        //Spawn();
     }
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-        x--;
+        
     }
-    
 
     private void Update()
     {
+
         if (PhotonNetwork.CurrentRoom.PlayerCount != i && !player)
         {
             Spawn();
             i++;
-
         }
         else if (PhotonNetwork.CurrentRoom.PlayerCount < i)
         {
@@ -57,7 +54,7 @@ public class Network : MonoBehaviourPunCallbacks
 
         player = PhotonNetwork.Instantiate("Player" + SaveSkin, SpawnPlayer[0], new Quaternion(0, 0, 0, 0));
 
-        player.name = "Player" + x;
+        player.name = "Player" + SaveSkin;
         player.GetComponent<MeshRenderer>().material.color = new Color(savedColorR, savedColorG, savedColorB, 255f);
 
         R = player.GetComponent<MeshRenderer>().material.color.r;
@@ -65,7 +62,7 @@ public class Network : MonoBehaviourPunCallbacks
         B = player.GetComponent<MeshRenderer>().material.color.b;
         player.GetComponent<PhotonView>().RPC("SetColor", RpcTarget.AllBufferedViaServer, R, G, B);
 
-        particle = PhotonNetwork.Instantiate("Fire", player.transform.position, player.transform.rotation);
+        particle = Instantiate(Particles[SaveParticle], player.transform.position, player.transform.rotation);
         particle.name = "BallParticle";
     }
 }
