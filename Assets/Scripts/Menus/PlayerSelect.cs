@@ -21,12 +21,10 @@ public class PlayerSelect : MonoBehaviour
     [SerializeField]
     private GameObject[] Players;
     [SerializeField]
-    private GameObject[] playersFBX;
+    private GameObject[] PlayersFBX;
     [SerializeField]
     private GameObject[] Particles;
-    private GameObject playerFbxMenu, player, particle;
-    private int SaveSkin, SaveParticle;
-    float savedColorR, savedColorG, savedColorB;
+    private GameObject player, playerPref, particle;
 
     [Header("Buttons")]
 
@@ -44,20 +42,44 @@ public class PlayerSelect : MonoBehaviour
     [Header("Camera")]
 
     public GameObject cam;
-    public Animator loadAnimator;
-    #endregion
 
     [Header("LoadingScreen")]
 
     [SerializeField]
     private GameObject LoadGameobjct;
     [SerializeField]
+    private GameObject bar;
+    [SerializeField]
     private Text loadingText;
     [SerializeField]
+    private bool backGroundImageAndLoop;
+    [SerializeField]
+    private float LoopTime;
+    [SerializeField]
+    private GameObject[] backgroundImages;
+    [SerializeField]
     [Range(0, 1f)] private float vignetteEfectVolue;
-
+    int SaveSkin, SaveParticle;
     AsyncOperation async;
 
+    #endregion
+
+    public void loadingScreen(int sceneNo)
+    {
+        LoadGameobjct.gameObject.SetActive(true);
+        StartCoroutine(Loading(sceneNo));
+    }
+
+    IEnumerator transitionImage()
+    {
+        for (int i = 0; i < backgroundImages.Length; i++)
+        {
+            yield return new WaitForSeconds(LoopTime);
+            for (int j = 0; j < backgroundImages.Length; j++)
+            backgroundImages[j].SetActive(false);
+            backgroundImages[i].SetActive(true);
+        }
+    }
 
     private void Awake()
     {
@@ -70,18 +92,23 @@ public class PlayerSelect : MonoBehaviour
         SaveParticle = PlayerPrefs.GetInt("Particle");
     }
 
+    void Start()
+    {
+        if (backGroundImageAndLoop)
+        {
+            StartCoroutine(transitionImage());
+        }
+        player.SetActive(true);
+    }
+
     void Update()
     {
-        savedColorR = PlayerPrefs.GetFloat("Color");
-        savedColorG = PlayerPrefs.GetFloat("Color1");
-        savedColorB = PlayerPrefs.GetFloat("Color2");
-
-        if (!playerFbxMenu)
+        if (!player)
         {
-            playerFbxMenu = Instantiate(playersFBX[SaveSkin], spawn.transform.position, spawn.transform.rotation);
-            playerFbxMenu.transform.parent = spawn.transform;
-            playerFbxMenu.gameObject.transform.localScale = new Vector3(10, 10, 10);
-            playerFbxMenu.name = "Player";
+            player = Instantiate(PlayersFBX[SaveSkin], spawn.transform.position, spawn.transform.rotation);
+            player.transform.parent = spawn.transform;
+            player.gameObject.transform.localScale = new Vector3(10, 10, 10);
+            player.name = "Player";
         }
 
         for (int i = 1; i < 4; i++)
@@ -101,7 +128,7 @@ public class PlayerSelect : MonoBehaviour
     {
         SaveSkin = index;
         PlayerPrefs.SetInt("Skin", SaveSkin);
-        Destroy(playerFbxMenu);
+        Destroy(player);
     }
 
     public void SelectParticle(int index)
@@ -111,46 +138,46 @@ public class PlayerSelect : MonoBehaviour
         Destroy(particle);
     }
 
-    public void loadingScreen(int sceneNo)
-    {
-        LoadGameobjct.gameObject.SetActive(true);
-        StartCoroutine(Loading(sceneNo));
-    }
-
     IEnumerator Loading(int sceneNo)
     {
         Stars.SetActive(false);
         Fragments.SetActive(false);
-        loadAnimator.SetTrigger("BallAnim");
-        yield return new WaitForSeconds(4);
+        player.SetActive(false);
 
         async = SceneManager.LoadSceneAsync(sceneNo);
         async.allowSceneActivation = false;
 
-        while (!async.isDone)
+        // Continue until the installation is completed
+        while (async.isDone == false)
         {
-            if (async.progress >= 0.9f && !loadAnimator.IsInTransition(0))
-            {
-                //Player spawn
-                if (!player)
-                {
-                    player = Instantiate(Players[SaveSkin], SpawnPlayer[sceneNo - 2], new Quaternion(0, 0, 0, 0));
-                    player.transform.parent = null;
-                    player.GetComponent<MeshRenderer>().material.color = new Color(savedColorR, savedColorG, savedColorB, 255f);
-                    player.GetComponent<Player>().isSinglePlayer = true;
-                }
+            bar.transform.localScale = new Vector3(async.progress, 0.9f, 1);
 
+            if (loadingText != null)
+                loadingText.text = "%" + (100 * bar.transform.localScale.x).ToString("####");
+
+            if (async.progress == 0.9f)
+            {
+                bar.transform.localScale = new Vector3(1, 0.9f, 1);
+
+                //Player spawn
+                if (!playerPref)
+                {
+                    playerPref = Instantiate(Players[SaveSkin], SpawnPlayer[sceneNo - 2], new Quaternion(0, 0, 0, 0));
+                }
                 if (!particle)
                 {
-                    particle = Instantiate(Particles[SaveParticle], new Vector3(-1000, -1000, 0), new Quaternion(0, 0, 0, 0));
-                    particle.transform.parent = null;
+                    particle = Instantiate(Particles[SaveParticle], playerPref.transform.position, playerPref.transform.rotation);
                 }
 
-                DontDestroyOnLoad(player);
+                DontDestroyOnLoad(playerPref);
                 DontDestroyOnLoad(particle);
 
-                player.name = "Player" + 0;
+
+                playerPref.name = "Player" + SaveSkin;
+
                 particle.name = "BallParticle";
+                playerPref.transform.GetChild(0).gameObject.SetActive(true);
+
 
                 async.allowSceneActivation = true;
             }

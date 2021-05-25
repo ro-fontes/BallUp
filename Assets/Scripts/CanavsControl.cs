@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class CanavsControl : MonoBehaviourPunCallbacks
+public class CanavsControl : MonoBehaviour
 {
     public GameObject spawn;
+    int PlayerSkin;
 
     // Start is called before the first frame update
     void Start()
     {
-        gameObject.transform.parent = null;
+        PlayerSkin = PlayerPrefs.GetInt("Skin");
     }
-    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
-    {
-        Destroy(gameObject);
-    }
+
     void LateUpdate()
     {
+        if (!spawn)
+        {
+            spawn = GameObject.Find("Player" + PlayerSkin + "(Clone)");
+        }
+        gameObject.transform.parent = null;
         this.transform.position = spawn.transform.position + new Vector3(0, 1, 0);
     }
 }
