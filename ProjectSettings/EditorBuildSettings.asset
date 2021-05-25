@@ -23,7 +23,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/1 - Forest/Map4/Fase1D.unity
     guid: 59732d7ddd035dd418e3204f1ee885d8
-  - enabled: 1
-    path: Assets/Scenes/2.unity
-    guid: dbb66a352572f7d47bb33d1458e6a01b
   m_configObjects: {}

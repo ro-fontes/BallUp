@@ -1,24 +1,12 @@
 ﻿using UnityEngine;
-using Photon.Pun;
 
-public class ParticleManager : MonoBehaviourPunCallbacks
+public class particleManager : MonoBehaviour
 {
     public GameObject Spawn;
-    int x = 0;
-
-    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
-    {
-        x++;
-    }
-
-    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
-    {
-        x--;
-    }
 
     void FixedUpdate()
     {
-        Spawn = GameObject.Find("Player" + x);
+        Spawn = GameObject.Find("Player"+PlayerPrefs.GetInt("Skin"));
 
         transform.position = Spawn.transform.position - new Vector3(0, 0.55f, 0);
     }

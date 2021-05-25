@@ -1,23 +1,10 @@
 ﻿using UnityEngine;
 using Cinemachine;
-using Photon.Pun;
-using Photon.Realtime;
 
-public class CamControl : MonoBehaviourPunCallbacks
+public class CamControl : MonoBehaviour
 {
-    int x = 0;
     CinemachineFreeLook freeLook;
     public GameObject player;
-    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
-    {
-        print("entrou joinedRoom");
-        x++;
-    }
-
-    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
-    {
-        x--;
-    }
 
     private void Awake()
     {
@@ -28,7 +15,7 @@ public class CamControl : MonoBehaviourPunCallbacks
     {
         if (!player)
         {
-            player = GameObject.Find("Player" + x);
+            player = GameObject.Find("Player" + PlayerPrefs.GetInt("Skin"));
         }
         freeLook.Follow = player.transform;
         freeLook.LookAt = player.transform;
