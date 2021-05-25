@@ -5,57 +5,101 @@ using System.Collections.Generic;
 
 public class Network : MonoBehaviourPunCallbacks
 {
+    [Header("Camera Prefab")]
     public GameObject Cam;
+    [Header("Spawn Players")]
     public Vector3[] SpawnPlayer;
-    public GameObject[] Particles;
 
-    private int i = 0;
+    [Header("UI")]
+
+    public GameObject waitingPlayerPanel;
+
     private int x = 0;
-    private int SaveSkin, SaveParticle;
+    private int i = 0;
     private float savedColorR, savedColorG, savedColorB;
     private float R, G, B;
-    private GameObject player, particle;
+    private int savedSkin;
+    public GameObject player, particle;
 
     private void Start()
     {
         //Pegando as cores do player
+        savedSkin = PlayerPrefs.GetInt("Skin");
         savedColorR = PlayerPrefs.GetFloat("Color");
         savedColorG = PlayerPrefs.GetFloat("Color1");
         savedColorB = PlayerPrefs.GetFloat("Color2");
-        SaveSkin = PlayerPrefs.GetInt("Skin");
-        SaveParticle = PlayerPrefs.GetInt("Particle");
     }
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
-        print("entrou joinedRoom");
         x++;
+        Spawn();
     }
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
         x--;
     }
-    
-
     private void Update()
     {
-        if (PhotonNetwork.CurrentRoom.PlayerCount != i && !player)
+
+
+
+        if(PhotonNetwork.CurrentRoom.PlayerCount != i && !player)
         {
             Spawn();
             i++;
-
         }
-        else if (PhotonNetwork.CurrentRoom.PlayerCount < i)
+        else if(PhotonNetwork.CurrentRoom.PlayerCount < i)
         {
             i--;
         }
+        if(x > 0)
+        {
+            player.GetComponent<Player>().enabled = true;
+
+            for (int i = 0; i > 4; i++)
+            {
+                GameObject.Find("Player" + i).GetComponent<Player>().enabled = true;
+
+            }
+            
+        }
     }
+
 
     void Spawn()
     {
-        Instantiate(Cam, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
 
-        player = PhotonNetwork.Instantiate("Player" + SaveSkin, SpawnPlayer[0], new Quaternion(0, 0, 0, 0));
+
+
+
+
+
+        if(x != 0)
+        {
+            Instantiate(Cam, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+            player = PhotonNetwork.Instantiate("Player" + savedSkin, SpawnPlayer[0], new Quaternion(0, 0, 0, 0));
+            player.GetComponent<Player>().enabled = true;
+            waitingPlayerPanel.SetActive(false);
+        }
+        else
+        {
+            Instantiate(Cam, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+            player = PhotonNetwork.Instantiate("Player" + savedSkin, SpawnPlayer[0], new Quaternion(0, 0, 0, 0));
+            player.GetComponent<Player>().enabled = false;
+            waitingPlayerPanel.SetActive(true);
+        }
+
+
+
+
+
+
+
+
+
+
+
 
         player.name = "Player" + x;
         player.GetComponent<MeshRenderer>().material.color = new Color(savedColorR, savedColorG, savedColorB, 255f);

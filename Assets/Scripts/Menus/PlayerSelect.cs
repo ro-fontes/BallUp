@@ -149,7 +149,7 @@ public class PlayerSelect : MonoBehaviour
                 DontDestroyOnLoad(player);
                 DontDestroyOnLoad(particle);
 
-                player.name = "Player" + SaveSkin;
+                player.name = "Player" + 0;
                 particle.name = "BallParticle";
 
                 async.allowSceneActivation = true;

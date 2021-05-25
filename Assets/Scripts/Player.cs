@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
     bool isFloor;
 
     #endregion
-
+    
     void Start()
     {
         if (!isSinglePlayer)
@@ -68,11 +68,29 @@ public class Player : MonoBehaviour
             if (MyPhotonView.IsMine)
             {
                 Move();
+
+                if (rb.velocity.magnitude >= 2.5f && WaterInScene == null && isFloor == true)
+                {
+                    GetComponent<PhotonView>().RPC("PlayParticle", RpcTarget.AllBufferedViaServer);
+                }
+                else
+                {
+                    GetComponent<PhotonView>().RPC("StopParticle", RpcTarget.AllBufferedViaServer);
+                }
             }
         }
         else
         {
             Move();
+
+            if (rb.velocity.magnitude >= 2.5f && WaterInScene == null && isFloor == true)
+            {
+                PlayParticle();
+            }
+            else
+            {
+                StopParticle();
+            }
         }
         
     }
@@ -80,6 +98,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         playerJump();
+
         if (!FreeLookCam)
         {
             FreeLookCam = FindObjectOfType<CinemachineFreeLook>();
@@ -88,23 +107,6 @@ public class Player : MonoBehaviour
         if (!BallParticle)
         {
             BallParticle = GameObject.Find("BallParticle");
-        }
-
-        if (MyPhotonView.IsMine)
-        {
-            if (rb.velocity.magnitude >= 2.5f && WaterInScene == null && isFloor == true)
-            {
-                PlayParticle();
-            }
-            else
-            {
-                StopParticle();
-                //GetComponent<PhotonView>().RPC("StopParticle", RpcTarget.AllBufferedViaServer);
-            }
-        }
-        else
-        {
-            return;
         }
 
 

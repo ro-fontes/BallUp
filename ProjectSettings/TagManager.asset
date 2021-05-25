@@ -12,6 +12,7 @@ TagManager:
   - Fragments
   - Skin1
   - Bullet
+  - Stars
   layers:
   - Default
   - TransparentFX
