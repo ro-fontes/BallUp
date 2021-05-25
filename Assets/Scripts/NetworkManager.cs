@@ -78,10 +78,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     void Start()
     {
+<<<<<<< HEAD
         if (backGroundImageAndLoop)
         {
             StartCoroutine(transitionImage());
         }
+=======
+        loadScreen = GetComponent<LoadingScreenMultiplayer>();
+>>>>>>> parent of 246c85b (O resto)
         if (!PlayerPrefs.HasKey("namePlayerSaved"))
         {
             loginPn.gameObject.SetActive(true);
@@ -129,7 +133,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
         yield return new WaitForSeconds(time);
 
+<<<<<<< HEAD
         RoomOptions roomOptions = new RoomOptions() { MaxPlayers = Convert.ToByte(maxPlayers.value), PlayerTtl = 20 };
+=======
+        RoomOptions roomOptions = new RoomOptions() { MaxPlayers = Convert.ToByte(maxPlayers.value)};
+>>>>>>> parent of 246c85b (O resto)
 
         if (roomName.text == "")
         {
@@ -217,6 +225,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.LogWarning("Players Conectados: " + PhotonNetwork.CurrentRoom.PlayerCount);
 
         loginPn.gameObject.SetActive(false);
+<<<<<<< HEAD
         loadingScreen(selectedMap);
     }
     IEnumerator Loading(string sceneNo)
@@ -241,5 +250,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             }
             yield return null;
         }
+=======
+        playerPun.GetComponent<Player>().isSinglePlayer = false;
+        loadingScreen(selectedMap);
+>>>>>>> parent of 246c85b (O resto)
     }
 }

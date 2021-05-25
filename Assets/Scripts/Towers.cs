@@ -14,32 +14,31 @@ public class Towers : MonoBehaviour
 
     [SerializeField]
     private GameObject bullet;
-    GameObject blt;
-    public GameObject spawnBullet;
-
-    [SerializeField]
-    [Range(1, 50)]
-    private float bulletLife;
 
     [SerializeField]
     [Range(1, 300)]
-    private float bulletSpeed = 200;
+    private float bulletSpeed;
 
     [Range(1, 20)]
-    public float minDistance = 1;
-    [Range(1, 1000)]
-    public float maxDistance = 100;
+    public float minDistance;
+    [Range(1, 20)]
+    public float maxDistance;
     
+
+    void Start()
+    {
+       
+    }
 
     void Update()
     {
-        playerTarget = GameObject.FindGameObjectWithTag("Player");
         distance = Vector3.Distance(this.gameObject.transform.position, playerTarget.transform.position);
 
-        if (distance < maxDistance)
+        if(distance < maxDistance)
         {
-            gameObject.transform.LookAt(playerTarget.transform.position);
-            gameObject.GetComponent<PhotonView>().RPC("Shooting", RpcTarget.All);
+            playerTarget = GameObject.FindGameObjectWithTag("Player");
+            gameObject.transform.rotation = Quaternion.LookRotation(playerTarget.transform.position);
+            gameObject.GetComponent<PhotonView>().RPC("Shoot", RpcTarget.All);
         }
         else
         {
@@ -47,21 +46,9 @@ public class Towers : MonoBehaviour
         }
     }
 
-    
-    IEnumerator Shoot(float time)
-    {
-        
-        if (!blt)
-        {
-            blt = Instantiate(bullet, spawnBullet.transform.position, spawnBullet.transform.rotation);
-        }
-        yield return new WaitForSeconds(time);
-
-    }
-
     [PunRPC]
-    void Shooting()
+    void Shoot()
     {
-        StartCoroutine(Shoot(bulletLife));
+        Instantiate(bullet);
     }
 }

@@ -172,9 +172,13 @@ public class PlayerSelect : MonoBehaviour
                 DontDestroyOnLoad(playerPref);
                 DontDestroyOnLoad(particle);
 
+<<<<<<< HEAD
 
                 playerPref.name = "Player" + SaveSkin;
 
+=======
+                player.name = "Player" + SaveSkin;
+>>>>>>> parent of 246c85b (O resto)
                 particle.name = "BallParticle";
                 playerPref.transform.GetChild(0).gameObject.SetActive(true);
 

@@ -58,7 +58,18 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+<<<<<<< HEAD
         if(MyPhotonView.IsMine)
+=======
+        if (!isSinglePlayer)
+        {
+            if (MyPhotonView.IsMine)
+            {
+                Move();
+            }
+        }
+        else
+>>>>>>> parent of 246c85b (O resto)
         {
             Move();
         }
@@ -75,6 +86,23 @@ public class Player : MonoBehaviour
         if (!BallParticle)
         {
             BallParticle = GameObject.Find("BallParticle");
+        }
+
+        if (MyPhotonView.IsMine)
+        {
+            if (rb.velocity.magnitude >= 2.5f && WaterInScene == null && isFloor == true)
+            {
+                PlayParticle();
+            }
+            else
+            {
+                StopParticle();
+                //GetComponent<PhotonView>().RPC("StopParticle", RpcTarget.AllBufferedViaServer);
+            }
+        }
+        else
+        {
+            return;
         }
 
 
