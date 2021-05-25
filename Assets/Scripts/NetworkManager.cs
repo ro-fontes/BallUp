@@ -19,6 +19,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public GameObject noRoomPn;
     public InputField roomName;
     public Slider maxPlayers;
+    public Button[] privacyButtons;
+    public Button[] mapButtons;
     public Text maxPlayerCount;
     string tempRoomName;
 
@@ -33,6 +35,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     string savedPlayerName;
 
     [Header("LoadMap")]
+    RoomOptions roomOptions;
     [SerializeField]
     private string selectedMap = "Fase1A";
     public LoadingScreenMultiplayer loadScreen;
@@ -49,6 +52,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        privacyButtons[0].GetComponentInChildren<Text>().color = new Color(1.0f, 0.64f, 0.0f);
+
+
+        mapButtons[0].GetComponentInChildren<Text>().color = new Color(1.0f, 0.64f, 0.0f);
+        selectedMap = "0";
+
         loadScreen = GetComponent<LoadingScreenMultiplayer>();
         if (!PlayerPrefs.HasKey("namePlayerSaved"))
         {
@@ -84,12 +93,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(time);
         PhotonNetwork.JoinLobby();
     }
+
     IEnumerator GenerateRoom(float time)
     {
         PhotonNetwork.ConnectUsingSettings();
+        loadingScreen(selectedMap);
         yield return new WaitForSeconds(time);
 
-        RoomOptions roomOptions = new RoomOptions() { MaxPlayers = Convert.ToByte(maxPlayers.value)};
+        roomOptions = new RoomOptions();
+
+        roomOptions.IsVisible = true;
+        roomOptions.IsOpen = true;
+
+        roomOptions.MaxPlayers = Convert.ToByte(maxPlayers.value);
+
 
         if (roomName.text == "")
         {
@@ -123,15 +140,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             savedPlayerName = tempPlayerName;
             PlayerPrefs.SetString("namePlayerSaved", savedPlayerName);
         }
-
         loginPn.gameObject.SetActive(false);
-        
     }
 
     public void Quicksearch()
     {
         StartCoroutine(JoinLobby(2));
-        
     }
 
     public void CreateRoom()
@@ -168,6 +182,50 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.Disconnect();
     }
 
+    public void SelectPrivateRoom(int number)
+    {
+        switch (number)
+        {
+            case 0:
+                privacyButtons[0].GetComponentInChildren<Text>().color = new Color(1.0f, 0.64f, 0.0f);
+                privacyButtons[1].GetComponentInChildren<Text>().color = Color.white;
+                roomOptions.IsVisible = true;
+                roomOptions.IsOpen = true;
+                break;
+            case 1:
+                privacyButtons[1].GetComponentInChildren<Text>().color = new Color(1.0f, 0.64f, 0.0f);
+                privacyButtons[0].GetComponentInChildren<Text>().color = Color.white;
+                roomOptions.IsVisible = false;
+                roomOptions.IsOpen = false;
+                break;
+        }
+    }
+
+    public void SelectMap(string mapName)
+    {
+        switch (mapName)
+        {
+            case "0":
+                mapButtons[0].GetComponentInChildren<Text>().color = new Color(1.0f, 0.64f, 0.0f);
+                mapButtons[1].GetComponentInChildren<Text>().color = Color.white;
+                mapButtons[2].GetComponentInChildren<Text>().color = Color.white;
+                selectedMap = mapName;
+                break;
+            case "1":
+                mapButtons[0].GetComponentInChildren<Text>().color = Color.white;
+                mapButtons[1].GetComponentInChildren<Text>().color = new Color(1.0f, 0.64f, 0.0f);
+                mapButtons[2].GetComponentInChildren<Text>().color = Color.white;
+                selectedMap = mapName;
+                break;
+            case "2":
+                mapButtons[0].GetComponentInChildren<Text>().color = Color.white;
+                mapButtons[1].GetComponentInChildren<Text>().color = Color.white;
+                mapButtons[2].GetComponentInChildren<Text>().color = new Color(1.0f, 0.64f, 0.0f);
+                selectedMap = mapName;
+                break;
+        }
+    }
+
     public override void OnJoinedRoom()
     {
         Debug.LogWarning("OnJoinedRoom");
@@ -178,6 +236,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         loginPn.gameObject.SetActive(false);
         playerPun.GetComponent<Player>().isSinglePlayer = false;
-        loadingScreen(selectedMap);
+        //loadingScreen(selectedMap);
     }
 }

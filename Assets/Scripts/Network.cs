@@ -39,16 +39,7 @@ public class Network : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if (PhotonNetwork.CurrentRoom.PlayerCount != i && !player)
-        {
-            Spawn();
-            i++;
 
-        }
-        else if (PhotonNetwork.CurrentRoom.PlayerCount < i)
-        {
-            i--;
-        }
     }
 
     void Spawn()

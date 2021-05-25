@@ -7,6 +7,7 @@ using Photon.Pun;
 public class LoadingScreenMultiplayer : MonoBehaviour
 {
     public Animator loadAnimator;
+    GameObject stars, fragments;
 
     [Header("LoadingScreen")]
     [SerializeField]
@@ -19,6 +20,8 @@ public class LoadingScreenMultiplayer : MonoBehaviour
     private void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
+        fragments = GameObject.FindGameObjectWithTag("Fragments");
+        stars = GameObject.FindGameObjectWithTag("Stars");
     }
 
     public void loadingScreen(string sceneNo)
@@ -28,6 +31,8 @@ public class LoadingScreenMultiplayer : MonoBehaviour
     
     IEnumerator Loading(string sceneNo)
     {
+        fragments.SetActive(false);
+        stars.SetActive(false);
         loadAnimator.SetTrigger("BallAnim");
         loadGameobject.gameObject.SetActive(true);
         yield return new WaitForSeconds(4);

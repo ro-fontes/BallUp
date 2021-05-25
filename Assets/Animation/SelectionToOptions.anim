@@ -154,7 +154,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
-    path: Select skin
+    path: SkinSelect
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -182,7 +182,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
-    path: Select skin
+    path: SkinSelect
     classID: 224
     script: {fileID: 0}
   m_PPtrCurves: []
@@ -215,14 +215,14 @@ AnimationClip:
       customType: 28
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 1465423931
+      path: 2251196473
       attribute: 1460864421
       script: {fileID: 0}
       typeID: 224
       customType: 28
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 1465423931
+      path: 2251196473
       attribute: 538195251
       script: {fileID: 0}
       typeID: 224
@@ -394,7 +394,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
-    path: Select skin
+    path: SkinSelect
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -422,7 +422,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
-    path: Select skin
+    path: SkinSelect
     classID: 224
     script: {fileID: 0}
   m_EulerEditorCurves: []
