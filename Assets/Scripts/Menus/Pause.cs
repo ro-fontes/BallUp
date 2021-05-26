@@ -12,7 +12,7 @@ public class Pause : MonoBehaviour
     #region Variables
 
     [Tooltip("Set Pause button Menu")]
-    public Button BotaoRetornarAoJogo, BotaoRestart, BotaoOpcoes, BotaoVoltarAoMenu;
+    public Button BotaoRetornarAoJogo, BotaoRestart, BotaoOpcoes, BotaoVoltarAoMenu, BotaoNextLevel;
     [Space(20)]
     [Tooltip("Set options button Menu")]
     public Slider BarraVolume, BarSoundFX, BarSoundMusic, BarFPSLimit;
@@ -26,6 +26,9 @@ public class Pause : MonoBehaviour
     public Image blur;
     public GameObject PauseButton, SettingsButton, EndLevelButton, Options;
     public Text txtFPSMax;
+    public int spawnPlayer;
+    public int nextSpawn;
+    public string nextLevel;
 
     bool OnController = true;
     DepthOfField DepthOfField = null;
@@ -327,7 +330,8 @@ public class Pause : MonoBehaviour
         BotaoRetornarAoJogo.onClick = new Button.ButtonClickedEvent();
         //
         BotaoVoltarAoMenu.onClick.AddListener(() => VoltarAoMenu());
-        BotaoRestart.onClick.AddListener(() => Restart());
+        BotaoNextLevel.onClick.AddListener(() => LoadNextLevel(nextLevel, nextSpawn));
+        BotaoRestart.onClick.AddListener(() => Restart(spawnPlayer));
         BotaoOpcoes.onClick.AddListener(() => Opcoes(false, true));
         BotaoRetornarAoJogo.onClick.AddListener(() => Opcoes(false, false));
     }
@@ -433,13 +437,7 @@ public class Pause : MonoBehaviour
         BotaoRestart.gameObject.SetActive(ativarOP);
         BotaoOpcoes.gameObject.SetActive(ativarOP);
         BotaoRetornarAoJogo.gameObject.SetActive(ativarOP);
-
         Options.gameObject.SetActive(ativarOP2);
-        //textoVol.gameObject.SetActive(ativarOP2);
-        //BarraVolume.gameObject.SetActive(ativarOP2);
-        //CaixaModoJanela.gameObject.SetActive(ativarOP2);
-        //Resolucoes.gameObject.SetActive(ativarOP2);
-        //Qualidades.gameObject.SetActive(ativarOP2);
 
         if (ativarOP == true && ativarOP2 == false)
         {
@@ -577,24 +575,24 @@ public class Pause : MonoBehaviour
 
     public void VoltarAoMenu()
     {
-        GameObject destroyPlayer = GameObject.Find("Player"+PlayerPrefs.GetInt("Skin"));
+        GameObject destroyPlayer = GameObject.FindGameObjectWithTag("Player");
         GameObject destroyParticle = GameObject.Find("BallParticle");
         Destroy(destroyParticle);
         Destroy(destroyPlayer);
-        SceneManager.LoadScene(1);
         PhotonNetwork.Disconnect();
+        SceneManager.LoadScene("Menu");
     }
 
-    public void Restart()
+    public void Restart(int spawn)
     {
-        GameObject.Find("Player").transform.position = PlayerSelect.Instance.SpawnPlayer[SceneManager.GetActiveScene().buildIndex - 2];
-        GameObject.Find("Player").GetComponent<Rigidbody>().velocity = new Vector3(0,0,0); 
+        GameObject.FindGameObjectWithTag("Player").transform.position = PlayerSelect.Instance.SpawnPlayer[spawn];
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>().velocity = new Vector3(0,0,0); 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
     }
 
-    public void LoadNextLevel()
+    public void LoadNextLevel(string nextLevel, int nextSpawn)
     {
-        GameObject.Find("Player").transform.position = PlayerSelect.Instance.SpawnPlayer[SceneManager.GetActiveScene().buildIndex - 1];
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        GameObject.FindGameObjectWithTag("Player").transform.position = PlayerSelect.Instance.SpawnPlayer[nextSpawn];
+        SceneManager.LoadScene(nextLevel);
     }
 }

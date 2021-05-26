@@ -53,10 +53,11 @@ public class ChangeColor : MonoBehaviour {
 			if (!isCamera && !isLight && gameObject.GetComponent<Renderer> ().material) {
                 if (ColorPickerToUse.value.a < 1)
                     return;
+				gameObject.GetComponent<Renderer>().material.color = ColorPickerToUse.value;
 				PlayerPrefs.SetFloat("Color", ColorPickerToUse.value.r);
 				PlayerPrefs.SetFloat("Color1", ColorPickerToUse.value.g);
 				PlayerPrefs.SetFloat("Color2", ColorPickerToUse.value.b);
-				gameObject.GetComponent<Renderer>().materials[MaterialIndex].color = ColorPickerToUse.value;
+
 			}
 
 			if (isCamera) {
@@ -76,6 +77,9 @@ public class ChangeColor : MonoBehaviour {
 			if (!isCamera && !isLight && gameObject.GetComponent<Renderer> ().material) 
 			{
 				gameObject.GetComponent<Renderer> ().materials[MaterialIndex].color = ObjectPaletteToUse.value;
+				PlayerPrefs.SetFloat("Color", ColorPickerToUse.value.r);
+				PlayerPrefs.SetFloat("Color1", ColorPickerToUse.value.g);
+				PlayerPrefs.SetFloat("Color2", ColorPickerToUse.value.b);
 			}
 
 			if (isCamera) 

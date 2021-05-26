@@ -47,6 +47,7 @@ public class Controlador : MonoBehaviour{
 	private float intSolInicial;
 
 	void Start (){
+		gameObject.transform.parent = null;
 		objetoSomSub = new GameObject ();
 		objetoSomSub.AddComponent (typeof(AudioSource));
 		objetoSomSub.GetComponent<AudioSource> ().loop = true;
@@ -82,15 +83,16 @@ public class Controlador : MonoBehaviour{
 		_edge.enabled = false;
 		_vortex.enabled = false;
 		//
-		planoGotas = GameObject.CreatePrimitive(PrimitiveType.Plane);
-		Destroy (planoGotas.GetComponent<MeshCollider> ());
-		planoGotas.transform.localScale = new Vector3 (0.02f, 0.02f, 0.02f);
-		planoGotas.transform.parent = transform;
-		planoGotas.transform.localPosition = new Vector3 (0, 0, 0.05f);
-		planoGotas.transform.localEulerAngles = new Vector3 (90, 180, 0);
-		planoGotas.GetComponent<Renderer>().material.shader = Shader.Find("FX/Glass/Stained BumpDistort");
-		planoGotas.GetComponent<Renderer> ().material.SetTexture ("_BumpMap", TexturaPingos);
-		planoGotas.GetComponent<Renderer> ().material.SetFloat ("_BumpAmt", 0);
+		//planoGotas = GameObject.CreatePrimitive(PrimitiveType.Plane);
+		//Destroy (planoGotas.GetComponent<MeshCollider> ());
+		////planoGotas.transform.localScale = new Vector3 (0.02f, 0.02f, 0.02f);
+		//planoGotas.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f);
+		//planoGotas.transform.parent = transform;
+		//planoGotas.transform.localPosition = new Vector3 (0, 0, 0.05f);
+		//planoGotas.transform.localEulerAngles = new Vector3 (90, 180, 0);
+		//planoGotas.GetComponent<Renderer>().material.shader = Shader.Find("FX/Glass/Stained BumpDistort");
+		//planoGotas.GetComponent<Renderer> ().material.SetTexture ("_BumpMap", TexturaPingos);
+		//planoGotas.GetComponent<Renderer> ().material.SetFloat ("_BumpAmt", 0);
 		//
 		if (GetComponent<SunShafts> () != null) {
 			temSunShafts = true;
@@ -137,16 +139,16 @@ public class Controlador : MonoBehaviour{
 		_fisheye.strengthY = 0.5f-cronometro*Distorcao;
 
 		// PROPRIEDADES DO SHADER
-		if (saiuDaAgua == true) {
-			cronometroGotas -= Time.deltaTime*20;
-			planoGotas.GetComponent<Renderer> ().material.SetTextureOffset ("_BumpMap", new Vector2 (0, -cronometroGotas/100));
-			planoGotas.GetComponent<Renderer> ().material.SetFloat ("_BumpAmt", cronometroGotas);
-			if(cronometroGotas < 0){
-				cronometroGotas = 0;
-				saiuDaAgua = false;
-				planoGotas.GetComponent<Renderer> ().material.SetFloat ("_BumpAmt", 0);
-			}
-		}
+		//if (saiuDaAgua == true) {
+		//	cronometroGotas -= Time.deltaTime*20;
+		//	planoGotas.GetComponent<Renderer> ().material.SetTextureOffset ("_BumpMap", new Vector2 (0, -cronometroGotas/100));
+		//	planoGotas.GetComponent<Renderer> ().material.SetFloat ("_BumpAmt", cronometroGotas);
+		//	if(cronometroGotas < 0){
+		//		cronometroGotas = 0;
+		//		saiuDaAgua = false;
+		//		planoGotas.GetComponent<Renderer> ().material.SetFloat ("_BumpAmt", 0);
+		//	}
+		//}
 	}
 	void OnTriggerEnter (Collider colisor){
 		if (colisor.gameObject.CompareTag (TagAgua)) {
@@ -155,7 +157,7 @@ public class Controlador : MonoBehaviour{
 			_edge.enabled = true;
 			_vortex.enabled = true;
 			saiuDaAgua = false;
-			planoGotas.GetComponent<Renderer> ().material.SetFloat ("_BumpAmt", 0);
+			//planoGotas.GetComponent<Renderer> ().material.SetFloat ("_BumpAmt", 0);
 			if(temSunShafts == true){
 				_sunShafts.sunShaftIntensity = _sunShafts.sunShaftIntensity*IntensidadeSol;
 			}

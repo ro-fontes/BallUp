@@ -21,10 +21,12 @@ public class PlayerSelect : MonoBehaviour
     [SerializeField]
     private GameObject[] Players;
     [SerializeField]
-    private GameObject[] PlayersFBX;
+    private GameObject[] playersFBX;
     [SerializeField]
     private GameObject[] Particles;
-    private GameObject player, playerPref, particle;
+    private GameObject playerFbxMenu, player, particle;
+    private int SaveSkin, SaveParticle;
+    float savedColorR, savedColorG, savedColorB;
 
     [Header("Buttons")]
 
@@ -42,44 +44,20 @@ public class PlayerSelect : MonoBehaviour
     [Header("Camera")]
 
     public GameObject cam;
+    public Animator loadAnimator;
+    #endregion
 
     [Header("LoadingScreen")]
 
     [SerializeField]
     private GameObject LoadGameobjct;
     [SerializeField]
-    private GameObject bar;
-    [SerializeField]
     private Text loadingText;
     [SerializeField]
-    private bool backGroundImageAndLoop;
-    [SerializeField]
-    private float LoopTime;
-    [SerializeField]
-    private GameObject[] backgroundImages;
-    [SerializeField]
     [Range(0, 1f)] private float vignetteEfectVolue;
-    int SaveSkin, SaveParticle;
+
     AsyncOperation async;
 
-    #endregion
-
-    public void loadingScreen(int sceneNo)
-    {
-        LoadGameobjct.gameObject.SetActive(true);
-        StartCoroutine(Loading(sceneNo));
-    }
-
-    IEnumerator transitionImage()
-    {
-        for (int i = 0; i < backgroundImages.Length; i++)
-        {
-            yield return new WaitForSeconds(LoopTime);
-            for (int j = 0; j < backgroundImages.Length; j++)
-            backgroundImages[j].SetActive(false);
-            backgroundImages[i].SetActive(true);
-        }
-    }
 
     private void Awake()
     {
@@ -92,23 +70,18 @@ public class PlayerSelect : MonoBehaviour
         SaveParticle = PlayerPrefs.GetInt("Particle");
     }
 
-    void Start()
-    {
-        if (backGroundImageAndLoop)
-        {
-            StartCoroutine(transitionImage());
-        }
-        player.SetActive(true);
-    }
-
     void Update()
     {
-        if (!player)
+        savedColorR = PlayerPrefs.GetFloat("Color");
+        savedColorG = PlayerPrefs.GetFloat("Color1");
+        savedColorB = PlayerPrefs.GetFloat("Color2");
+
+        if (!playerFbxMenu)
         {
-            player = Instantiate(PlayersFBX[SaveSkin], spawn.transform.position, spawn.transform.rotation);
-            player.transform.parent = spawn.transform;
-            player.gameObject.transform.localScale = new Vector3(10, 10, 10);
-            player.name = "Player";
+            playerFbxMenu = Instantiate(playersFBX[SaveSkin], spawn.transform.position, spawn.transform.rotation);
+            playerFbxMenu.transform.parent = spawn.transform;
+            playerFbxMenu.gameObject.transform.localScale = new Vector3(10, 10, 10);
+            playerFbxMenu.name = "Player";
         }
 
         for (int i = 1; i < 4; i++)
@@ -128,7 +101,7 @@ public class PlayerSelect : MonoBehaviour
     {
         SaveSkin = index;
         PlayerPrefs.SetInt("Skin", SaveSkin);
-        Destroy(player);
+        Destroy(playerFbxMenu);
     }
 
     public void SelectParticle(int index)
@@ -138,50 +111,46 @@ public class PlayerSelect : MonoBehaviour
         Destroy(particle);
     }
 
+    public void loadingScreen(int sceneNo)
+    {
+        LoadGameobjct.gameObject.SetActive(true);
+        StartCoroutine(Loading(sceneNo));
+    }
+
     IEnumerator Loading(int sceneNo)
     {
         Stars.SetActive(false);
         Fragments.SetActive(false);
-        player.SetActive(false);
+        loadAnimator.SetTrigger("BallAnim");
+        yield return new WaitForSeconds(4);
 
         async = SceneManager.LoadSceneAsync(sceneNo);
         async.allowSceneActivation = false;
 
-        // Continue until the installation is completed
-        while (async.isDone == false)
+        while (!async.isDone)
         {
-            bar.transform.localScale = new Vector3(async.progress, 0.9f, 1);
-
-            if (loadingText != null)
-                loadingText.text = "%" + (100 * bar.transform.localScale.x).ToString("####");
-
-            if (async.progress == 0.9f)
+            if (async.progress >= 0.9f && !loadAnimator.IsInTransition(0))
             {
-                bar.transform.localScale = new Vector3(1, 0.9f, 1);
-
                 //Player spawn
-                if (!playerPref)
+                if (!player)
                 {
-                    playerPref = Instantiate(Players[SaveSkin], SpawnPlayer[sceneNo - 2], new Quaternion(0, 0, 0, 0));
+                    player = Instantiate(Players[SaveSkin], SpawnPlayer[sceneNo - 2], new Quaternion(0, 0, 0, 0));
+                    player.transform.parent = null;
+                    player.GetComponent<MeshRenderer>().material.color = new Color(savedColorR, savedColorG, savedColorB, 255f);
+                    player.GetComponent<Player>().isSinglePlayer = true;
                 }
+
                 if (!particle)
                 {
-                    particle = Instantiate(Particles[SaveParticle], playerPref.transform.position, playerPref.transform.rotation);
+                    particle = Instantiate(Particles[SaveParticle], new Vector3(-1000, -1000, 0), new Quaternion(0, 0, 0, 0));
+                    particle.transform.parent = null;
                 }
 
-                DontDestroyOnLoad(playerPref);
+                DontDestroyOnLoad(player);
                 DontDestroyOnLoad(particle);
 
-<<<<<<< HEAD
-
-                playerPref.name = "Player" + SaveSkin;
-
-=======
-                player.name = "Player" + SaveSkin;
->>>>>>> parent of 246c85b (O resto)
+                player.name = "Player" + 0;
                 particle.name = "BallParticle";
-                playerPref.transform.GetChild(0).gameObject.SetActive(true);
-
 
                 async.allowSceneActivation = true;
             }
