@@ -64,28 +64,24 @@ public class Network : MonoBehaviourPunCallbacks
             }
             
         }
+        else
+        {
+            player.GetComponent<Player>().enabled = false;
+        }
     }
-
 
     void Spawn()
     {
-
-
-
-
-
-
         if(x != 0)
         {
             Instantiate(Cam, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
-            player = PhotonNetwork.Instantiate("Player" + savedSkin, SpawnPlayer[0], new Quaternion(0, 0, 0, 0));
-            player.GetComponent<Player>().enabled = true;
+            player = PhotonNetwork.Instantiate("Player" + savedSkin, SpawnPlayer[x], new Quaternion(0, 0, 0, 0));
             waitingPlayerPanel.SetActive(false);
         }
         else
         {
             Instantiate(Cam, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
-            player = PhotonNetwork.Instantiate("Player" + savedSkin, SpawnPlayer[0], new Quaternion(0, 0, 0, 0));
+            player = PhotonNetwork.Instantiate("Player" + savedSkin, SpawnPlayer[x], new Quaternion(0, 0, 0, 0));
             player.GetComponent<Player>().enabled = false;
             waitingPlayerPanel.SetActive(true);
         }
