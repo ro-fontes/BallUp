@@ -59,14 +59,14 @@ public class Network : MonoBehaviourPunCallbacks
 
             for (int i = 0; i > 4; i++)
             {
-                GameObject.Find("Player" + i).GetComponent<Player>().enabled = true;
+                //GameObject.Find("Player" + i).GetComponent<Player>().enabled = true;
 
             }
             
         }
         else
         {
-            player.GetComponent<Player>().enabled = false;
+            //player.GetComponent<Player>().enabled = false;
         }
     }
 
@@ -74,20 +74,20 @@ public class Network : MonoBehaviourPunCallbacks
     {
         if(x != 0)
         {
-            Instantiate(Cam, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
-            player = PhotonNetwork.Instantiate("Player" + savedSkin, SpawnPlayer[x], new Quaternion(0, 0, 0, 0));
-            waitingPlayerPanel.SetActive(false);
+            //Instantiate(Cam, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+            //player = PhotonNetwork.Instantiate("Player" + savedSkin, SpawnPlayer[x], new Quaternion(0, 0, 0, 0));
+            //waitingPlayerPanel.SetActive(false);
         }
         else
         {
-            Instantiate(Cam, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
-            player = PhotonNetwork.Instantiate("Player" + savedSkin, SpawnPlayer[x], new Quaternion(0, 0, 0, 0));
-            player.GetComponent<Player>().enabled = false;
-            waitingPlayerPanel.SetActive(true);
+
+            //player.GetComponent<Player>().enabled = false;
+            //waitingPlayerPanel.SetActive(true);
         }
 
 
-
+        Instantiate(Cam, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+        player = PhotonNetwork.Instantiate("Player" + savedSkin, SpawnPlayer[x], new Quaternion(0, 0, 0, 0));
 
 
 
