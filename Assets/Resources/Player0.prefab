@@ -76,6 +76,8 @@ GameObject:
   - component: {fileID: 3018901164597012677}
   - component: {fileID: 6332910731332670035}
   - component: {fileID: 1062477669439120087}
+  - component: {fileID: 11594387527114493}
+  - component: {fileID: -5404263027628970005}
   m_Layer: 0
   m_Name: Player0
   m_TagString: Player
@@ -125,7 +127,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1e5c97ef1e590fc4d9691a61ceb35c36, type: 2}
+  - {fileID: 2100000, guid: 3e7101ee60b046b418bc7a05d385162b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -325,11 +327,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InWater: {fileID: 8300000, guid: ee9be2df301d38a4d8af54e68a7e4fda, type: 3}
   Outwater: {fileID: 8300000, guid: f1c511443316b7e43848ed6d29c6668c, type: 3}
+  myActorNumber: 0
   speed: 9
   isSinglePlayer: 0
+  isDead: 0
+  particlesSystem: {fileID: 0}
   jumpFloat: 300
   fluctuationMultiplier: 3
   MyCamera: {fileID: 4314535513345889584}
+  Network: {fileID: 0}
+  dissolvepeed: 1
+  WaterInScene: {fileID: 0}
+  isFloor: 0
+  timeDissolve: 1
 --- !u!114 &1062477669439120087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,6 +353,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameText: {fileID: 7098894313399377321}
+--- !u!114 &11594387527114493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039231868707457675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db142af22ca32d3409b55d7ff5d29033, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BallParticle: {fileID: 0}
+--- !u!114 &-5404263027628970005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039231868707457675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db142af22ca32d3409b55d7ff5d29033, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BallParticle: {fileID: 0}
 --- !u!1 &4314535513345889584
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,6 +592,11 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 2776671736743594881, guid: 7813927b094ee424d9076756d3a172f8,
         type: 3}
+      propertyPath: m_textAlignment
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 2776671736743594881, guid: 7813927b094ee424d9076756d3a172f8,
+        type: 3}
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
@@ -563,6 +604,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_enableAutoSizing
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2776671736743594881, guid: 7813927b094ee424d9076756d3a172f8,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 2776671736743594881, guid: 7813927b094ee424d9076756d3a172f8,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 2776671736743594881, guid: 7813927b094ee424d9076756d3a172f8,
         type: 3}
@@ -578,6 +629,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.wordCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2776671736743594881, guid: 7813927b094ee424d9076756d3a172f8,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2776671736743594881, guid: 7813927b094ee424d9076756d3a172f8,
         type: 3}

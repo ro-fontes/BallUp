@@ -11,7 +11,7 @@ public enum EnumAxis
 
 public class Rotate : MonoBehaviour
 {
-    
+    float x = 0;
     public EnumAxis axis;
     public float speed;
 

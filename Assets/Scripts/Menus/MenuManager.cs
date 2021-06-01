@@ -693,6 +693,7 @@ public class MenuManager : MonoBehaviour
 
     private void Jogar()
     {
+        Skins.SetAsLastSibling();
         menuAnim.SetBool("MenuToLocations", true);
         menuAnim.SetBool("Menu", false);
         if (ControllerManager.Mouse_Controller == 1)
@@ -710,6 +711,9 @@ public class MenuManager : MonoBehaviour
 
     private void Back()
     {
+        Skins.gameObject.SetActive(true);
+        Particle.gameObject.SetActive(false);
+        Skins.SetAsLastSibling();
         FirstButton.GetComponent<Animator>().updateMode = AnimatorUpdateMode.Normal;
         if (ControllerManager.Mouse_Controller == 1)
         {
@@ -738,6 +742,9 @@ public class MenuManager : MonoBehaviour
 
     void Customize()
     {
+        Skins.gameObject.SetActive(true);
+        Particle.gameObject.SetActive(false);
+        Skins.SetAsLastSibling();
         Invoke("ActiveColorUI", 0.7f);
         if (ControllerManager.Mouse_Controller == 1)
         {
@@ -769,6 +776,9 @@ public class MenuManager : MonoBehaviour
 
     void Multiplayer()
     {
+        Skins.gameObject.SetActive(true);
+        Particle.gameObject.SetActive(false);
+        Skins.SetAsLastSibling();
         menuAnim.SetBool("Menu", false);
         menuAnim.SetBool("SkinSelector", false);
         menuAnim.SetBool("SkinSelectorToSettings", false);
@@ -786,6 +796,9 @@ public class MenuManager : MonoBehaviour
 
     void Settings()
     {
+        Skins.gameObject.SetActive(true);
+        Particle.gameObject.SetActive(false);
+        Skins.SetAsLastSibling();
         if (ControllerManager.Mouse_Controller == 1)
         {
             EventSystem.current.SetSelectedGameObject(null);

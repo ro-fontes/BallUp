@@ -254,6 +254,7 @@ GameObject:
   - component: {fileID: 437180745786533351}
   - component: {fileID: -73074338024470789}
   - component: {fileID: -700074312341077934}
+  - component: {fileID: -8246858629447898055}
   m_Layer: 0
   m_Name: Player6
   m_TagString: Player
@@ -303,7 +304,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1e5c97ef1e590fc4d9691a61ceb35c36, type: 2}
+  - {fileID: 2100000, guid: 3e7101ee60b046b418bc7a05d385162b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -503,11 +504,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InWater: {fileID: 8300000, guid: ee9be2df301d38a4d8af54e68a7e4fda, type: 3}
   Outwater: {fileID: 8300000, guid: f1c511443316b7e43848ed6d29c6668c, type: 3}
+  myActorNumber: 0
   speed: 9
   isSinglePlayer: 0
+  isDead: 0
+  particlesSystem: {fileID: 0}
   jumpFloat: 300
   fluctuationMultiplier: 3
   MyCamera: {fileID: 3040792060772428144}
+  Network: {fileID: 0}
+  dissolvepeed: 1
+  WaterInScene: {fileID: 0}
+  isFloor: 0
+  timeDissolve: 1
 --- !u!114 &-700074312341077934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,6 +530,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameText: {fileID: 1706570781301307377}
+--- !u!114 &-8246858629447898055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5672249366127164578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db142af22ca32d3409b55d7ff5d29033, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BallParticle: {fileID: 0}
 --- !u!1001 &3541603020661750896
 PrefabInstance:
   m_ObjectHideFlags: 0

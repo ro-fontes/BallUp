@@ -11,21 +11,26 @@ public class Pause : MonoBehaviour
 {
     #region Variables
 
+    [Header("Buttons")]
     [Tooltip("Set Pause button Menu")]
     public Button BotaoRetornarAoJogo, BotaoRestart, BotaoOpcoes, BotaoVoltarAoMenu, BotaoNextLevel;
+    public GameObject PauseButton, SettingsButton, EndLevelButton, Options;
     [Space(20)]
+    [Header("Sliders")]
     [Tooltip("Set options button Menu")]
     public Slider BarraVolume, BarSoundFX, BarSoundMusic, BarFPSLimit;
+    [Header("Toggles")]
     [Tooltip("Set options button Menu")]
     public Toggle CaixaModoJanela, VSync, BloomBox, DepthOfFieldBox, MotionBlurBox, AnisotropicFiltering;
+    [Header("Dropdowns")]
     [Tooltip("Set options button Menu")]
     public Dropdown Resolucoes, Qualidades;
-    [Tooltip("Set options button Menu")]
     [Space(20)]
+    [Header("Others")]
     public AudioMixer masterMixer;
     public Image blur;
-    public GameObject PauseButton, SettingsButton, EndLevelButton, Options;
     public Text txtFPSMax;
+    [Header("SinglePlayer")]
     public int spawnPlayer;
     public int nextSpawn;
     public string nextLevel;
@@ -442,7 +447,6 @@ public class Pause : MonoBehaviour
         if (ativarOP == true && ativarOP2 == false)
         {
             EventSystem.current.SetSelectedGameObject(null);
-
             EventSystem.current.SetSelectedGameObject(PauseButton);
             menuParte1Ativo = true;
             menuParte2Ativo = false;
@@ -450,9 +454,7 @@ public class Pause : MonoBehaviour
         else if (ativarOP == false && ativarOP2 == true)
         {
             EventSystem.current.SetSelectedGameObject(null);
-
             EventSystem.current.SetSelectedGameObject(SettingsButton);
-
             menuParte1Ativo = false;
             menuParte2Ativo = true;
         }
@@ -461,7 +463,6 @@ public class Pause : MonoBehaviour
             menuParte1Ativo = false;
             menuParte2Ativo = false;
             Time.timeScale = 1;
-            //AudioListener.volume = VOLUME;
         }
     }
 
@@ -575,12 +576,13 @@ public class Pause : MonoBehaviour
 
     public void VoltarAoMenu()
     {
-        GameObject destroyPlayer = GameObject.FindGameObjectWithTag("Player");
-        GameObject destroyParticle = GameObject.Find("BallParticle");
-        Destroy(destroyParticle);
-        Destroy(destroyPlayer);
-        PhotonNetwork.Disconnect();
-        SceneManager.LoadScene("Menu");
+        //GameObject destroyPlayer = Destroy(GameObject.FindGameObjectWithTag("Player"));
+        Destroy(GameObject.FindGameObjectWithTag("Player"));
+        Destroy(GameObject.Find("BallParticle"));
+        //Destroy(destroyParticle);
+        //Destroy(destroyPlayer);
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LoadLevel("Menu");
     }
 
     public void Restart(int spawn)

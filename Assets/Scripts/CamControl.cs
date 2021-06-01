@@ -5,19 +5,8 @@ using Photon.Realtime;
 
 public class CamControl : MonoBehaviourPunCallbacks
 {
-    int x = 0;
     CinemachineFreeLook freeLook;
     public GameObject player;
-    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
-    {
-        print("entrou joinedRoom");
-        x++;
-    }
-
-    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
-    {
-        x--;
-    }
 
     private void Awake()
     {
@@ -28,7 +17,7 @@ public class CamControl : MonoBehaviourPunCallbacks
     {
         if (!player)
         {
-            player = GameObject.Find("Player" + x);
+            player = GameObject.FindWithTag("Player");
         }
         freeLook.Follow = player.transform;
         freeLook.LookAt = player.transform;

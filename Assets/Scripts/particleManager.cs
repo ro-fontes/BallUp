@@ -1,25 +1,48 @@
 ﻿using UnityEngine;
 using Photon.Pun;
 
-public class ParticleManager : MonoBehaviourPunCallbacks
+public class particleManager : MonoBehaviourPunCallbacks
 {
     public GameObject Spawn;
-    int x = 0;
 
-    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    private void Start()
     {
-        x++;
-    }
-
-    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
-    {
-        x--;
+        Spawn = GameObject.FindWithTag("Player");
+        this.gameObject.name = "BallParticle";   
     }
 
     void FixedUpdate()
     {
-        Spawn = GameObject.Find("Player" + x);
+        if (!Spawn)
+        {
+            Spawn = GameObject.FindWithTag("Player");
+        }
 
-        transform.position = Spawn.transform.position - new Vector3(0, 0.55f, 0);
+        if (GetComponent<PhotonView>().IsMine && !Spawn.GetComponent<Player>().isSinglePlayer)
+        {
+            transform.position = Spawn.transform.position - new Vector3(0, 0.55f, 0);
+        }
+        else
+        {
+
+            transform.position = Spawn.transform.position - new Vector3(0, 0.55f, 0);
+        }
+    }
+
+    [PunRPC]
+    public void RPC_ChangeParticleName(int playerID)
+    {
+        this.gameObject.name = "BallParticle" + playerID;
+    }
+    [PunRPC]
+    public void PlayParticle()
+    {
+        GetComponent<ParticleSystem>().Play();
+    }
+
+    [PunRPC]
+    public void StopParticle()
+    {
+        GetComponent<ParticleSystem>().Stop();
     }
 }

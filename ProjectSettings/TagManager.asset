@@ -13,6 +13,8 @@ TagManager:
   - Skin1
   - Bullet
   - Stars
+  - Void
+  - Particle
   layers:
   - Default
   - TransparentFX

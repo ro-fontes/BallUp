@@ -10,54 +10,42 @@ public class PlayerSelect : MonoBehaviour
     #region Variables
 
     public static PlayerSelect Instance;
+    private AsyncOperation async;
 
     [HideInInspector]
     public int Language;
 
     [Header("Player")]
-
     public Vector3[] SpawnPlayer;
     public GameObject spawn;
     [SerializeField]
-    private GameObject[] Players;
+    private GameObject[] Players;    
+    [SerializeField]
+    private GameObject[] particles;
     [SerializeField]
     private GameObject[] playersFBX;
     [SerializeField]
-    private GameObject[] Particles;
-    private GameObject playerFbxMenu, player, particle;
+    private GameObject[] particlesFBX;
+    private GameObject playerFbxMenu, particleFbxMenu, player, particle;
     private int SaveSkin, SaveParticle;
-    float savedColorR, savedColorG, savedColorB;
+    private float savedColorR, savedColorG, savedColorB;
 
     [Header("Buttons")]
-
     [SerializeField]
     [Tooltip("Put the buttons that will activate if the player passes the level")]
     private Button[] levelButtonActivate;
 
     [Header("UI")]
-
     [SerializeField]
     private GameObject Stars;
     [SerializeField]
     private GameObject Fragments;
 
     [Header("Camera")]
-
     public GameObject cam;
     public Animator loadAnimator;
+
     #endregion
-
-    [Header("LoadingScreen")]
-
-    [SerializeField]
-    private GameObject LoadGameobjct;
-    [SerializeField]
-    private Text loadingText;
-    [SerializeField]
-    [Range(0, 1f)] private float vignetteEfectVolue;
-
-    AsyncOperation async;
-
 
     private void Awake()
     {
@@ -78,10 +66,16 @@ public class PlayerSelect : MonoBehaviour
 
         if (!playerFbxMenu)
         {
-            playerFbxMenu = Instantiate(playersFBX[SaveSkin], spawn.transform.position, spawn.transform.rotation);
+            playerFbxMenu = Instantiate(playersFBX[SaveSkin], spawn.transform.position, Quaternion.identity);
             playerFbxMenu.transform.parent = spawn.transform;
             playerFbxMenu.gameObject.transform.localScale = new Vector3(10, 10, 10);
             playerFbxMenu.name = "Player";
+        }
+        if (!particleFbxMenu)
+        {
+            particleFbxMenu = Instantiate(particlesFBX[SaveParticle], playerFbxMenu.transform.position, Quaternion.identity);
+            particleFbxMenu.transform.parent = spawn.transform;
+            particleFbxMenu.name = "BallParticle";
         }
 
         for (int i = 1; i < 4; i++)
@@ -108,12 +102,12 @@ public class PlayerSelect : MonoBehaviour
     {
         SaveParticle = index;
         PlayerPrefs.SetInt("Particle", SaveParticle);
-        Destroy(particle);
+        Destroy(particleFbxMenu);
     }
 
     public void loadingScreen(int sceneNo)
     {
-        LoadGameobjct.gameObject.SetActive(true);
+        //LoadGameobjct.gameObject.SetActive(true);
         StartCoroutine(Loading(sceneNo));
     }
 
@@ -134,15 +128,14 @@ public class PlayerSelect : MonoBehaviour
                 //Player spawn
                 if (!player)
                 {
-                    player = Instantiate(Players[SaveSkin], SpawnPlayer[sceneNo - 2], new Quaternion(0, 0, 0, 0));
+                    player = Instantiate(Players[SaveSkin], SpawnPlayer[sceneNo - 2], Quaternion.identity);
                     player.transform.parent = null;
                     player.GetComponent<MeshRenderer>().material.color = new Color(savedColorR, savedColorG, savedColorB, 255f);
                     player.GetComponent<Player>().isSinglePlayer = true;
                 }
-
                 if (!particle)
                 {
-                    particle = Instantiate(Particles[SaveParticle], new Vector3(-1000, -1000, 0), new Quaternion(0, 0, 0, 0));
+                    particle = Instantiate(particles[SaveParticle], playerFbxMenu.transform.position, Quaternion.identity);
                     particle.transform.parent = null;
                 }
 
@@ -151,7 +144,6 @@ public class PlayerSelect : MonoBehaviour
 
                 player.name = "Player" + 0;
                 particle.name = "BallParticle";
-
                 async.allowSceneActivation = true;
             }
             yield return null;

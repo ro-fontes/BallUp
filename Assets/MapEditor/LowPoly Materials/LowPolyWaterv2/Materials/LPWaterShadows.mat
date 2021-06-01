@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: LPWaterShadows
   m_Shader: {fileID: 4800000, guid: 8165be4dd0b12774d80426d906df9c38, type: 3}
-  m_ShaderKeywords: LPW_SHADOWS _DISTORT_ON _EMISSION _SHADING_FLAT _WAVES_HIGHQUALITY
+  m_ShaderKeywords: LPW_SHADOWS _CULL_ON _DISTORT_ON _EMISSION _SHADING_FLAT _WAVES_HIGHQUALITY
     _ZWRITE_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
@@ -46,8 +46,8 @@ Material:
     - _BumpScale: 35
     - _BumpScale_: 50.260372
     - _BumpSpeed: 0.2
-    - _Cull: 0
-    - _Cull_: 2
+    - _Cull: 1
+    - _Cull_: 0
     - _Diffuse: 1
     - _Direction: 180
     - _Distort: 1
