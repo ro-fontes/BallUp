@@ -90,10 +90,12 @@ public class Network : MonoBehaviourPunCallbacks
     {
         myPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
         Instantiate(Cam);
-        particle = PhotonNetwork.Instantiate(playerParticles[savedParticle].name, new Vector3(0,0,0), Quaternion.identity);
+        particle = PhotonNetwork.Instantiate(playerParticles[savedParticle].name, new Vector3(0, 0, 0), Quaternion.identity);
         player = PhotonNetwork.Instantiate("Player" + savedSkin, SpawnPlayer[myPlayerId - 1], Quaternion.identity);
+        
+        
 
-        //particle.GetComponent<particleManager>().myActorNumber = myPlayerId;
+        particle.GetComponent<particleManager>().myActorNumber = myPlayerId;
         player.GetComponent<Player>().myActorNumber = myPlayerId;
         player.GetComponent<Player>().isSinglePlayer = false;
 

@@ -5,8 +5,17 @@ using UnityEngine;
 
 public class PlayerParticle : MonoBehaviour
 {
-    GameObject BallParticle;
+    public GameObject BallParticle;
 
+    private void Start()
+    {
+        if (!GetComponent<PhotonView>().IsMine)
+        {
+            //gameObject.tag = "OtherPlayer";
+        }
+
+        BallParticle = GameObject.FindWithTag("Particle");
+    }
 
     void Update()
     {
@@ -28,17 +37,19 @@ public class PlayerParticle : MonoBehaviour
                     BallParticle.GetComponent<PhotonView>().RPC("StopParticle", RpcTarget.All);
                 }
             }
+            else
+            {
+                //gameObject.tag = "OtherPlayer";
+            }
         }
         else
         {
             if (GetComponent<Rigidbody>().velocity.magnitude >= 5f && GetComponent<Player>().WaterInScene == null && GetComponent<Player>().isFloor == true)
             {
-                //PlayParticle();
                 BallParticle.GetComponent<particleManager>().PlayParticle();
             }
             else
             {
-                //StopParticle();
                 BallParticle.GetComponent<particleManager>().StopParticle();
             }
         }

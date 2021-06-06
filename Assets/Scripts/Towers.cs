@@ -44,7 +44,7 @@ public class Towers : MonoBehaviour
         }
         else
         {
-            playerTarget = null;
+            //playerTarget = null;
         }
     }
 

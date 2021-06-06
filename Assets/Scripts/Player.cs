@@ -6,7 +6,6 @@ using Photon.Pun;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(PhotonView))]
 [RequireComponent(typeof(SphereCollider))]
 
 public class Player : MonoBehaviour
@@ -138,7 +137,7 @@ public class Player : MonoBehaviour
                 mesh.material.SetFloat("_Cutoff", Mathf.Clamp01(timeDissolve * dissolvepeed));
             }
         }
-        if (isDead && timeDissolve < 1f)
+        if (isDead && timeDissolve < 1f) 
         {
             timeDissolve += Time.deltaTime;
         }
