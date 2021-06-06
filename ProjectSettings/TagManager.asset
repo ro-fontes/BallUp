@@ -17,6 +17,8 @@ TagManager:
   - Particle
   - OtherParticle
   - OtherPlayer
+  - FxTemporaire
+  - Boost
   layers:
   - Default
   - TransparentFX

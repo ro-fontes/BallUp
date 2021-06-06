@@ -5,44 +5,23 @@ using Photon.Pun;
 
 public class Mines : MonoBehaviourPunCallbacks
 {
-    [Range(1, 100)]
-    public float explosionRange = 2;
-    [Range(1, 1000)]
-    public float explosionForce = 50;
+    [Range(10, 10000)]
+    public float explosionForce = 650;
     [Range(1, 360)]
-    public float radius = 2;
+    public float radius = 10;
 
     public GameObject particleExplosion;
-
     public AudioClip soundExplosion;
-    public float distance;
-    public Vector3 explosionPosition;
 
-    public AudioSource audioSource;
-    private GameObject player, particle;
+    private Vector3 explosionPosition;
+    private AudioSource audioSource;
+    private GameObject particle;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
 
-    void Update()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-        distance = Vector3.Distance(this.gameObject.transform.position, player.transform.position);
-        if (distance < explosionRange)
-        {
-            
-
-            
-            
-            //GetComponent<PhotonView>().RPC("Explosion", RpcTarget.All);
-        }
-        else
-        {
-            player = null;
-        }
-    }
     [PunRPC]
     private void Explode()
     {
@@ -51,18 +30,27 @@ public class Mines : MonoBehaviourPunCallbacks
             particle = Instantiate(particleExplosion, transform.position, Quaternion.identity);
             particle.transform.parent = this.gameObject.transform;
             audioSource.PlayOneShot(soundExplosion);
-            
         }
+
         GetComponentInChildren<MeshRenderer>().enabled = false;
         Destroy(this.gameObject, 2f);
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.gameObject.CompareTag("Player"))
+        if (collision.collider.gameObject.CompareTag("Player"))
         {
-            explosionPosition = transform.position;
-            collision.collider.gameObject.GetComponent<Rigidbody>().AddExplosionForce(explosionForce, explosionPosition, radius, 0);
-            Explode();
+            if (!collision.collider.gameObject.GetComponent<Player>().isSinglePlayer)
+            {
+                explosionPosition = transform.position;
+                collision.collider.gameObject.GetComponent<Rigidbody>().AddExplosionForce(explosionForce, explosionPosition, radius, 0);
+                GetComponent<PhotonView>().RPC("Explode", RpcTarget.All);
+            }
+            else
+            {
+                explosionPosition = transform.position;
+                collision.collider.gameObject.GetComponent<Rigidbody>().AddExplosionForce(explosionForce, explosionPosition, radius, 0);
+                Explode();
+            }
         }
     }
 }

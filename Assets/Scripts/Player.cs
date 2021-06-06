@@ -224,6 +224,11 @@ public class Player : MonoBehaviour
             GameManager.Instance.AddFragments(1);
             Destroy(other.gameObject);
         }
+        if (other.gameObject.CompareTag("Boost"))
+        {
+            rb.velocity = new Vector3(20, 0, 0);
+
+        }
     }
 
     private void OnTriggerExit(Collider other)

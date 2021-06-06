@@ -165,14 +165,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e96e511ba54944a29ff0edcce2d7ad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionRange: 5
-  explosionForce: 50
-  radius: 2
-  particleExplosion: {fileID: 0}
+  explosionForce: 650
+  radius: 10
+  particleExplosion: {fileID: 1879769179923522, guid: 65932b7368590234d8163da03c2055d8,
+    type: 3}
   soundExplosion: {fileID: 8300000, guid: 27893c9986d1643048d2c5b7d6351237, type: 3}
-  distance: 0
-  explosionPosition: {x: 0, y: 0, z: 0}
-  audioSource: {fileID: 0}
 --- !u!65 &3147558747594259997
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -184,8 +181,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.01061569, y: 0.0025291306, z: 0.009929589}
-  m_Center: {x: 0.00006566399, y: 0.0005870707, z: 0.00012407376}
+  m_Size: {x: 0.01061569, y: 0.0026065013, z: 0.009929589}
+  m_Center: {x: 0, y: 0.0011268876, z: 0}
 --- !u!1 &6950984607911951366
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,7 +209,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6950984607911951366}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: -0.00038909446, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 314206613275657301}
