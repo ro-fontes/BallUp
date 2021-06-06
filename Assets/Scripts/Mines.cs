@@ -32,9 +32,9 @@ public class Mines : MonoBehaviourPunCallbacks
         distance = Vector3.Distance(this.gameObject.transform.position, player.transform.position);
         if (distance < explosionRange)
         {
-            explosionPosition = transform.position;
+            
 
-            Explode();
+            
             
             //GetComponent<PhotonView>().RPC("Explosion", RpcTarget.All);
         }
@@ -48,21 +48,21 @@ public class Mines : MonoBehaviourPunCallbacks
     {
         if (!particle)
         {
-            player.GetComponent<Rigidbody>().AddExplosionForce(explosionForce, explosionPosition, radius, 0);
             particle = Instantiate(particleExplosion, transform.position, Quaternion.identity);
             particle.transform.parent = this.gameObject.transform;
             audioSource.PlayOneShot(soundExplosion);
             
         }
         GetComponentInChildren<MeshRenderer>().enabled = false;
-        Destroy(this.gameObject, 3f);
+        Destroy(this.gameObject, 2f);
     }
-
-    [PunRPC]
-    public void Explosion()
+    private void OnCollisionEnter(Collision collision)
     {
-        audioSource.PlayOneShot(soundExplosion);
-        particleExplosion.GetComponent<ParticleSystem>().Play();
-        Destroy(this.gameObject);
+        if(collision.collider.gameObject.CompareTag("Player"))
+        {
+            explosionPosition = transform.position;
+            collision.collider.gameObject.GetComponent<Rigidbody>().AddExplosionForce(explosionForce, explosionPosition, radius, 0);
+            Explode();
+        }
     }
 }
