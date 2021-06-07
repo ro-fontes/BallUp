@@ -210,7 +210,8 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Void"))
         {
-            StartCoroutine(PlayerDied());
+            MyPhotonView.RPC("SpawnPlayer", RpcTarget.All);
+            isDead = false;
         }
         if (other.gameObject.CompareTag("Water"))
         {
@@ -240,6 +241,13 @@ public class Player : MonoBehaviour
             AudioPlayer.PlayOneShot(Outwater);
         }
     }
+
+    [PunRPC]
+    public void SpawnPlayer()
+    {
+        StartCoroutine(PlayerDied());
+    }
+
     IEnumerator PlayerDied()
     {
         isDead = true;
