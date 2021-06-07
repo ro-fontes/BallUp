@@ -306,6 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db142af22ca32d3409b55d7ff5d29033, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BallParticle: {fileID: 0}
 --- !u!1 &6704043989894591569
 GameObject:
   m_ObjectHideFlags: 0

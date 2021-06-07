@@ -97,10 +97,7 @@ public class Player : MonoBehaviour
             if (MyPhotonView.IsMine)
             {
                 Move();
-                if (Input.GetKeyDown(KeyCode.R))
-                {
-                    transform.position = Network.GetComponent<Network>().SpawnPlayer[myActorNumber - 1];
-                }
+
             }
         }
         else
@@ -111,6 +108,10 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            this.transform.position = Network.GetComponent<Network>().SpawnPlayer[myActorNumber - 1];
+        }
         playerJump();
         if (!Network)
         {

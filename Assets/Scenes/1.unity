@@ -6504,6 +6504,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1630710605914692195, guid: b23ec8141c1aad74b9851c9b7e004e4b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2113454091}
+    - target: {fileID: 1630710605914692195, guid: b23ec8141c1aad74b9851c9b7e004e4b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: VoltarAoMenu
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b23ec8141c1aad74b9851c9b7e004e4b, type: 3}
 --- !u!114 &666631270 stripped
@@ -12239,7 +12249,10 @@ MonoBehaviour:
   SpawnPlayer:
   - {x: -47.59, y: 0.5, z: 104}
   - {x: -44.71, y: 0.5, z: 159.16}
-  playerParticles: []
+  playerParticles:
+  - {fileID: 1120192483763867306, guid: 721c5c2c6b20ecf4a847043ee0e92d1f, type: 3}
+  - {fileID: 7390649683063592130, guid: f5d66e22e6402e848b90b5a6384d657d, type: 3}
+  - {fileID: 4938580969921280616, guid: ba155112085174c4585c906fe4823200, type: 3}
   playerJoinText: {fileID: 666631298}
   waitingPlayerPanel: {fileID: 666631297}
 --- !u!4 &1253790745
