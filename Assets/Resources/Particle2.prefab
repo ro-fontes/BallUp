@@ -4674,8 +4674,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04ea349a0400d554ea1442c80440318e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Spawn:
-  - {fileID: 0}
+  Spawn: {fileID: 0}
+  myActorNumber: 0
 --- !u!114 &839344016364887185
 MonoBehaviour:
   m_ObjectHideFlags: 0

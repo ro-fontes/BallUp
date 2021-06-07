@@ -97,6 +97,10 @@ public class Player : MonoBehaviour
             if (MyPhotonView.IsMine)
             {
                 Move();
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    transform.position = Network.GetComponent<Network>().SpawnPlayer[myActorNumber - 1];
+                }
             }
         }
         else
