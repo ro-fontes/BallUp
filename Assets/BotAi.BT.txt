@@ -1,0 +1,23 @@
+tree("Root")
+	sequence	
+		repeat mute tree("Patrol")
+
+tree("Patrol")
+	fallback
+		tree("Attack")
+		while not SeePlayer
+			fallback
+				tree("Wander")
+				
+
+tree("Attack")
+	while SeePlayer
+		Sequence
+			TargetPlayer
+			LookAtTarget
+			Position
+
+tree("Wander")
+	Sequence	
+		PickRandomDestination
+		MoveToDestination

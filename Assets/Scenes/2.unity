@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 0.45
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: cc421da483ed06c49933077a621bff25, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 97637a2a763b7f24b8da4e139e4144ca, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.15303451, g: 0.108390845, b: 0.1281673, a: 0.1}
+  m_IndirectSpecularColor: {r: 0.00007200191, g: 0.00018433576, b: 0.005602655, a: 0.1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &4
 LightmapSettings:
@@ -1171,6 +1171,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1126645804, guid: 03ea4ff66147c99489151276fc9358d7, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 5579466137406947961, guid: 03ea4ff66147c99489151276fc9358d7,
         type: 3}
       propertyPath: m_IsActive
@@ -1210,6 +1214,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.a
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5579466138138472287, guid: 03ea4ff66147c99489151276fc9358d7,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 5579466138219033685, guid: 03ea4ff66147c99489151276fc9358d7,
         type: 3}
@@ -1614,7 +1623,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 140807899}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -2199,13 +2208,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a7f7193a3142fa4396d98e91c2bc975, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapParticles: []
   Cam: {fileID: 4707662105271802058, guid: 67a61d26238afd142b4dad1ce2593c14, type: 3}
   SpawnPlayer:
   - {x: 55.8, y: 7.9, z: 130.3}
-  particles: []
+  playerParticles: []
+  playerJoinText: {fileID: 0}
   waitingPlayerPanel: {fileID: 340618048}
-  player: {fileID: 0}
-  particle: {fileID: 0}
 --- !u!4 &214270834
 Transform:
   m_ObjectHideFlags: 0
@@ -8433,7 +8442,7 @@ Transform:
   - {fileID: 195321751}
   - {fileID: 976799020}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1339178728
 GameObject:

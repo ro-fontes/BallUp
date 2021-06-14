@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(AudioSource))]
@@ -257,7 +258,15 @@ public class Player : MonoBehaviour
     {
         isDead = true;
         yield return new WaitForSeconds(1);
-        transform.position = Network.GetComponent<Network>().SpawnPlayer[myActorNumber - 1];
+        if (!isSinglePlayer)
+        {
+            transform.position = Network.GetComponent<Network>().SpawnPlayer[myActorNumber - 1];
+        }
+        else
+        {
+            transform.position = PlayerSelect.Instance.SpawnPlayer[SceneManager.GetActiveScene().buildIndex - 2];
+        }
+        
         rb.velocity = new Vector3(0, 0, 0);
         yield return new WaitForSeconds(1);
         isDead = false;
